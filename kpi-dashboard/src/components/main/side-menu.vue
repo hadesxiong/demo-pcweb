@@ -1,29 +1,61 @@
 <template>
-    <div>
-        <a-menu style="width: 12vw;" mode="inline" :inline-collapsed="menu_collapsed">
+    <div class="side_con">
+        <a-menu style="" mode="inline" :inline-collapsed="menu_collapsed">
             <a-sub-menu v-for="item in menu_data" :key="item.menu_key">
                 <template #icon><icon-park :type=item.menu_icon theme="outline" size="16"></icon-park></template>
                 <template #title>{{ item.menu_title }}</template>
                 <a-menu-item v-for="sub_item in item.sub_menu" :key="sub_item.menu_key">{{ sub_item.menu_title
                 }}</a-menu-item>
             </a-sub-menu>
-            <a-button type="text" @click="toggleCollapsed" class="toggle_btn">
-                <template #icon>
-                    <icon-park v-if="menu_collapsed" type="MenuFoldOne" theme="outline" size="16"
-                        fill="#4E5969"></icon-park>
-                    <icon-park v-else type="MenuUnfoldOne" theme="outline" size="16" fill="#4E5969"></icon-park>
-                </template>
-            </a-button>
+            <div class="triggle_con">
+                <a-button type="text" @click="toggleCollapsed" class="triggle_btn">
+                    <template #icon>
+                        <icon-park v-if="menu_collapsed" type="MenuFoldOne" theme="filled" size="16" fill="#4E5969"
+                            class="triggle_icon"></icon-park>
+                        <icon-park v-else type="MenuUnfoldOne" theme="filled" size="16" fill="#4E5969"
+                            class="triggle_icon"></icon-park>
+                    </template>
+                </a-button>
+            </div>
         </a-menu>
+
 
     </div>
 </template>
 
 <style>
-.toggle_btn {
-    width: 100% !important;
-    height: 40px;
-    line-height: 40px;
+.side_con {
+    width: 11vw;
+
+}
+.mg-auto {
+    margin: auto;
+}
+.triggle_con {
+    height: inherit;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.triggle_btn {
+    background-color: #F7F8FA;
+    display: inline-flex;
+    align-items: center;
+}
+.flex_end {
+    align-items: flex-end !important;
+}
+
+.triggle_icon {
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    line-height: inherit;
+    margin: auto;
 }
 </style>
 
