@@ -1,0 +1,64 @@
+/* 该样式表用于对ant-design的基本样式的覆盖 */
+
+/* menu部分 */
+.ant-menu-item-selected {
+  color: #165dff !important;
+  background-color: #f2f3f5 !important;
+  font-weight: 500;
+}
+.ant-menu-inline .ant-menu-sub.ant-menu-inline {
+  background-color: #ffffff !important;
+}
+.ant-menu-light .ant-menu-submenu-selected > .ant-menu-submenu-title {
+  color: #165dff !important;
+}
+.ant-menu-inline.ant-menu-root .ant-menu-item > .ant-menu-title-content,
+.ant-menu-inline.ant-menu-root
+  .ant-menu-submenu-title
+  > .ant-menu-title-content {
+  text-align: left;
+  margin-left: 1.2rem;
+}
+
+.ant-layout .ant-layout-header {
+  background: #fff;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+  height: 60px;
+  line-height: 60px;
+  padding-inline-end:20px;
+  padding-inline-start:20px;
+}
+
+.ant-layout .ant-layout-sider-trigger {
+  background:#fff;
+  color: #1D2129;
+  border-inline-end: 1px solid rgba(5, 5, 5, 0.06);
+}
+
+/* layout部分 */
+.ant-layout-header{
+  color: #fff;
+  background: #fff;
+}
+[data-theme="dark"].ant-layout-header{
+  background: #6aa0c7;
+}
+.ant-layout-sider {
+  color: #fff;
+  line-height: 120px;
+  background: #3ba0e9;
+  width: auto;
+  height: calc(100vh - 60px);
+}
+[data-theme="dark"].ant-layout-sider {
+  background: #3499ec;
+}
+.ant-layout-content {
+  min-height: 120px;
+  color: #fff;
+  line-height: 120px;
+  background: #f7f8fa;
+}
+[data-theme="dark"].ant-layout-content {
+  background: #107bcb;
+}

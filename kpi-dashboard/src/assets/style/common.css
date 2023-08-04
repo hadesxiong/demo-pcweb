@@ -1,0 +1,28 @@
+/* 该样式表作为基本样式供其他组件进行引用 */
+
+/* 边距部分 */
+.m_0 {
+  margin: 0;
+}
+.m_a {
+  margin: auto;
+}
+.mr_16 {
+  margin-right: 16px;
+}
+.mt_16 {
+  margin-top: 16px;
+}
+.mb_16 {
+  margin-bottom: 16px;
+}
+.ml_16 {
+  margin-left: 16px;
+}
+/* 布局部分 */
+.jc_c {
+  justify-content: center;
+}
+.jc_e {
+  justify-content: end;
+}

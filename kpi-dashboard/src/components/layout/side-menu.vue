@@ -1,61 +1,27 @@
 <template>
     <div class="side_con">
-        <a-menu style="" mode="inline" :inline-collapsed="menu_collapsed">
+        <a-menu style="" mode="inline" class="menu_con">
             <a-sub-menu v-for="item in menu_data" :key="item.menu_key">
                 <template #icon><icon-park :type=item.menu_icon theme="outline" size="16"></icon-park></template>
                 <template #title>{{ item.menu_title }}</template>
                 <a-menu-item v-for="sub_item in item.sub_menu" :key="sub_item.menu_key">{{ sub_item.menu_title
                 }}</a-menu-item>
             </a-sub-menu>
-            <div class="triggle_con">
-                <a-button type="text" @click="toggleCollapsed" class="triggle_btn">
-                    <template #icon>
-                        <icon-park v-if="menu_collapsed" type="MenuFoldOne" theme="filled" size="16" fill="#4E5969"
-                            class="triggle_icon"></icon-park>
-                        <icon-park v-else type="MenuUnfoldOne" theme="filled" size="16" fill="#4E5969"
-                            class="triggle_icon"></icon-park>
-                    </template>
-                </a-button>
-            </div>
         </a-menu>
-
 
     </div>
 </template>
 
 <style>
+@import url('../../assets/style/common.css');
+
 .side_con {
-    width: 11vw;
-
-}
-.mg-auto {
-    margin: auto;
-}
-.triggle_con {
-    height: inherit;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 100%;
 }
-
-.triggle_btn {
-    background-color: #F7F8FA;
-    display: inline-flex;
-    align-items: center;
-}
-.flex_end {
-    align-items: flex-end !important;
-}
-
-.triggle_icon {
-    font-size: 18px;
-    cursor: pointer;
-    transition: color 0.3s;
-    display: flex;
-    align-items: center;
-    line-height: inherit;
-    margin: auto;
+.menu_con {
+    height: 100%;
+    color: #1D2129;
 }
 </style>
 
@@ -80,19 +46,14 @@ export default defineComponent({
     },
     setup() {
         const state = reactive({
-            menu_collapsed: false,
+            // menu_collapsed: false,
             selectedKeys: [],
             openKeys: [],
             preOpenKeys: [],
 
         });
-        const toggleCollapsed = () => {
-            state.menu_collapsed = !state.menu_collapsed;
-            state.openKeys = state.menu_collapsed ? [] : state.preOpenKeys;
-        }
         return {
-            ...toRefs(state),
-            toggleCollapsed
+            ...toRefs(state)
         };
     },
 });
