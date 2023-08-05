@@ -2,17 +2,11 @@
   <div class="side_con">
     <a-menu mode="inline" class="menu_con">
       <a-sub-menu v-for="item in menu_data" :key="item.menu_key">
-        <template #icon
-          ><icon-park
-            :type="item.menu_icon"
-            theme="outline"
-            size="16"
-          ></icon-park
-        ></template>
+        <template #icon><icon-park :type="item.menu_icon" theme="outline" size="16"></icon-park></template>
         <template #title>{{ item.menu_title }}</template>
         <a-menu-item v-for="sub_item in item.sub_menu" :key="sub_item.menu_key">
           {{ sub_item.menu_title }}
-          <!-- <router-link :to="sub_item.menu_path"></router-link> -->
+          <router-link :to="{path: sub_item.menu_path}"></router-link>
         </a-menu-item>
       </a-sub-menu>
     </a-menu>
@@ -20,7 +14,6 @@
 </template>
 
 <style>
-
 @import url('../../../assets/style/common.css');
 
 .side_con {
@@ -39,10 +32,10 @@ import { defineComponent, reactive, toRefs } from "vue";
 import { IconPark } from "@icon-park/vue-next/es/all";
 
 export default defineComponent({
-  name: "SideMenu",
+  name: "SiderMenu",
   // props: ['icon'],
   components: {
-    IconPark,
+    'icon-park': IconPark,
   },
   data() {
     this.menu_data = [
@@ -55,11 +48,13 @@ export default defineComponent({
             menu_key: "dashboard-important",
             menu_title: "重要指标分析",
             menu_icon: "",
+            menu_path: "/dashboard-main"
           },
           {
             menu_key: "dashboard-other",
             menu_title: "同业指标分析",
-            menu_icon: "",
+            menu_icon:"",
+            menu_path: "/dashboard-other",
           },
         ],
       },
@@ -85,19 +80,19 @@ export default defineComponent({
             menu_key: "enterprise-table",
             menu_title: "企金数据报表",
             menu_icon: "",
-            menu_path: "/table-main",
+            menu_path: "/data-table",
           },
           {
             menu_key: "retail-table",
             menu_title: "零售数据报表",
             menu_icon: "",
-            menu_path: "/table-main",
+            menu_path: "/data-table",
           },
-          { menu_key: "bank-table", menu_title: "同业数据报表", menu_icon: "" },
+          { menu_key: "bank-table", menu_title: "同业数据报表", menu_icon: "",menu_path:"/data-table" },
           {
             menu_key: "other-table",
             menu_title: "其他数据报表",
-            menu_path: "/table-main",
+            menu_path: "/data-table",
           },
         ],
       },
@@ -106,9 +101,9 @@ export default defineComponent({
         menu_title: "数据管理",
         menu_icon: "Data",
         sub_menu: [
-          { menu_key: "data-import", menu_title: "数据导入", menu_icon: "",menu_path: "/table-main", },
-          { menu_key: "org_manage", menu_title: "机构管理", menu_icon: "",menu_path: "/table-main", },
-          { menu_key: "user_manage", menu_title: "用户管理", menu_icon: "",menu_path: "/table-main", },
+          { menu_key: "data-import", menu_title: "数据导入", menu_icon: "", menu_path: "/data-manage", },
+          { menu_key: "org_manage", menu_title: "机构管理", menu_icon: "", menu_path: "/org-manage", },
+          { menu_key: "user_manage", menu_title: "用户管理", menu_icon: "", menu_path: "/user-manage", },
         ],
       },
     ];

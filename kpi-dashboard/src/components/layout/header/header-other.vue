@@ -36,7 +36,7 @@ import { IconPark } from "@icon-park/vue-next/es/all";
 export default defineComponent({
     name:'HeaderOther',
     components: {
-        IconPark
+        'icon-park':IconPark
     },
     data(){
         // 测试数据

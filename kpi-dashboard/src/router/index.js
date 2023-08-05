@@ -1,23 +1,39 @@
 // 导入你的组件
-import db_main from "../views/dashboard/db_main.vue";
-import table_main from "../views/table/table_main.vue";
-import App from '../App.vue';
+// import LayoutMain from '../components/layout/layout-main.vue';
 
 // 定义路由配置
 const routes = [
   {
     path: "/",
-    component:App
+    redirect: "/dashboard-main",
   },
   {
-    path: "/db_main",
-    name: "db_main",
-    component: db_main,
+    path: "/dashboard-main",
+    component: () => import("../views/dashboard/dashboard-main.vue"),
   },
   {
-    path: "/table_main",
-    name: "table_main",
-    component: table_main,
+    path: "/dashboard-other",
+    component: () => import("../views/dashboard/dashboard-other.vue"),
+  },
+  {
+    path: "/data-manage",
+    component: () => import("../views/manage/data-manage.vue"),
+  },
+  {
+    path: "/org-manage",
+    component: () => import("../views/manage/org-manage.vue"),
+  },
+  {
+    path: "/user-manage",
+    component: () => import("../views/manage/user-manage.vue"),
+  },
+  {
+    path: "/rank-important",
+    component: () => import("../views/rank/rank-important.vue"),
+  },
+  {
+    path: "/data-table",
+    component: () => import("../views/table/data-table.vue"),
   },
 ];
 
