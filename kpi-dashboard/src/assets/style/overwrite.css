@@ -62,3 +62,6 @@
 [data-theme="dark"].ant-layout-content {
   background: #107bcb;
 }
+.ant-layout-content {
+  padding: 20px;
+}

@@ -1,12 +1,13 @@
 <template>
     <div class="logo_con">
-        <img src="../../assets/logo.png" class="logo_icon mt_16 mb_16 mr_16">
+        <img src="../../../assets/logo.png" class="logo_icon mt_16 mb_16 mr_16">
         <div class="logo_title">业绩展示系统</div>
     </div>
 </template>
 
 <style>
-@import url('../../assets/style/common.css');
+@import url('../../../assets/style/common.css');
+
 .logo_con {
     display:flex;
 }
@@ -21,4 +22,13 @@
 }
 </style>
 <script>
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+    name:'HeaderLogo',
+    data(){
+        return {}
+    },
+    setup(){}
+});
 </script>
