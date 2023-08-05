@@ -20,8 +20,7 @@
             <a-layout-content class="mt_60">
                 <div class="bread_con">
                     <a-breadcrumb>
-                        <a-breadcrumb-item v-for="item in bread_data" :key="item.data_key">{{ item.data_title
-                        }}</a-breadcrumb-item>
+                        <a-breadcrumb-item v-for="(item, index) in breadcrumb" :key="index">{{ item }}</a-breadcrumb-item>
                     </a-breadcrumb>
                 </div>
                 <div class="main_con mt_20">
@@ -43,6 +42,7 @@
     z-index: 1;
     width: 100%;
 }
+
 .layout_sider {
     overflow: auto;
     height: calc(100vh - 60px);
@@ -81,17 +81,13 @@ import { defineComponent, ref } from 'vue';
 export default defineComponent({
     name: 'LayoutMain',
     components: {
-        'header-logo':HeaderLogo,
-        'header-other':HeaderOther,
-        'sider-menu':SiderMenu,
-        'icon-park':IconPark
+        'header-logo': HeaderLogo,
+        'header-other': HeaderOther,
+        'sider-menu': SiderMenu,
+        'icon-park': IconPark
     },
     data() {
-        // 面包屑数据样例
-        this.bread_data = [
-            { data_title: '数据看板', data_key: 'dashboard', data_path: '' },
-            { data_title: '重要指标分析', data_key: 'dashboard-kpi', data_path: '' }
-        ];
+
         return {
             menu_collapsed: ref(false),
         }
@@ -99,6 +95,21 @@ export default defineComponent({
     setup() {
         return {}
     },
+    computed: {
+        breadcrumb() {
+            const matchedRoutes = this.$route.matched;
+            const breadcrumb = [];
+
+            matchedRoutes.forEach(route => {
+                if (route.meta && route.meta.breadcrumb) {
+                    // 将每个路由的 breadcrumb 数组合并到总的面包屑数组中
+                    breadcrumb.push(...route.meta.breadcrumb);
+                }
+            });
+
+            return breadcrumb;
+        }
+    }
 }
 );
 </script>
