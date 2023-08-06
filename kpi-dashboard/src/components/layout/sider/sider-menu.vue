@@ -31,6 +31,8 @@
 import { defineComponent, reactive, toRefs } from "vue";
 import { IconPark } from "@icon-park/vue-next/es/all";
 
+import axios from 'axios';
+
 export default defineComponent({
   name: "SiderMenu",
   // props: ['icon'],
@@ -38,76 +40,10 @@ export default defineComponent({
     'icon-park': IconPark,
   },
   data() {
-    this.menu_data = [
-      {
-        menu_key: "dashboard",
-        menu_title: "数据看板",
-        menu_icon: "DashboardOne",
-        sub_menu: [
-          {
-            menu_key: "dashboard-important",
-            menu_title: "重要指标分析",
-            menu_icon: "",
-            menu_path: "/dashboard-main"
-          },
-          {
-            menu_key: "dashboard-other",
-            menu_title: "同业指标分析",
-            menu_icon:"",
-            menu_path: "/dashboard-other",
-          },
-        ],
-      },
-      {
-        menu_key: "rank",
-        menu_title: "业绩排行",
-        menu_icon: "NewComputer",
-        sub_menu: [
-          {
-            menu_key: "rank-important",
-            menu_title: "重要指标排行",
-            menu_icon: "",
-            menu_path: "/rank-important",
-          },
-        ],
-      },
-      {
-        menu_key: "table",
-        menu_title: "数据报表",
-        menu_icon: "Notes",
-        sub_menu: [
-          {
-            menu_key: "enterprise-table",
-            menu_title: "企金数据报表",
-            menu_icon: "",
-            menu_path: "/data-table",
-          },
-          {
-            menu_key: "retail-table",
-            menu_title: "零售数据报表",
-            menu_icon: "",
-            menu_path: "/data-table",
-          },
-          { menu_key: "bank-table", menu_title: "同业数据报表", menu_icon: "",menu_path:"/data-table" },
-          {
-            menu_key: "other-table",
-            menu_title: "其他数据报表",
-            menu_path: "/data-table",
-          },
-        ],
-      },
-      {
-        menu_key: "settings",
-        menu_title: "数据管理",
-        menu_icon: "Data",
-        sub_menu: [
-          { menu_key: "data-import", menu_title: "数据导入", menu_icon: "", menu_path: "/data-manage", },
-          { menu_key: "org_manage", menu_title: "机构管理", menu_icon: "", menu_path: "/org-manage", },
-          { menu_key: "user_manage", menu_title: "用户管理", menu_icon: "", menu_path: "/user-manage", },
-        ],
-      },
-    ];
-    return {};
+    return {
+      res_data:'',
+      menu_data:''
+    };
   },
   setup() {
     const state = reactive({
@@ -116,9 +52,20 @@ export default defineComponent({
       openKeys: [],
       preOpenKeys: [],
     });
+    
     return {
       ...toRefs(state),
     };
   },
+  methods:{
+    async getMenuData() {
+      const menu_res = await axios.get('./demo/menu.json');
+      // console.log(menu_res.data);
+      this.menu_data = menu_res.data;
+    }
+  },
+  mounted() {
+    this.getMenuData();
+  }
 });
 </script>

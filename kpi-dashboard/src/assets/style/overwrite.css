@@ -66,3 +66,11 @@
   padding: 20px;
   height: calc(100vh - 60px);
 }
+
+/* 表格部分 */
+.ant-table-tbody > tr:last-child td {
+  border-bottom: none !important;
+}
+.ant-table-wrapper .ant-table-thead>tr>th, .ant-table-wrapper .ant-table-tbody>tr>td, .ant-table-wrapper tfoot>tr>th, .ant-table-wrapper tfoot>tr>td {
+  padding: 10px 16px;
+}

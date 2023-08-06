@@ -65,7 +65,7 @@
 .main_con {
     width: 100%;
     overflow: auto;
-    background-color: #FFF;
+    /* background-color: #f2f3f3; */
     color: black;
     height: calc(100% - 40px);
 }

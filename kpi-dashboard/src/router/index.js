@@ -49,10 +49,31 @@ const routes = [
     }
   },
   {
-    path: "/data-table",
-    component: () => import("../views/table/data-table.vue"),
+    path: "/enterprise-table",
+    component: () => import("../views/table/enterprise-table.vue"),
     meta:{
       breadcrumb:['数据报表','企金数据报表']
+    }
+  },
+  {
+    path: "/retail-table",
+    component: () => import("../views/table/retail-table.vue"),
+    meta:{
+      breadcrumb:['数据报表','零售数据报表']
+    }
+  },
+  {
+    path: "/bank-table",
+    component: () => import("../views/table/bank-table.vue"),
+    meta:{
+      breadcrumb:['数据报表','同业数据报表']
+    }
+  },
+  {
+    path: "/other-table",
+    component: () => import("../views/table/other-table.vue"),
+    meta:{
+      breadcrumb:['数据报表','其他数据报表']
     }
   },
 ];

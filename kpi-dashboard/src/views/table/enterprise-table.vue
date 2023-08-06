@@ -1,5 +1,5 @@
 <template>
     <div>
-        **数据报表
+        企金数据报表
     </div>
 </template>

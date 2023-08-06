@@ -16,7 +16,7 @@
     height: 30px;
 }
 .logo_title {
-    font-size:20px;
+    font-size:18px;
     font-weight:500;
     color: #1D2129;
 }
