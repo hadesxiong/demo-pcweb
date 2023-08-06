@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="v-rank_table">
-
+            
         </div>
     </div>
 </template>

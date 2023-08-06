@@ -59,7 +59,7 @@ export default defineComponent({
   },
   methods:{
     async getMenuData() {
-      const menu_res = await axios.get('./demo/menu.json');
+      const menu_res = await axios.get('http://localhost:8080/demo/menu.json');
       // console.log(menu_res.data);
       this.menu_data = menu_res.data;
     }

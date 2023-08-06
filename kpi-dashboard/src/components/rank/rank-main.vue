@@ -47,13 +47,14 @@
     flex-direction: column;
     padding: 20px;
     /* max-width: calc(34% - 20px); */
-    min-width: 520px;
+    /* min-width: 500px; */
     flex: 1 1 auto;
     /* flex-basis: calc(100% / 3); */
 }
 
 .c-rank_con:last-child {
     max-width: calc(50% - 10px);
+    /* min-width: 100%; */
 }
 
 .c-rank_header {
