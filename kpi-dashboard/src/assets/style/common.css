@@ -35,3 +35,9 @@
 .jc_e {
   justify-content: end;
 }
+/* 标签部分 */
+.tag_magenta {
+  background-color: var(--magenta-level-1);
+  color: var(--magenta-level-6);
+  border: 1px solid var(--magenta-level-1);
+}

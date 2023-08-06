@@ -49,6 +49,13 @@ const routes = [
     }
   },
   {
+    path:"/rank-important/rank-detail",
+    component: () => import("../views/rank/rank-detail.vue"),
+    meta:{
+      breadcrumb:['业绩排行','重要指标排行','业绩详情']
+    }
+  },
+  {
     path: "/enterprise-table",
     component: () => import("../views/table/enterprise-table.vue"),
     meta:{

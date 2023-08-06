@@ -1,21 +1,21 @@
 <template>
-    <div class="logo_con">
-        <img src="../../../assets/logo.png" class="logo_icon mt_16 mb_16 mr_16">
-        <div class="logo_title">业绩展示系统</div>
+    <div class="c-logo_con">
+        <img src="../../../assets/logo.png" class="c-logo_icon mt_16 mb_16 mr_16">
+        <div class="c-logo_title">业绩展示系统</div>
     </div>
 </template>
 
 <style>
 @import url('../../../assets/style/common.css');
 
-.logo_con {
+.c-logo_con {
     display:flex;
 }
-.logo_icon {
+.c-logo_icon {
     width: 30px;
     height: 30px;
 }
-.logo_title {
+.c-logo_title {
     font-size:18px;
     font-weight:500;
     color: #1D2129;

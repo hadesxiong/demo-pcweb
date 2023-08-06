@@ -1,11 +1,11 @@
 <template>
-    <div class="data_con">
-        <div class="data_head">
-            <div class="data_title">{{ title }}</div>
-            <div class="data_filter"></div>
+    <div class="c-data_con">
+        <div class="c-data_head">
+            <div class="c-data_title">{{ title }}</div>
+            <div class="c-data_filter"></div>
         </div>
-        <div class="data_body">
-            <div class="data_main">
+        <div class="c-data_body">
+            <div class="c-data_main">
                 <div :style="{ height: db_height, width: db_width }" :id="id"></div>
             </div>
         </div>

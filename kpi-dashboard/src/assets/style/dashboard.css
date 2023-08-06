@@ -1,7 +1,7 @@
 /* 该文件用于存放dashboard相关样式表 */
 
 /* 容器相关 */
-.data_con {
+.c-data_con {
     /* width: 44.625rem; */
     height: 17.875rem;
     flex-shrink: 0;
@@ -10,12 +10,12 @@
     display: flex;
     flex-direction: column;
 }
-.data_head {
+.c-data_head {
     display: flex;
     justify-content: space-between;
     height: auto;
 }
-.data_title {
+.c-data_title {
     display: inline-flex;
     padding: 1.25rem;
     align-items: flex-start;
@@ -27,14 +27,14 @@
     font-weight: 500;
     line-height: 1.25rem;
 }
-.data_body {
+.c-data_body {
     padding: 0 1.25rem 1.25rem 1.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
-.data_main {
+.c-data_main {
     display: flex;
     justify-content: center;
     align-items: center;

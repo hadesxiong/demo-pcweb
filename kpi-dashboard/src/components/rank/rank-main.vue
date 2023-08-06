@@ -1,21 +1,23 @@
 <template>
-    <div class="rank_list">
-        <div class="rank_con" v-for="item in rank_list" :key="item.rank_id">
-        <div class="rank_header">
-            <div class="header_left">
-                <div class="rank_title">{{ item.rank_info.data_title }}</div>
-                <div class="rank_tag" v-for="(tag_item,index) in item.rank_info.data_tag" :key="index">
+    <div class="c-rank_list">
+        <div class="c-rank_con" v-for="item in rank_list" :key="item.rank_id">
+        <div class="c-rank_header">
+            <div class="c-header_left">
+                <div class="c-rank_title">{{ item.rank_info.data_title }}</div>
+                <div class="c-rank_tag" v-for="(tag_item,index) in item.rank_info.data_tag" :key="index">
                     <a-tag :class="tag_item.tag_class">{{ tag_item.tag_title }}</a-tag>
                 </div>
-                <div class="rank_update">
+                <div class="c-rank_update">
                     数据更新于{{ item.rank_info.data_update }}
                 </div>
             </div>
-            <div class="header_right">
-                <div class="more_btn">查看全部</div>
+            <div class="c-header_right">
+                <div class="more_btn">
+                    <router-link to="/rank-important/rank-detail" class="more_btn">查看全部</router-link>
+                </div>
             </div>
         </div>
-        <div class="rank_main mt_20">
+        <div class="c-rank_main mt_20">
             <a-table :columns="item.rank_column" :data-source="item.rank_data" :pagination="false"></a-table>
         </div>
     </div>
@@ -27,7 +29,7 @@
 @import url('../../assets/style/common.css');
 @import url('../../assets/style/overwrite.css');
 
-.rank_list {
+.c-rank_list {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
@@ -35,7 +37,7 @@
     flex-direction: row;
 }
 
-.rank_con {
+.c-rank_con {
     border-radius: 4px;
     border: 1px solid var(--color-border-2);
     background-color: #fff;
@@ -44,12 +46,17 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
-    max-width: calc(34% - 20px);
-    min-width: 540px;
+    /* max-width: calc(34% - 20px); */
+    min-width: 520px;
     flex: 1 1 auto;
+    /* flex-basis: calc(100% / 3); */
 }
 
-.rank_header {
+.c-rank_con:last-child {
+    max-width: calc(50% - 10px);
+}
+
+.c-rank_header {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -58,24 +65,18 @@
     align-items: baseline;
 }
 
-.header_left {
+.c-header_left {
     display: inline-flex;
     gap: 12px;
     align-items: baseline;
 }
 
-.rank_title {
+.c-rank_title {
     font-size: 14px;
     font-weight: 500;
 }
 
-.tag_magenta {
-    background-color: var(--magenta-level-1);
-    color: var(--magenta-level-6);
-    border: 1px solid var(--magenta-level-1);
-}
-
-.rank_update {
+.c-rank_update {
     color: var(--color-text-3);
 }
 
