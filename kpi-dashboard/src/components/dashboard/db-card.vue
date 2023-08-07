@@ -32,8 +32,6 @@
 
 <style>
 @import url('../../assets/style/dashboard.css');
-@import url('../../assets/style/common.css');
-@import url('../../assets/style/overwrite.css');
 @import url('../../assets/style/colorset.css');
 
 .width_360 {

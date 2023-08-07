@@ -2,13 +2,14 @@
 
 /* 容器相关 */
 .c-data_con {
-    /* width: 44.625rem; */
-    height: 17.875rem;
+    width: auto;
+    height: auto;
     flex-shrink: 0;
-    border-radius: 0.25rem;
+    border-radius: 4px;
     background: #FFF;
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 .c-data_head {
     display: flex;
@@ -17,20 +18,20 @@
 }
 .c-data_title {
     display: inline-flex;
-    padding: 1.25rem;
+    padding: 20px;
     align-items: flex-start;
-    gap: 0.625rem;
+    gap: 10px;
     color: #000;
     font-family: PingFang SC;
-    font-size: 1rem;
+    font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    line-height: 1.25rem;
+    line-height: 20px;
 }
 .c-data_body {
-    padding: 0 1.25rem 1.25rem 1.25rem;
+    padding: 0 20px 20px 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     width: 100%;
 }
@@ -44,19 +45,26 @@
 .c-card_con {
     display: flex;
     flex-wrap: wrap;
-    width: 27.5rem;
-    justify-content: space-between;
-    margin-top: -1rem;
+    width: auto;
+    justify-content: flex-start;
+    gap: 16px;
+    flex-shrink: 0;
 }
 .c-card_main {
-    width: 13.25rem;
+    width: auto;
     background-color: #F7F8FA;
-    border-radius: 0.25rem;
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
-    padding: 1rem;
-    gap: 0.62rem;
-    margin-top: 1rem;
+    padding: 16px;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-basis: 33%;
+    flex-grow: 1;
+    max-width: 250px;
+}
+.c-card_main:last-child {
+    max-width: calc(50% - 10px);
 }
 .c-card_title {
     font-size: 0.875rem;
@@ -67,46 +75,10 @@
 }
 .c-card_data {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
-}
-
-/* 标签相关 */
-.label_magenta {
-    background-color: var(--magenta-level-1);
-    color:var(--magenta-level-6)
-}
-.label_purple {
-    background-color: var(--purple-level-1);
-    color:var(--purple-level-6)
-}
-.label_yellow {
-    background-color: var(--yellow-level-1);
-    color: var(--yellow-level-6);
-}
-.label_lime {
-    background-color: var(--lime-level-1);
-    color: var(--lime-level-6);
-}
-.label_blue {
-    background-color: var(--blue-level-1);
-    color: var(--blue-level-6);
-}
-.label_orange {
-    background-color: var(--orange-level-1);
-    color: var(--orange-level-6);
-}
-.label_cyan {
-    background-color: var(--cyan-lavel-1);
-    color: var(--cyan-level-6);
-}
-.label_gold {
-    background-color: var(--gold-level-1);
-    color: var(--gole-level-6);
-}
-.label_pink_purple {
-    background-color: var(--pink_purple-level-1);
-    color: var(--pink_purple-level-6);
+    width:100%;
+    gap: 12px;
 }
 
 /* 比较 */

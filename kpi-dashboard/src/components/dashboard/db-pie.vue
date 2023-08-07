@@ -8,31 +8,31 @@
         </div>
         <div class="c-data_body">
             <div class="c-data_main">
-                <div :style="{ height: height, width: width }" :id="id" class="pie_main"></div>
-                <div class="c-card_con width_275">
-                    <div class="c-card_main width_48p gap-06">
+                <div :style="{ height: height, width: width }" :id="id" class="ml_20 mr_20"></div>
+                <div class="c-card_con">
+                    <div class="c-card_main">
                         <div class="c-card_title">企金指标得分</div>
                         <div class="c-card_data">
                             <div class="data_num"><span>100</span> / 200</div>
-                            <div class="data_bar">
+                            <div class="c-data_bar">
                                 <div class="bar_value linear_blue"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="c-card_main width_48p gap-06">
+                    <div class="c-card_main">
                         <div class="c-card_title">零售指标得分</div>
                         <div class="c-card_data">
                             <div class="data_num"><span>100</span> / 200</div>
-                            <div class="data_bar">
+                            <div class="c-data_bar">
                                 <div class="bar_value linear_red"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="c-card_main width_48p gap-06">
+                    <div class="c-card_main">
                         <div class="c-card_title">同业指标得分</div>
                         <div class="c-card_data">
                             <div class="data_num"><span>100</span> / 200</div>
-                            <div class="data_bar">
+                            <div class="c-data_bar">
                                 <div class="bar_value linear_purple"></div>
                             </div>
                         </div>
@@ -48,43 +48,36 @@
 <style>
 /* 引入dashboard基本样式 */
 @import url('../../assets/style/dashboard.css');
+@import url('../../assets/style/colorset.css');
 @import url('../../assets/style/common.css');
-@import url('../../assets/style/overwrite.css');
 
-.width_275 {
-    max-width:var(--card-con-275);
-}
-.width_48p {
-    width:48%;
-}
 
-.pie_main {
-    margin-right: 2rem;
-}
 .data_num {
     color: #C9CDD4;
-    font-size: 0.75rem;
-    line-height: 1.5625rem;
-    letter-spacing: 0.0125rem;
+    font-size: 12px;
+    line-height: 30px;
+    letter-spacing: 0.5px;
     font-weight: 700;
 }
 
 .data_num span {
-    font-size: 1.125rem;
+    font-size: 18px;
     color: #0F172A;
-    line-height: 1.875rem;
+    line-height: 30px;
 }
 
-.data_bar {
-    width: 6rem;
-    height: 0.625rem;
+.c-data_bar {
+    width: auto;
+    height: 12px;
     background-color: #e5e6eb;
+    flex-grow: 1;
+    min-width: 100px;
 }
 
 .bar_value {
-    border-radius: 0rem 0.25rem 0.25rem 0rem;
-    width: 4.704rem;
-    height: 0.625rem;
+    border-radius: 0 4px 4px 0;
+    width: 33%;
+    height: 12px;
     flex-shrink: 0;
 }
 
@@ -119,11 +112,11 @@ export default {
     props: {
         height: {
             type: String,
-            default: "10.875rem",
+            default: "180px",
         },
         width: {
             type: String,
-            default: "10.875rem",
+            default: "180px",
         },
         id: {
             type: String,
@@ -162,7 +155,7 @@ export default {
                         emphasis: {
                             label: {
                                 show: false,
-                                fontSize: 24,
+                                fontSize: 20,
                                 fontWeight: 'bold'
                             }
                         },
@@ -182,25 +175,25 @@ export default {
                         type: 'text',
                         style: {
                             text: '综合评分',
-                            fontSize: '1rem',
+                            fontSize: '16px',
                             textAlign: 'center',
                             width: 'auto',
                             height: 'auto'
                         },
                         left: 'center',
-                        top: '35%'
+                        top: '40%'
                     }, {
                         type: 'text',
                         style: {
                             text: '753',
-                            fontSize: '1.75rem',
+                            fontSize: '22px',
                             fontWeight: 'bold',
                             textAlign: 'center',
                             width: 'auto',
                             height: 'auto'
                         },
                         left: 'center',
-                        top: '50%'
+                        top: '55%'
                     }]
                 }
             });
