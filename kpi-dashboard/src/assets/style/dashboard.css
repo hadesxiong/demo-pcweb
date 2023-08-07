@@ -41,14 +41,14 @@
 }
 
 /* 数据卡片相关 */
-.card_con {
+.c-card_con {
     display: flex;
     flex-wrap: wrap;
     width: 27.5rem;
     justify-content: space-between;
     margin-top: -1rem;
 }
-.card_main {
+.c-card_main {
     width: 13.25rem;
     background-color: #F7F8FA;
     border-radius: 0.25rem;
@@ -58,15 +58,61 @@
     gap: 0.62rem;
     margin-top: 1rem;
 }
-.card_title {
+.c-card_title {
     font-size: 0.875rem;
     font-weight: 400;
     line-height: 1.375rem;
     text-align: left;
     color: #4E5969;
 }
-.card_data {
+.c-card_data {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+/* 标签相关 */
+.label_magenta {
+    background-color: var(--magenta-level-1);
+    color:var(--magenta-level-6)
+}
+.label_purple {
+    background-color: var(--purple-level-1);
+    color:var(--purple-level-6)
+}
+.label_yellow {
+    background-color: var(--yellow-level-1);
+    color: var(--yellow-level-6);
+}
+.label_lime {
+    background-color: var(--lime-level-1);
+    color: var(--lime-level-6);
+}
+.label_blue {
+    background-color: var(--blue-level-1);
+    color: var(--blue-level-6);
+}
+.label_orange {
+    background-color: var(--orange-level-1);
+    color: var(--orange-level-6);
+}
+.label_cyan {
+    background-color: var(--cyan-lavel-1);
+    color: var(--cyan-level-6);
+}
+.label_gold {
+    background-color: var(--gold-level-1);
+    color: var(--gole-level-6);
+}
+.label_pink_purple {
+    background-color: var(--pink_purple-level-1);
+    color: var(--pink_purple-level-6);
+}
+
+/* 比较 */
+.compare_plus {
+    color: var(--color-danger-6);
+}
+.compare_minus {
+    color: var(--color-success-6);
 }

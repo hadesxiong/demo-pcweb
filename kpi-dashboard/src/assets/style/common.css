@@ -42,3 +42,33 @@
   border: 1px solid var(--magenta-level-1);
   margin: 0;
 }
+
+:root {
+  /* 首页数据卡片布局 */
+  /* 这里的布局仅仅是声明极限宽高 */
+  --card-con-275: 27.5rem;
+  --card-con-360: 34.0rem;
+  --card-con-410: 41.0rem;
+
+
+}
+/* 这里是flex对齐方向 */
+.flex-align-fs {
+  align-items: flex-start;
+}
+.flex-align-c {
+  align-items: center;
+}
+.flex-align-fe {
+  align-items: flex-end;
+}
+.flex-align-sb {
+  align-items: space-between;
+}
+/* 这里是flex的gap设定 */
+.gap-06 {
+  gap:0.6rem;
+}
+.gap-02 {
+  gap:0.2rem;
+}

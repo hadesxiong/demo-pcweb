@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="v-rank_table">
-            <a-table :columns="detail_data.table_column" :data-source="detail_data.table_data" :pagination=false :scroll="{y: 630}">
+            <a-table :columns="detail_data.table_column" :data-source="detail_data.table_data" :pagination=false :scroll="{y: 680}">
                 <template #bodyCell="{ column }">
                     <template v-if="column.dataIndex === 'data_operation'">
                         <div class="operation_btn">
@@ -113,6 +113,7 @@
     border: 1px solid var(--color-border-2);
     border-radius: 4px;
     overflow: auto;
+    height: 100%;
 }
 .operation_btn {
     color: var(--brand-1-6);
