@@ -9,7 +9,6 @@
     background: #FFF;
     display: flex;
     flex-direction: column;
-    flex: 1;
 }
 .c-data_head {
     display: flex;

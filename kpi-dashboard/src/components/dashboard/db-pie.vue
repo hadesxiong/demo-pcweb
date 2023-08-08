@@ -1,5 +1,5 @@
 <template>
-    <div class="c-data_con">
+    <div class="c-data_con db-pie_con">
         <div class="c-data_head">
             <div class="c-head_left">
                 <div class="c-data_title">考核评分</div>
@@ -91,6 +91,18 @@
 
 .linear_purple {
     background: linear-gradient(270deg, rgba(195, 76, 217, 0.52) 0%, #C34CD9 100%);
+}
+
+@media (max-width: 1279.98px) {
+    .db-pie_con {
+        width: 100%;
+    }
+}
+
+@media (min-width:1280px) {
+    .db-pie_con {
+        width: ;
+    }
 }
 </style>
 
