@@ -1,17 +1,21 @@
 <template>
-    <div class="c-data_con">
-        <div class="c-data_head">
-            <div class="c-head_left">
-                <div class="c-data_title">机构画像</div>
+    <a-row type="flex">
+        <a-col flex="auto">
+            <div class="c-data_con">
+                <div class="c-data_head">
+                    <div class="c-head_left">
+                        <div class="c-data_title">机构画像</div>
+                    </div>
+                    <div class="c-data_filter"></div>
+                </div>
+                <div class="c-data_body">
+                    <div class="c-data_main">
+                        <div :style="{ height: height, width: width }" :id="id"></div>
+                    </div>
+                </div>
             </div>
-            <div class="c-data_filter"></div>
-        </div>
-        <div class="c-data_body">
-            <div class="c-data_main">
-                <div :style="{ height: height, width: width }" :id="id"></div>
-            </div>
-        </div>
-    </div>
+        </a-col>
+    </a-row>
 </template>
 
 <style>
@@ -58,11 +62,11 @@ export default {
                     center: ['50%', '55%'],
                     radius: '75%',
                     name: {
-                        show:true,
+                        show: true,
                         textStyle: {
                             color: '#999',
                             borderRadius: 4,
-                            fontSize:"0.875rem",
+                            fontSize: "0.875rem",
                             padding: [1, 6],
                         }
                     },
@@ -81,16 +85,16 @@ export default {
                     data: [
                         {
                             value: [170, 60, 123, 150, 120],
-                            symbol:'circle',
+                            symbol: 'circle',
                             symbolSize: 4,
-                            itemStyle:{
-                                color:"#249EFF",
+                            itemStyle: {
+                                color: "#249EFF",
                             },
                             // name: '预算分配（Allocated Budget）'
-                            areaStyle:{
-                                color:'rgba(36, 158, 255, 0.40)'
+                            areaStyle: {
+                                color: 'rgba(36, 158, 255, 0.40)'
                             },
-                            lineStyle:{
+                            lineStyle: {
                                 color: '#249EFF'
                             }
                         }

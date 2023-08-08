@@ -1,6 +1,6 @@
 <template>
     <div class="v-db_con">
-        <db-pie></db-pie>
+        <db-pie v-if="pie_data.db_option" :db_data="pie_data"></db-pie>
         <!-- <db-radar></db-radar>
         <db-bar v-if="bar_data.db_option" :option_data="bar_data.db_option" :title="bar_data.db_title"></db-bar>
         <db-card1></db-card1>
@@ -12,9 +12,10 @@
 <style>
 .v-db_con {
     width: 100%;
+    min-width: 1280px;
+    /* height: 100%; */
     display: flex;
     gap: 20px;
-    flex-wrap: wrap;
 }
 </style>
 
@@ -41,6 +42,7 @@ export default defineComponent({
     data() {
         return {
             bar_data:{},
+            pie_data:{}
         }
     },
     mounted(){
@@ -48,10 +50,18 @@ export default defineComponent({
     },
     methods: {
         async getDbData() {
-            const db_data = await axios.get('./demo/dashboard/dashboard-bar.json');
-            // console.log(db_data.data);
-            this.bar_data = db_data.data.db_bar;
+
+            // db-bar
+            const dbbar_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-bar.json');
+            // console.log(dbbar_data.data);
+            this.bar_data = dbbar_data.data.db_bar;
             console.log(this.bar_data);
+
+            // db-pie
+            const dbpie_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-pie.json')
+            // console.log(dbpie_data.data)
+            this.pie_data = dbpie_data.data.db_pie;
+            console.log(this.pie_data)
         }
     }
 })
