@@ -1,5 +1,5 @@
 <template>
-    <div class="v-rank_con">
+    <div class="w_p100 h_p100 bg_white">
         <div class="v-filter_con">
             <div class="v-filter_left">
                 <a-radio-group v-model:value="default_line" button-style="solid" class="v-radio_group">
@@ -10,7 +10,7 @@
                     <a-radio-button value="other" class="v-radio_btn">其他指标</a-radio-button>
                 </a-radio-group>
             </div>
-            <div class="v-filter_right">
+            <div class="d_flex gap_20">
                 <a-dropdown class="v-input_style">
                     <a>全部分类<a-icon style="dropdown_icon" type="down"></a-icon></a>
                     <a-menu>
@@ -37,7 +37,9 @@
                 </a-dropdown>
             </div>
         </div>
-        <div class="v-data_con">
+        <div class="p_20">
+            <a-row>
+            </a-row>
             <rank-main v-if="rank_list" :rank_list="rank_list"></rank-main>
         </div>
     </div>
@@ -115,11 +117,6 @@
 
 .v-data_con {
     padding: 20px;
-}
-.v-filter_right {
-    display: flex;
-    gap: 20px;
-
 }
 .v-input_style {
     background-color: #f2f3f5;
