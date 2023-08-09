@@ -59,6 +59,12 @@
 .p_20 {
   padding: 20px;
 }
+.pt_4 {
+  padding-top: 4px;
+}
+.pt_8 {
+  padding-top: 8px;
+}
 .pt_10 {
   padding-top: 10px;
 }
@@ -73,6 +79,12 @@
 }
 .pb_20 {
   padding-bottom: 20px;
+}
+.pb_4 {
+  padding-bottom: 4px;
+}
+.pb_8 {
+  padding-bottom: 8px;
 }
 .pb_10 {
   padding-bottom: 10px;
@@ -143,6 +155,9 @@
 }
 .gap_4 {
   gap: 4px;
+}
+.gap_8 {
+  gap:8px;
 }
 .gap_10 {
   gap: 10px;
@@ -312,6 +327,9 @@
 }
 .fc_l1 {
   color: var(--color-text-1);
+}
+.fc_l3 {
+  color: var(--color-text-3);
 }
 
 /* 其他复用 */

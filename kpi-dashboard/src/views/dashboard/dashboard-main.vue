@@ -18,6 +18,9 @@
         <a-col>
             <db-bar2 v-if="bar2_data.db_option" :db_data="bar2_data"></db-bar2>
         </a-col>
+        <a-col>
+            <db-line v-if="line_data.db_option" :db_data="line_data"></db-line>
+        </a-col>
     </a-row>
     <!-- <div class="v-db_con"> -->
 
@@ -49,6 +52,7 @@ import DashboardPie from '../../components/dashboard/db-pie.vue';
 import DashboardRadar from '../../components/dashboard/db-radar.vue';
 import DashboardCard1 from '../../components/dashboard/db-card.vue';
 import DashboardCard2 from '../../components/dashboard/db-card2.vue';
+import DashboardLine from '../../components/dashboard/db-line.vue';
 import { defineComponent } from 'vue';
 import axios from 'axios';
 
@@ -60,7 +64,8 @@ export default defineComponent({
         'db-pie':DashboardPie,
         'db-radar':DashboardRadar,
         'db-card1':DashboardCard1,
-        'db-card2':DashboardCard2
+        'db-card2':DashboardCard2,
+        'db-line':DashboardLine
     },
     data() {
         return {
@@ -69,7 +74,8 @@ export default defineComponent({
             radar_data:{},
             card1_data:{},
             card2_data:{},
-            bar2_data:{}
+            bar2_data:{},
+            line_data:{}
         }
     },
     mounted(){
@@ -112,7 +118,13 @@ export default defineComponent({
             const dbbar2_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-bar2.json');
             // console.log(dbbar2_data);
             this.bar2_data = dbbar2_data.data.db_bar2;
-            console.log(this.bar2_data);
+            // console.log(this.bar2_data);
+
+            // db-line
+            const dbline_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-line.json');
+            console.log(dbline_data);
+            this.line_data = dbline_data.data.db_line;
+            console.log(this.line_data);
         }
     }
 })
