@@ -40,15 +40,11 @@
   color: #fff;
   background: #fff;
 }
+.ant-layout-sider {
+  background-color: #fff !important;
+}
 [data-theme="dark"].ant-layout-header{
   background: #6aa0c7;
-}
-.ant-layout-sider {
-  color: #fff;
-  line-height: 120px;
-  background: #3ba0e9;
-  width: auto;
-  height: calc(100vh - 60px);
 }
 [data-theme="dark"].ant-layout-sider {
   background: #3499ec;
@@ -77,7 +73,7 @@
 }
 
 /* radio部分 */
-.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+/* .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
   color: #165dff;
   background-color: #f2f3f5;
 }
@@ -113,7 +109,7 @@
   color: #165dff;
   border-color: transparent;
   font-weight: 500;
-}
+} */
 
 /* 按钮部分 */
 .ant-btn-default {

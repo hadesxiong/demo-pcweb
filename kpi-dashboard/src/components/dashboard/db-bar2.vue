@@ -1,172 +1,106 @@
 <template>
-    <div class="data_con">
-        <div class="data_head">
-            <div class="head_left">
-                <div class="data_title">AUM日均</div>
-                <div class="data_label label_orange">转型与质量发展</div>
+    <div class="d_flex fd_c bd_4 bg_white">
+        <div class="d_flex jc_sb">
+            <div class="d_flex">
+                <div class="d_iflex font_16 fw_500 fc_l1 lh_20 m_20">{{ db_data.db_title }}</div>
+                <div class="d_iflex br_4" :class="db_data.db_tag.tag_class">{{ db_data.db_tag.tag_name }}</div>
             </div>
             <div class="data_filter"></div>
         </div>
-        <div class="btn_switch flex-align-fs">
-            <a-radio-group default-value="company" button-style="solid">
-                <a-radio-button value="company">企金</a-radio-button>
+        <div class="d_flex fai_fs pl_20 pr_20 pb_10 pt_10">
+            <a-radio-group v-model:value="chosen_value" button-style="solid">
+                <a-radio-button value="enterprise">企金</a-radio-button>
                 <a-radio-button value="retial">零售</a-radio-button>
             </a-radio-group>
         </div>
-        <div class="data_body">
-            <div class="data_main">
-                <div :style="{ height: height, width: width }" :id="id"></div>
+        <div class="d_flex jc_c fai_c pl_20 pr_20 pb_10 pt_10">
+            <div class="d_flex jc_sb fai_c">
+                <div :style="{ height: db_height, width: db_width }" :id="id"></div>
             </div>
         </div>
     </div>
 </template>
 
-<style>
-@import url('../../assets/style/dashboard.css');
-@import url('../../assets/style/colorset.css');
+<style scoped>
 
-.btn_switch {
-    display: flex;
-    margin-left: 1.25rem;
+.ant-radio-group {
+    border: 4px solid #f2f3f5;
+    border-radius: 4px;
 }
+.ant-radio-button-wrapper {
+    color: #4E5969;
+    background-color: #F2F3F5;
+    border: 1px solid #f2f3f5;
+    height: 32px;
+    line-height: 32px;
+}
+.ant-radio-button-wrapper:first-child {
+    border-inline-start: 1px solid #f2f3f5;
+    border-start-start-radius:2px;
+    border-end-start-radius:2px;
+}
+.ant-radio-button-wrapper:last-child {
+    border-start-end-radius:2px;
+    border-end-end-radius:2px;
+}
+.ant-radio-button-wrapper:not(:first-child)::before {
+    width: 0px;
+}
+.ant-radio-button-wrapper-checked {
+    border-start-start-radius:2px !important;
+    border-end-start-radius:2px !important;
+    background-color: #fff !important;
+    color: #165dff !important;
+    border: none;
+    font-weight: 700;
+}
+
 </style>
 
 <script>
+import { defineComponent, ref } from 'vue';
+
 let echarts = require("echarts/lib/echarts")
 require("echarts/lib/chart/bar")
 require("echarts/lib/component/tooltip")
 require("echarts/lib/component/grid")
 
-export default {
-    name: "dashboard_bar",
+export default defineComponent({
+    name: "DashboardBar2",
     props: {
-        height: {
-            type: String,
-            default: "100%"
-        },
-        width: {
-            type: String,
-            default: "30rem"
-        },
         id: {
             type: String,
             default: "rank_bar"
+        },
+        db_data: {
+            type:Object
         }
     },
     data() {
-        return {};
+        return {
+            db_width:"600px",
+            db_height: "60px"
+        };
+    },
+    setup() {
+        const chosen_value = ref('enterprise');
+        return {
+            chosen_value
+        }
     },
     mounted() {
         this.drawLine();
     },
     methods: {
         drawLine() {
-            console.log(this.id);
+            // console.log(this.id);
             let myChart = echarts.init(document.getElementById(this.id));
-
-            myChart.setOption({
-                tooltip: {
-                    // trigger: 'axis',
-                    // axisPointer: {
-                    // Use axis to trigger tooltip
-                    // type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
-                    // }
-                },
-                grid: {
-                    left: '0%',
-                    right: '4%',
-                    bottom: '3%',
-                    width: '100%',
-                    height: '100%',
-                    containLabel: true
-                },
-                yAxis: {
-                    type: 'value',
-                    max: function (value) {
-                        return value.max + 0.25 * value.max;
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: ["#E5E8EF"],
-                            type: "dashed"
-                        }
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    axisLine: {
-                        lineStyle: {
-                            color: ["#E5E8EF"],
-                            type: "dashed"
-                        }
-                    },
-                    axisLabel: {
-                        margin: 12,
-                    },
-                    axisTick: {
-                        alignWithLabel: true,
-                        lineStyle: {
-                            color: "#86909C"
-                        }
-                    },
-                    data: ['2023.01', '2023.02', '2023.03', '2023.04', '2023.05', '2023.06']
-                },
-                series: [
-                    {
-                        name: '企金条线',
-                        type: 'bar',
-                        stack: 'total',
-                        barWidth: 28,
-                        label: {
-                            show: false
-                        },
-                        emphasis: {
-                            focus: 'none'
-                        },
-                        itemStyle: {
-                            color: '#246EFF'
-                        },
-                        data: [320, 302, 301, 334, 390, 330]
-                    },
-                    {
-                        name: '零售条线',
-                        type: 'bar',
-                        stack: 'total',
-                        label: {
-                            show: false
-                        },
-                        emphasis: {
-                            focus: 'none'
-                        },
-                        itemStyle: {
-                            color: '#00B2FF'
-                        },
-                        data: [120, 132, 101, 134, 90, 230]
-                    },
-                    {
-                        name: '同业条线',
-                        type: 'bar',
-                        stack: 'total',
-                        label: {
-                            show: false
-                        },
-                        emphasis: {
-                            focus: 'none'
-                        },
-                        itemStyle: {
-                            color: '#81E2FF',
-                            borderRadius: [4, 4, 0, 0]
-                        },
-                        data: [220, 182, 191, 234, 290, 330]
-                    }
-                ]
-
-            });
+            myChart.setOption(this.db_data.db_option);
             //添加自适应
             window.addEventListener('resize', function () {
                 myChart.resize();
             })
         }
     }
-}
+})
 </script>

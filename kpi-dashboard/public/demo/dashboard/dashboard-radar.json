@@ -1,0 +1,50 @@
+{
+    "db_radar":{
+        "db_title":"机构画像",
+        "db_option":{
+            "tooltip": {},
+            
+            "radar": {
+                "center": ["50%", "55%"],
+                "radius": "75%",
+                
+                "axisName": {
+                    "show": true,
+                    "textStyle": {
+                        "color": "#999",
+                        "borderRadius": 4,
+                        "fontSize": "14px",
+                        "padding": [1, 6]
+                    }
+                },
+                "indicator": [
+                    { "name": "财务效益", "max": 200 },
+                    { "name": "客户建设", "max": 300 },
+                    { "name": "转型发展", "max": 200 },
+                    { "name": "社会责任", "max": 180 },
+                    { "name": "风险合规", "max": 200 }
+                ]
+            },
+            "series": [{
+                "name": "机构画像",
+                "type": "radar",
+                "data": [
+                    {
+                        "value": [170, 60, 123, 150, 120],
+                        "symbol": "circle",
+                        "symbolSize": 4,
+                        "itemStyle": {
+                            "color": "#249EFF"
+                        },
+                        "areaStyle": {
+                            "color": "rgba(36, 158, 255, 0.40)"
+                        },
+                        "lineStyle": {
+                            "color": "#249EFF"
+                        }
+                    }
+                ]
+            }]
+        }
+    }
+}

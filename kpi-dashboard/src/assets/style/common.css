@@ -18,6 +18,9 @@
 .m_20 {
   margin: 20px;
 }
+.mr_4 {
+  margin-right: 4px;
+}
 .mr_16 {
   margin-right: 16px;
 }
@@ -29,6 +32,9 @@
 }
 .mb_16 {
   margin-bottom: 16px;
+}
+.ml_4 {
+  margin-left: 4px;
 }
 .ml_12 {
   margin-left: 12px;
@@ -53,6 +59,9 @@
 .p_20 {
   padding: 20px;
 }
+.pt_10 {
+  padding-top: 10px;
+}
 .pt_20 {
   padding-top: 20px;
 }
@@ -64,6 +73,9 @@
 }
 .pb_20 {
   padding-bottom: 20px;
+}
+.pb_10 {
+  padding-bottom: 10px;
 }
 
 /* 行高部分 */
@@ -128,6 +140,9 @@
 }
 .jc_fe {
   justify-content: flex-end;
+}
+.gap_4 {
+  gap: 4px;
 }
 .gap_10 {
   gap: 10px;
@@ -201,55 +216,82 @@
   background-color: var(--magenta-level-1);
   color: var(--magenta-level-6);
   border: 1px solid var(--magenta-level-1);
-  margin: 0;
+  margin: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+  line-height: 24px;
 }
 .tag_purple {
     background-color: var(--purple-level-1);
     color:var(--purple-level-6);
     border: 1px solid var(--purple-level-1);
-    margin: 0;
+    margin: auto;
+    padding-left: 8px;
+    padding-right: 8px;
+    line-height: 24px;
 }
 .tag_yellow {
   background-color: var(--yellow-level-1);
   color: var(--yellow-level-6);
   border: 1px solid var(--yellow-level-1);
-  margin: 0;
+  margin: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+  line-height: 24px;
 }
 .tag_lime {
   background-color: var(--lime-level-1);
   color: var(--lime-level-6);
   border: 1px solid var(--lime-level-1);
-  margin: 0;
+  margin: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+  line-height: 24px;
 }
 .tag_blue {
   background-color: var(--blue-level-1);
   color: var(--blue-level-1);
   border: 1px solid var(--blue-level-1);
-  margin: 0;
+  margin: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+  line-height: 24px;
 }
 .tag_orange {
   background-color: var(--orange-level-1);
-  color: var(--orange-level-1);
+  color: var(--orange-level-6);
   border: 1px solid var(--orange-level-1);
-  margin: 0;
+  margin: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+  line-height: 24px;
 }
 .tag_cyan {
   background-color: var(--cyan-level-1);
   color: var(--cyan-level-1);
   border: 1px solid var(--cyan-level-1);
-  margin: 0;
+  margin: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+  line-height: 24px;
 }
 .tag_gold {
   background-color: var(--gold-level-1);
   color: var(--gold-level-6);
   border: 1px solid var(--gold-level-1);
-  margin: 0;
+  margin: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+  line-height: 24px;
 }
 .tag_pink_purple {
   background-color: var(--pink_purple-level-1);
   color: var(--pink_purple-level-6);
   border: 1px solid var(--pink_purple-level-1);
-  margin: 0;
+  margin: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+  line-height: 24px;
 }
 
 /* 常用色部分 */
@@ -270,4 +312,15 @@
 }
 .fc_l1 {
   color: var(--color-text-1);
+}
+
+/* 其他复用 */
+.db-card_bgc {
+  background: #f7f8fa;
+}
+.compare_plus {
+  color: var(--color-success-6);
+}
+.compare_minus {
+  color: var(--color-danger-6);
 }

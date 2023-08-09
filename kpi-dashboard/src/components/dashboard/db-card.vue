@@ -1,26 +1,25 @@
 <template>
-    <div class="c-data_con">
-        <div class="c-data_head">
-            <div class="c-head_left">
-                <div class="c-data_title">客户建设情况</div>
-                <div class="c-data_label c-label_purple">客户建设</div>
+    <div class="d_flex fd_c bd_4 bg_white">
+        <div class="d_flex jc_sb">
+            <div class="d_flex">
+                <div class="d_iflex font_16 fw_500 fc_l1 lh_20 m_20">{{ db_data.db_title }}</div>
+                <div class="d_iflex br_4" :class="db_data.db_tag.tag_class">{{ db_data.db_tag.tag_name }}</div>
             </div>
-
             <div class="c-data_filter"></div>
         </div>
-        <div class="c-data_body">
-            <div class="c-data_main">
-                <div class="c-card_con width_360">
-                    <div v-for="item in card_data" :key="item.data_title" class="c-card_main width_48p gap-06">
-                        <div class="c-card_title">{{ item.data_title }}</div>
-                        <div class="c-card_data">
-                            <div class="data_detail">
-                                <span class="detail_num">{{ item.data_value }}</span>
-                                {{ item.data_unit }}
+        <div class="cd_flex jc_c fai_c pl_20 pr_20 pb_20">
+            <div class="d_flex jc_sb fai_c">
+                <div class="d_flex fwrap_w jc_fs gap_16 fs_0 dbcard-card_con">
+                    <div v-for="(item,index) in db_data.db_other.card_data" :key="index" class="d_flex br_4 fd_c p_16 gap_4 jc_c fai_fs db-card_bgc dbcard-card_limit">
+                        <div class="font_14 fw_400 lh_22 ta_l fc_l2">{{ item.card_title }}</div>
+                        <div class="d_flex fai_b jc_sb gap_12 w_p100">
+                            <div class="font_14 fw_700 lh_30 mr_4">
+                                <span class="font_18 fc_l1 mr_4">{{ item.value_current }}</span>
+                                {{ item.value_unit }}
                             </div>
-                            <div class="data_compare compare_detail">
+                            <div class="font_12 fc_l2 lh_20">
                                 较上期
-                                <span :class="item.status == '1'? 'compare_plus' : 'compare_minus'">{{item.compare_value}}</span>
+                                <span :class="item.value_status === 0 ? 'compare_plus' : 'compare_minus'" class="ml_4 fw_700">{{item.value_compare}}</span>
                             </div>
                         </div>
                     </div>
@@ -31,37 +30,15 @@
 </template>
 
 <style>
-@import url('../../assets/style/dashboard.css');
-@import url('../../assets/style/colorset.css');
 
-.width_360 {
-    max-width: var(--card-con-360);
+.dbcard-card_con {
+    flex-basis: 600px;
 }
-.width_48p {
-    width:48%;
+
+.dbcard-card_limit {
+    width: 260px;
 }
-.data_detail {
-    font-size:0.75rem;
-    line-height: 1.875rem;
-    display: flex;
-    align-items:flex-end;
-    align-self: stretch;
-}
-.detail_num {
-    font-size: 1.125rem;
-    color: "#0f172a";
-    font-weight: 700;
-    line-height: 1.875rem;
-    letter-spacing: 0.0125rem;
-    margin-right: 0.25rem;
-}
-.data_compare {
-    font-size:0.75rem;
-    line-height: 1.375rem;
-}
-.compare_detail span{
-    margin-left: 0.25rem;
-}
+
 
 </style>
 
@@ -70,7 +47,11 @@
 
 export default {
     name: "DashboardCard1",
-    props:{},
+    props:{
+        db_data:{
+            type:Object
+        }
+    },
     data() {
         this.card_data = [
             {data_title:'企金动户数',data_unit:'户',status:'1',data_value:'232,123',compare_value:'+12,309'},

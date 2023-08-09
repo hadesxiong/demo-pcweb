@@ -1,0 +1,36 @@
+{
+    "db_card2":{
+        "db_title":"理财日均保有量",
+        "db_tag":{
+            "tag_name":"转型与质量发展",
+            "tag_class":"tag_orange"
+        },
+        "db_option":{},
+        "db_other":{
+            "other_type":"cardtype_2",
+            "card_data":[
+                {
+                    "card_title":"企金理财日均保有量",
+                    "value_current":"223,876.21",
+                    "value_unit":"万元",
+                    "value_compare":"+12,309",
+                    "value_status":1
+                },
+                {
+                    "card_title":"零售理财日均保有量",
+                    "value_current":"223,876.21",
+                    "value_unit":"万元",
+                    "value_compare":"-12,309",
+                    "value_status":0
+                },
+                {
+                    "card_title":"同业理财日均保有量",
+                    "value_current":"223,876.21",
+                    "value_unit":"万元",
+                    "value_compare":"+12,309",
+                    "value_status":1
+                }
+            ]
+        }
+    }
+}

@@ -1,26 +1,21 @@
 <template>
-    <a-row type="flex">
-        <a-col flex="auto">
-            <div class="c-data_con">
-                <div class="c-data_head">
-                    <div class="c-head_left">
-                        <div class="c-data_title">机构画像</div>
-                    </div>
-                    <div class="c-data_filter"></div>
-                </div>
-                <div class="c-data_body">
-                    <div class="c-data_main">
-                        <div :style="{ height: height, width: width }" :id="id"></div>
-                    </div>
-                </div>
+    <div class="c-data_con d_flex fd_c bd_4 bg_white">
+        <div class="d_flex jc_sb">
+            <div class="d_flex jc_sb">
+                <div class="d_iflex gap_10 font_16 fw_500 fc_l1 lh_20 m_20">机构画像</div>
             </div>
-        </a-col>
-    </a-row>
+            <div class="c-data_filter"></div>
+        </div>
+        <div class="d_flex jc_c fai_c pl_20 pr_20 pb_20">
+            <div class="d_flex jc_sb fai_c">
+                <div :style="{ height: radar_height, width: radar_width }" :id="id"></div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <style>
-@import url('../../assets/style/dashboard.css');
-@import url('../../assets/style/colorset.css');
+
 </style>
 
 <script>
@@ -32,75 +27,28 @@ require("echarts/lib/component/grid")
 export default {
     name: "DashboardRadar",
     props: {
-        height: {
-            type: String,
-            default: "12.875rem",
-        },
-        width: {
-            type: String,
-            default: "27.875rem",
-        },
         id: {
             type: String,
             default: "score_2"
+        },
+        db_data:{
+            type:Object
         }
     },
     data() {
-        return {};
+        return {
+            radar_height:"200px",
+            radar_width:"446px"
+        };
     },
     mounted() {
         this.drawLine();
     },
     methods: {
         drawLine() {
-            console.log(this.id);
+            // console.log(this.id);
             let myChart = echarts.init(document.getElementById(this.id));
-
-            myChart.setOption({
-                tooltip: {},
-                radar: {
-                    center: ['50%', '55%'],
-                    radius: '75%',
-                    name: {
-                        show: true,
-                        textStyle: {
-                            color: '#999',
-                            borderRadius: 4,
-                            fontSize: "0.875rem",
-                            padding: [1, 6],
-                        }
-                    },
-                    indicator: [
-                        { name: '财务效益', max: 200 },
-                        { name: '客户建设', max: 300 },
-                        { name: '转型发展', max: 200 },
-                        { name: '社会责任', max: 180 },
-                        { name: '风险合规', max: 200 },
-                    ]
-                },
-                series: [{
-                    name: '机构画像',
-                    type: 'radar',
-                    // areaStyle: {normal: {}},
-                    data: [
-                        {
-                            value: [170, 60, 123, 150, 120],
-                            symbol: 'circle',
-                            symbolSize: 4,
-                            itemStyle: {
-                                color: "#249EFF",
-                            },
-                            // name: '预算分配（Allocated Budget）'
-                            areaStyle: {
-                                color: 'rgba(36, 158, 255, 0.40)'
-                            },
-                            lineStyle: {
-                                color: '#249EFF'
-                            }
-                        }
-                    ]
-                }]
-            });
+            myChart.setOption(this.db_data.db_option);
         }
     }
 }

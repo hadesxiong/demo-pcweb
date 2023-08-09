@@ -2,20 +2,20 @@
     <div class="d_flex fd_c bd_4 bg_white">
         <div class="d_flex jc_sb">
             <div class="d_flex jc_sb">
-                <div class="c-data_title d_iflex gap_10 font_16 fw_500 fc_l1 lh_20 m_20">{{db_data.db_title}}</div>
+                <div class="d_iflex gap_10 font_16 fw_500 fc_l1 lh_20 m_20">{{db_data.db_title}}</div>
             </div>
             <div class="c-data_filter"></div>
         </div>
-        <div class="d_flex jc_c fai_c w_p100 pl_20 pr_20 pb_20">
-            <div class="d_flex jc_sb mt_20 fai_c">
-                <div :style="{ height: pie_height, width: pie_width }" :id="id" class="mr_20"></div>
-                <div class="d_flex fwrap_w jc_fs gap_16 fs_0">
-                    <div class="d_flex br_4 fd_c p_16 gap_10 jc_c card_bgc"  v-for="(item,index) in db_data.db_other.card_data" :key="index">
+        <div class="d_flex jc_c fai_c pl_20 pr_20 pb_20">
+            <div class="d_flex jc_sb fai_c">
+                <div :style="{ height: pie_height, width: pie_width }" :id="id" class="mr_20 dbpie_con"></div>
+                <div class="d_flex fwrap_w jc_fs gap_16 fs_0 dbpie-card_con">
+                    <div class="d_flex br_4 fd_c p_16 gap_10 jc_c db-card_bgc dbpie-card_limit "  v-for="(item,index) in db_data.db_other.card_data" :key="index">
                         <div class="font_14 fw_400 lh_22 ta_l fc_l2">{{item.card_title}}</div>
                         <div class="d_flex fai_b jc_sb gap_12">
-                            <div class="fc_l4 lh_30 font_12 fw_700"><span class="font_18 fc_l1">{{item.value_current}}</span> / {{ item.value_max }}</div>
+                            <div class="fc_l4 lh_30 font_12 fw_700 dbpie-bar_data"><span class="font_18 fc_l1">{{item.value_current}}</span> / {{ item.value_max }}</div>
                             <div class="c-data_bar fg_1 bg_l3">
-                                <div class="bar_value br_tr4 br_br4 fs_0" :class="item.class" :style="{width: item.value_rate}"></div>
+                                <div class="dbpie-bar_value br_tr4 br_br4 fs_0" :class="item.class" :style="{width: item.value_rate}"></div>
                             </div>
                         </div>
                     </div>
@@ -26,21 +26,30 @@
 </template>
 
 <style>
-/* 引入dashboard基本样式 */
-@import url('../../assets/style/colorset.css');
-@import url('../../assets/style/common.css');
 
-.card_bgc {
-    background: #f7f8fa;
-}
 .c-data_bar {
     width: auto;
     height: 12px;
     min-width: 100px;
 }
-.bar_value {
-    width: 33%;
+.dbpie-bar_value {
     height: 12px;
+}
+.dbpie-bar_data {
+    width: 70px;
+    text-align: left;
+}
+.dbpie-card_limit {
+    flex: 0 1 auto;
+}
+/* .dbpie-card_limit:last-child{
+    max-width: calc(50% - 10px);
+} */
+.dbpie_con {
+    min-width: 174px;
+}
+.dbpie-card_con {
+    max-width: 450px;
 }
 
 .linear_blue {
@@ -79,10 +88,6 @@ export default {
         db_data: {
             type:Object,
         },
-        // title:{
-        //     type:String,
-        //     default:"看到这个说明接口失效了"
-        // }
     },
     data() {
         return {
@@ -99,7 +104,7 @@ export default {
             let myChart = echarts.init(document.getElementById(this.id));
             // 绘制图表
 
-            myChart.setOption(this.db_data.db_option)
+            myChart.setOption(this.db_data.db_option);
             //添加自适应
             window.addEventListener('resize', function () {
                 myChart.resize();

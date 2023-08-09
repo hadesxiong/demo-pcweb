@@ -43,9 +43,50 @@
     </div>
 </template>
 
-<style>
+<style scoped>
 @import url('../../assets/style/colorset.css');
 @import url('../../assets/style/overwrite.css');
+
+/* 覆盖部分 */
+
+/* radio部分 */
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+  color: #165dff;
+  background-color: #f2f3f5;
+}
+
+.ant-radio-button-wrapper:last-child {
+  border-start-end-radius: 100px;
+  border-end-end-radius: 100px;
+}
+
+.ant-radio-button-wrapper:first-child {
+  border-inline-start: 0;
+  border-start-start-radius: 100px;
+  border-end-start-radius: 100px;
+}
+
+.ant-radio-button-wrapper {
+  border: none;
+}
+.ant-radio-button-wrapper:not(:first-child)::before {
+  width: 0;
+  inset-block-start: 0;
+  inset-block-end: 0;
+  padding-block: 0;
+  background-color: transparent;
+}
+.ant-radio-button-wrapper:not(:first-child)::before {
+  color: #165dff;
+  background-color: #f2f3f5;
+  border-color: transparent;
+}
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  background-color: #f2f3f5;
+  color: #165dff;
+  border-color: transparent;
+  font-weight: 500;
+}
 
 .v-rank_con {
     width: 100%;

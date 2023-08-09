@@ -1,6 +1,10 @@
 {
     "db_bar": {
         "db_title": "营业净收入",
+        "db_tag": {
+            "tag_name":"财务效益",
+            "tag_class":"tag_magenta"
+        },
         "db_option": {
             "tooltip": {},
             "grid": {

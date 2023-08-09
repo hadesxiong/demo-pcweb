@@ -64,28 +64,28 @@
     /* 7 - 点击 */
 
     /* 成功 */
-    -color-success-1:#e8ffea;
-    -color-success-2:#aff0b5;
-    -color-success-3:#7be188;
-    -color-success-5:#23c343;
-    -color-success-6:#00b42a;
-    -color-success-7:#009a29;
+    --color-success-1:#e8ffea;
+    --color-success-2:#aff0b5;
+    --color-success-3:#7be188;
+    --color-success-5:#23c343;
+    --color-success-6:#00b42a;
+    --color-success-7:#009a29;
 
     /* 提示 */
-    -color-warning-1:#fff7e8;
-    -color-warning-2:#ffe4ba;
-    -color-warning-3:#ffcf8b;
-    -color-warning-5:#ff9a2e;
-    -color-warning-6:#ff7d00;
-    -color-warning-7:#d25f00;
+    --color-warning-1:#fff7e8;
+    --color-warning-2:#ffe4ba;
+    --color-warning-3:#ffcf8b;
+    --color-warning-5:#ff9a2e;
+    --color-warning-6:#ff7d00;
+    --color-warning-7:#d25f00;
 
     /* 错误 */
-    -color-danger-1:#ffece8;
-    -color-danger-2:#fdcdc5;
-    -color-danger-3:#fbaca3;
-    -color-danger-5:#f76560;
-    -color-danger-6:#f53f3f;
-    -color-danger-7:#cb2634;
+    --color-danger-1:#ffece8;
+    --color-danger-2:#fdcdc5;
+    --color-danger-3:#fbaca3;
+    --color-danger-5:#f76560;
+    --color-danger-6:#f53f3f;
+    --color-danger-7:#cb2634;
 
     /* 其他颜色 */
     /* level-1 -- 用于背景 */
