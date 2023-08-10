@@ -82,6 +82,9 @@
 .pt_10 {
   padding-top: 10px;
 }
+.pt_12 {
+  padding-top: 12px;
+}
 .pt_16 {
   padding-top: 16px;
 }
@@ -105,6 +108,9 @@
 }
 .pb_10 {
   padding-bottom: 10px;
+}
+.pb_12 {
+  padding-bottom: 12px;
 }
 .pb_16 {
   padding-bottom: 16px;
@@ -222,6 +228,9 @@
 }
 .fw_700 {
   font-weight: 700;
+}
+.fw_normal {
+  font-weight: normal;
 }
 
 /* 边框部分 */
@@ -387,6 +396,20 @@
 .compare_minus {
   color: var(--color-danger-6);
 }
+/* .blue_dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: #165DFF;
+  border: 2px solid #BEDAFF;
+}
+.purple_dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: #722ED1;
+  border: 2px solid #F5E8FF;
+} */
 
 /* 字体隐藏 */
 .of_h {

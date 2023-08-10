@@ -1,0 +1,153 @@
+{
+    "history_id":"history_id",
+    "table_data":{
+        "table_column":[
+            {
+                "title":"数据时间",
+                "dataIndex":"data_time",
+                "key":"data_time"
+            },
+            {
+                "title":"期末数(万元)",
+                "dataIndex":"data_cterm",
+                "key":"data_cterm",
+                "sorter":true
+            },
+            {
+                "title":"上年数(万元)",
+                "dataIndex":"data_lyear",
+                "key":"data_lyear",
+                "sorter":true
+            },
+            {
+                "title":"期末比上年(万元)",
+                "dataIndex":"data_comp",
+                "key":"data_comp",
+                "sorter":true
+            },
+            {
+                "title":"计划数(万元)",
+                "dataIndex":"data_plan",
+                "key":"data_plan",
+                "sorter":true
+            },
+            {
+                "title":"计划完成率(%)",
+                "dataIndex":"data_rate",
+                "key":"data_rate",
+                "sorter":true
+            }
+        ],
+        "table_data":[
+            {
+                "data_time":"2023.06",
+                "data_cterm": "23334.84",
+                "data_lyear": "12391.23",
+                "data_comp": "12312.02",
+                "data_plan": "30000.00",
+                "data_rate": "23.91%"
+            },
+            {
+                "data_time":"2023.05",
+                "data_cterm": "23334.84",
+                "data_lyear": "12391.23",
+                "data_comp": "12312.02",
+                "data_plan": "30000.00",
+                "data_rate": "23.91%"
+            },
+            {
+                "data_time":"2023.04",
+                "data_cterm": "23334.84",
+                "data_lyear": "12391.23",
+                "data_comp": "12312.02",
+                "data_plan": "30000.00",
+                "data_rate": "23.91%"
+            },
+            {
+                "data_time":"2023.03",
+                "data_cterm": "23334.84",
+                "data_lyear": "12391.23",
+                "data_comp": "12312.02",
+                "data_plan": "30000.00",
+                "data_rate": "23.91%"
+            },
+            {
+                "data_time":"2023.02",
+                "data_cterm": "23334.84",
+                "data_lyear": "12391.23",
+                "data_comp": "12312.02",
+                "data_plan": "30000.00",
+                "data_rate": "23.91%"
+            },
+            {
+                "data_time":"2023.01",
+                "data_cterm": "23334.84",
+                "data_lyear": "12391.23",
+                "data_comp": "12312.02",
+                "data_plan": "30000.00",
+                "data_rate": "23.91%"
+            }
+        ]
+    },
+    "echarts_data":{
+        "grid": {
+            "left": "0%",
+            "right": "4%",
+            "bottom": "3%",
+            "width": "100%",
+            "height": "100%",
+            "containLabel": true
+        },
+        "xAxis":{
+            "type":"category",
+            "data":["2023.01", "2023.02", "2023.03", "2023.04", "2023.05", "2023.06"],
+            "axisLine": {
+                "lineStyle": {
+                    "color": "#E5E8EF",
+                    "type": "dashed"
+                }
+            },
+            "axisLabel": {
+                "color": "#86909C",
+                "type:": "dashed"
+            },
+            "boundaryGap":true
+        },
+        "yAxis":{
+            "type":"value",
+            "splitLine":{
+                "lineStyle":{
+                    "type":"dashed"
+                }
+            }
+        },
+        "series":[
+            {   
+                "name":"一般性存款",
+                "data":[820, 932, 901, 934, 1290, 1330],
+                "type":"line",
+                "smooth":true,
+                "symbol":"none",
+                "lineStyle":{
+                    "color":"#3469FF"
+                },
+                "areaStyle":{
+                    "color":""
+                }
+            },
+            {
+                "name":"低成本存款",
+                "data":[129, 1300, 650, 459, 1600, 630],
+                "type":"line",
+                "smooth":true,
+                "symbol":"none",
+                "lineStyle":{
+                    "color":"#722ED1"
+                },
+                "areaStyle":{
+                    "color":""
+                }
+            }
+        ]
+    }
+}
