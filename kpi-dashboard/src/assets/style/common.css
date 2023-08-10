@@ -115,6 +115,9 @@
 .pb_16 {
   padding-bottom: 16px;
 }
+.pil_15 {
+  padding-inline: 15px;
+}
 
 /* 行高部分 */
 .lh_20 {
@@ -395,6 +398,9 @@
 }
 .compare_minus {
   color: var(--color-danger-6);
+}
+.cursor_p {
+  cursor:pointer;
 }
 /* .blue_dot {
   width: 10px;

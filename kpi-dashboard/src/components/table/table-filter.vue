@@ -11,23 +11,9 @@
             </div>
         </div>
         <div class="d_flex fd_r lh_30 gap_20">
-            <div class="fc_l3 filter_title ta_l">查看方式</div>
+            <div class="fc_l3 filter_title ta_l">指标分类</div>
             <div class="d_flex">
-                <a-radio-group v-model:value="default_org" button-style="solid" class="d_flex gap_12">
-                    <a-radio-button value="qyzxzh" class="br_100 of_h tover_ell">区域中心支行</a-radio-button>
-                    <a-radio-button value="ddzh" class="br_100 of_h tover_ell">单点支行</a-radio-button>
-                    <a-radio-button value="zlkhb" class="br_100 of_h tover_ell">战略客户部</a-radio-button>
-                </a-radio-group>
-            </div>
-        </div>
-        <div class="d_flex fd_r lh_30 gap_20">
-            <div class="fc_l3 filter_title ta_l">查看方式</div>
-            <div class="d_flex">
-                <a-radio-group v-model:value="default_org" button-style="solid" class="d_flex gap_12">
-                    <a-radio-button value="qyzxzh" class="br_100 of_h tover_ell">区域中心支行</a-radio-button>
-                    <a-radio-button value="ddzh" class="br_100 of_h tover_ell">单点支行</a-radio-button>
-                    <a-radio-button value="zlkhb" class="br_100 of_h tover_ell">战略客户部</a-radio-button>
-                </a-radio-group>
+                <custom-multi></custom-multi>
             </div>
         </div>
     </div>
@@ -80,9 +66,13 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
+import CustomMulti from './custom-multi.vue';
 
 export default defineComponent({
     name:"TableFilter",
+    components:{
+        'custom-multi':CustomMulti
+    },
     props:{
         org_filter:{
             type:Array
@@ -94,8 +84,15 @@ export default defineComponent({
     },
     setup() {
         const default_org = ref('qyzxzh');
+        const indeterminate = ref(false)
         return {
-            default_org
+            default_org,
+            indeterminate
+        }
+    },
+    methods:{
+        checkAllClass() {
+            
         }
     }
 });
