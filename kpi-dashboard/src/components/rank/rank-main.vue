@@ -1,86 +1,35 @@
 <template>
-    <a-row :gutter="[0, 20]">
-        <a-col :xl="8" :lg="12" :xs="24" class="c-rank_con" v-for="item in rank_list" :key="item.rank_id">
-            <div class="c-rank_header">
-                <div class="c-header_left">
-                    <div class="c-rank_title">{{ item.rank_info.data_title }}</div>
-                    <div class="c-rank_tag" v-for="(tag_item, index) in item.rank_info.data_tag" :key="index">
-                        <a-tag :class="tag_item.tag_class">{{ tag_item.tag_title }}</a-tag>
+    <div class="d_flex fwrap_w" style="padding: 0px !important;">
+        <a-row :gutter="[20, 20]" :wrap="true" justify="start">
+            <a-col :md="24" :lg="24" :xl="12" :xxl="8" :xxxl="6" v-for="item in rank_list" :key="item.rank_id">
+                <div class="d_flex fd_c bg_white br_4 c-rank_con p_20 b_w1c2_so">
+                    <div class="d_flex jc_sb w_p100 lh_20 fai_b">
+                        <div class="d_iflex gap_12 fai_c">
+                            <div class="font_14 fw_500">{{ item.rank_info.data_title }}</div>
+                            <div v-for="(tag_item, index) in item.rank_info.data_tag" :key="index">
+                                <a-tag :class="tag_item.tag_class">{{ tag_item.tag_title }}</a-tag>
+                            </div>
+                            <div class="fc_l3">
+                                数据更新于{{ item.rank_info.data_update }}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="fc_brand6">
+                                <router-link to="/rank-important/rank-detail" class="more_btn">查看全部</router-link>
+                            </div>
+                        </div>
                     </div>
-                    <div class="c-rank_update">
-                        数据更新于{{ item.rank_info.data_update }}
+                    <div class="w_p100 mt_20">
+                        <a-table :columns="item.rank_column" :data-source="item.rank_data" :pagination="false"></a-table>
                     </div>
                 </div>
-                <div class="c-header_right">
-                    <div class="more_btn">
-                        <router-link to="/rank-important/rank-detail" class="more_btn">查看全部</router-link>
-                    </div>
-                </div>
-            </div>
-            <div class="c-rank_main mt_20">
-                <a-table :columns="item.rank_column" :data-source="item.rank_data" :pagination="false"></a-table>
-            </div>
-        </a-col>
-    </a-row>
+
+            </a-col>
+        </a-row>
+    </div>
 </template>
 
 <style>
-@import url('../../assets/style/colorset.css');
-@import url('../../assets/style/common.css');
-@import url('../../assets/style/overwrite.css');
-
-.c-rank_con {
-    border-radius: 4px;
-    border: 1px solid var(--color-border-2);
-    background-color: #fff;
-    width: auto;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    /* max-width: calc(34% - 20px); */
-    /* min-width: 500px; */
-    /* flex: 1 1 auto; */
-    /* flex-basis: calc(100% / 3); */
-}
-
-.c-rank_header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    line-height: 20px;
-    font-size: 12px;
-    align-items: baseline;
-}
-
-.c-header_left {
-    display: inline-flex;
-    gap: 12px;
-    align-items: baseline;
-}
-
-.c-rank_title {
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.c-rank_update {
-    color: var(--color-text-3);
-}
-
-.more_btn {
-    color: var(--brand-1-6);
-}
-
-.rank_main {
-    width: 100%;
-}
-
-/* 表格覆写部分 */
-
-.ant-table-wrapper .ant-table {
-    font-size: 13px;
-}
 </style>
 
 <script>

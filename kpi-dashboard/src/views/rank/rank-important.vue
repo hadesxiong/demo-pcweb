@@ -1,13 +1,13 @@
 <template>
     <div class="w_p100 h_p100 bg_white">
-        <div class="v-filter_con">
-            <div class="v-filter_left">
-                <a-radio-group v-model:value="default_line" button-style="solid" class="v-radio_group">
-                    <a-radio-button value="all" class="v-radio_btn">全部</a-radio-button>
-                    <a-radio-button value="enterprise" class="v-radio_btn">企金指标</a-radio-button>
-                    <a-radio-button value="retail" class="v-radio_btn">零售指标</a-radio-button>
-                    <a-radio-button value="bank" class="v-radio_btn">同业指标</a-radio-button>
-                    <a-radio-button value="other" class="v-radio_btn">其他指标</a-radio-button>
+        <div class="d_flex jc_sb pt_20 pl_20 pr_20">
+            <div class="d_flex">
+                <a-radio-group v-model:value="default_line" button-style="solid" class="d_flex gap_12">
+                    <a-radio-button value="all" class="br_100 of_h tover_ell">全部</a-radio-button>
+                    <a-radio-button value="enterprise" class="br_100 of_h tover_ell">企金指标</a-radio-button>
+                    <a-radio-button value="retail" class="br_100 of_h tover_ell">零售指标</a-radio-button>
+                    <a-radio-button value="bank" class="br_100 of_h tover_ell">同业指标</a-radio-button>
+                    <a-radio-button value="other" class="br_100 of_h tover_ell">其他指标</a-radio-button>
                 </a-radio-group>
             </div>
             <div class="d_flex gap_20">
@@ -46,6 +46,7 @@
 </template>
 
 <style scoped>
+@import url('../../assets/style/common.css');
 @import url('../../assets/style/colorset.css');
 @import url('../../assets/style/overwrite.css');
 
@@ -90,34 +91,6 @@
   font-weight: 500;
 }
 
-.v-rank_con {
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-}
-
-.v-filter_con {
-    display: flex;
-    padding: 20px 20px 0 20px;
-    line-height: 0;
-    justify-content: space-between;
-}
-
-.v-radio_group {
-    display: flex;
-    gap: 12px;
-}
-
-.v-radio_btn {
-    border-radius: 100px;
-    min-width: 50px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.v-data_con {
-    padding: 20px;
-}
 .v-input_style {
     background-color: #f2f3f5;
     width: 180px;
@@ -134,6 +107,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+/* 表格覆写部分 */
+
+.ant-table-wrapper .ant-table {
+    font-size: 13px;
 }
 
 </style>
@@ -165,9 +144,9 @@ export default defineComponent({
     methods: {
         async getRankData() {
             const rank_res = await axios.get('http://localhost:8080/demo/rank/rank-important.json');
-            console.log(rank_res);
+            // console.log(rank_res);
             this.rank_list = rank_res.data;
-            console.log(this.rank_list)
+            // console.log(this.rank_list)
         }
     }
 });

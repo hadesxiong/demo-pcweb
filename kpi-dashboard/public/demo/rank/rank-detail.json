@@ -5,11 +5,12 @@
     "tag_title": "财务效益",
     "table_update": "2023.12",
     "table_view": "按区域中心支行查看",
-    "table_column": [{
+    "table_column": [
+        {
             "title": "序号",
             "dataIndex": "rank_sort",
             "key": "rank_sort",
-            "width":80
+            "width": 80
         },
         {
             "title": "机构名称",
@@ -20,37 +21,37 @@
             "title": "期末数(万元)",
             "dataIndex": "data_cterm",
             "key": "data_cterm",
-            "sorter":true
+            "sorter": true
         },
         {
             "title": "上年数(万元)",
             "dataIndex": "data_lyear",
             "key": "data_lyear",
-            "sorter":true
+            "sorter": true
         },
         {
             "title": "期末比上年(万元)",
             "dataIndex": "data_comp",
             "key": "data_comp",
-            "sorter":true
+            "sorter": true
         },
         {
             "title": "计划数(万元)",
             "dataIndex": "data_plan",
             "key": "data_plan",
-            "sorter":true
+            "sorter": true
         },
         {
             "title": "计划完成率(%)",
             "dataIndex": "data_rate",
             "key": "data_rate",
-            "sorter":true
+            "sorter": true
         },
         {
-            "title":"操作",
-            "dataIndex":"data_operation",
-            "key":"data_operation",
-            "width":200
+            "title": "操作",
+            "dataIndex": "data_operation",
+            "key": "data_operation",
+            "width": 200
         }
     ],
     "table_data": [
@@ -61,133 +62,49 @@
             "data_lyear": "12391.23",
             "data_comp": "12312.02",
             "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "2",
-            "rank_org": "普陀区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "3",
-            "rank_org": "闵行区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "4",
-            "rank_org": "嘉定区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "5",
-            "rank_org": "黄浦区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "6",
-            "rank_org": "杨浦区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "7",
-            "rank_org": "浦东区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "1",
-            "rank_org": "徐汇区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "2",
-            "rank_org": "普陀区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "3",
-            "rank_org": "闵行区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "4",
-            "rank_org": "嘉定区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "5",
-            "rank_org": "黄浦区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "6",
-            "rank_org": "杨浦区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "7",
-            "rank_org": "浦东区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
-        },
-        {
-            "rank_sort": "1",
-            "rank_org": "徐汇区域中心支行",
-            "data_cterm": "23334.84",
-            "data_lyear": "12391.23",
-            "data_comp": "12312.02",
-            "data_plan": "30000.00",
-            "data_rate": "23.91%"
+            "data_rate": "23.91%",
+            "children": [
+                {
+                    "rank_org": "本部",
+                    "data_cterm": "23334.84",
+                    "data_lyear": "12391.23",
+                    "data_comp": "12312.02",
+                    "data_plan": "30000.00",
+                    "data_rate": "23.91%"
+                },
+                {
+                    "rank_org": "华山支行",
+                    "data_cterm": "23334.84",
+                    "data_lyear": "12391.23",
+                    "data_comp": "12312.02",
+                    "data_plan": "30000.00",
+                    "data_rate": "23.91%"
+                },
+                {
+                    "rank_org": "漕河泾支行",
+                    "data_cterm": "23334.84",
+                    "data_lyear": "12391.23",
+                    "data_comp": "12312.02",
+                    "data_plan": "30000.00",
+                    "data_rate": "23.91%"
+                },
+                {
+                    "rank_org": "龙吴路社区支行",
+                    "data_cterm": "23334.84",
+                    "data_lyear": "12391.23",
+                    "data_comp": "12312.02",
+                    "data_plan": "30000.00",
+                    "data_rate": "23.91%"
+                },
+                {
+                    "rank_org": "罗山路社区支行",
+                    "data_cterm": "23334.84",
+                    "data_lyear": "12391.23",
+                    "data_comp": "12312.02",
+                    "data_plan": "30000.00",
+                    "data_rate": "23.91%"
+                }
+            ]
         },
         {
             "rank_sort": "2",

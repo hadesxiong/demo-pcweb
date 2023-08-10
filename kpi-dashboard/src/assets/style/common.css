@@ -1,12 +1,20 @@
 /* 该样式表作为基本样式供其他组件进行引用 */
 
-/* 宽高百分比 */
+/* 宽高 */
 .w_p100 {
   width: 100%;
+}
+.minw_p100 {
+  min-width: 100%;
 }
 .h_p100 {
   height: 100%;
 }
+.h_60 {
+  height: 60px;
+}
+
+/* display部分 */
 
 /* 外边距部分 */
 .m_0 {
@@ -15,11 +23,17 @@
 .m_a {
   margin: auto;
 }
+.m_0a {
+  margin: 0 auto;
+}
 .m_20 {
   margin: 20px;
 }
 .mr_4 {
   margin-right: 4px;
+}
+.mr_8 {
+  margin-right: 8px;
 }
 .mr_16 {
   margin-right: 16px;
@@ -68,6 +82,9 @@
 .pt_10 {
   padding-top: 10px;
 }
+.pt_16 {
+  padding-top: 16px;
+}
 .pt_20 {
   padding-top: 20px;
 }
@@ -88,6 +105,9 @@
 }
 .pb_10 {
   padding-bottom: 10px;
+}
+.pb_16 {
+  padding-bottom: 16px;
 }
 
 /* 行高部分 */
@@ -205,8 +225,14 @@
 }
 
 /* 边框部分 */
+.br_2 {
+  border-radius: 2px;
+}
 .br_4 {
   border-radius: 4px;
+}
+.br_100 {
+  border-radius: 100px;
 }
 .br_tr4 {
   border-top-right-radius: 4px;
@@ -219,6 +245,14 @@
 }
 .br_bl4 {
   border-bottom-left-radius: 4px;
+}
+
+/* 常用边框 */
+.b_w1c2_so {
+  border: 1px solid var(--color-border-2);
+}
+.bb_w1c2_so {
+  border-bottom: 1px solid var(--color-border-2);
 }
 
 /* 对齐部分 */
@@ -319,6 +353,11 @@
 .bg_l3 {
   background-color: var(--color-fill-3);
 }
+.bg_brand6 {
+  background-color: var(--brand-1-6);
+}
+
+/* 常用字体色 */
 .fc_l2 {
   color: var(--color-text-2);
 }
@@ -331,6 +370,12 @@
 .fc_l3 {
   color: var(--color-text-3);
 }
+.fc_l5 {
+  color: var(--color-text-5);
+}
+.fc_brand6 {
+  color: var(--brand-1-6);
+}
 
 /* 其他复用 */
 .db-card_bgc {
@@ -341,4 +386,24 @@
 }
 .compare_minus {
   color: var(--color-danger-6);
+}
+
+/* 字体隐藏 */
+.of_h {
+  overflow: hidden;
+}
+.of_a {
+  overflow: auto;
+}
+.of_s {
+  overflow: scroll;
+}
+.ofx_h {
+  overflow-x: hidden;
+}
+.ofy_h {
+  overflow-y: hidden;
+}
+.tover_ell {
+  text-overflow: ellipsis;
 }

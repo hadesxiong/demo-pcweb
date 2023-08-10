@@ -17,9 +17,10 @@
       {
         "title": "完成情况(万元)",
         "dataIndex": "rank_finish",
-        "key": "rank_finish"
+        "key": "rank_finish",
+        "align":"right"
       },
-      { "title": "完成率", "dataIndex": "rank_rate", "key": "rank_rate" }
+      { "title": "完成率", "dataIndex": "rank_rate", "key": "rank_rate","align":"right" }
     ],
     "rank_data": [
       {
@@ -72,9 +73,10 @@
       {
         "title": "完成情况(万元)",
         "dataIndex": "rank_finish",
-        "key": "rank_finish"
+        "key": "rank_finish",
+        "align":"right"
       },
-      { "title": "完成率", "dataIndex": "rank_rate", "key": "rank_rate" }
+      { "title": "完成率", "dataIndex": "rank_rate", "key": "rank_rate","align":"right" }
     ],
     "rank_data": [
       {
@@ -127,9 +129,10 @@
       {
         "title": "完成情况(万元)",
         "dataIndex": "rank_finish",
-        "key": "rank_finish"
+        "key": "rank_finish",
+        "align":"right"
       },
-      { "title": "完成率", "dataIndex": "rank_rate", "key": "rank_rate" }
+      { "title": "完成率", "dataIndex": "rank_rate", "key": "rank_rate","align":"right" }
     ],
     "rank_data": [
       {
@@ -182,9 +185,10 @@
       {
         "title": "完成情况(万元)",
         "dataIndex": "rank_finish",
-        "key": "rank_finish"
+        "key": "rank_finish",
+        "align":"right"
       },
-      { "title": "完成率", "dataIndex": "rank_rate", "key": "rank_rate" }
+      { "title": "完成率", "dataIndex": "rank_rate", "key": "rank_rate","align":"right" }
     ],
     "rank_data": [
       {
