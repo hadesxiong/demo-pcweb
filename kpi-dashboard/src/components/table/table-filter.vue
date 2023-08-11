@@ -1,19 +1,17 @@
 <template>
     <div class="d_flex w_p100 fd_c bg_white p_20 gap_20">
-        <div class="d_flex fd_r lh_30 gap_20">
+        <div class="d_flex fd_r lh_30 gap_20 h_30">
             <div class="fc_l3 filter_title ta_l">查看方式</div>
             <div class="d_flex">
-                <a-radio-group v-model:value="default_org" button-style="solid" class="d_flex gap_12">
-                    <a-radio-button value="qyzxzh" class="br_100 of_h tover_ell">区域中心支行</a-radio-button>
-                    <a-radio-button value="ddzh" class="br_100 of_h tover_ell">单点支行</a-radio-button>
-                    <a-radio-button value="zlkhb" class="br_100 of_h tover_ell">战略客户部</a-radio-button>
+                <a-radio-group v-model:value="default_org" button-style="solid" class="d_flex gap_12 h_30">
+                    <a-radio-button class="br_100 of_h tover_ell" v-for="(item,index) in filter_data.org_filter" :key="index" :value="item.value">{{ item.label }}</a-radio-button>
                 </a-radio-group>
             </div>
         </div>
         <div class="d_flex fd_r lh_30 gap_20">
             <div class="fc_l3 filter_title ta_l">指标分类</div>
             <div class="d_flex">
-                <custom-multi></custom-multi>
+                <custom-multi v-if="filter_data.enterprise_filter.index_class" :custom_options="filter_data.enterprise_filter.index_class"></custom-multi>
             </div>
         </div>
     </div>
@@ -39,6 +37,7 @@
 
 .ant-radio-button-wrapper {
   border: none;
+  height: 30px;
 }
 .ant-radio-button-wrapper:not(:first-child)::before {
   width: 0;
@@ -74,7 +73,7 @@ export default defineComponent({
         'custom-multi':CustomMulti
     },
     props:{
-        org_filter:{
+        filter_data:{
             type:Array
         },
 
@@ -84,15 +83,14 @@ export default defineComponent({
     },
     setup() {
         const default_org = ref('qyzxzh');
-        const indeterminate = ref(false)
         return {
             default_org,
-            indeterminate
         }
     },
+    mounted() {},
     methods:{
-        checkAllClass() {
-            
+        execLabelList(index_list) {
+            console.log(index_list);
         }
     }
 });

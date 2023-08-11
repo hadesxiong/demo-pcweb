@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table-filter></table-filter>
+        <table-filter v-if="filter_data.enterprise_filter" :filter_data="filter_data"></table-filter>
     </div>
 </template>
 
@@ -14,7 +14,7 @@
 import { defineComponent } from 'vue';
 import TableFilter from '../../components/table/table-filter.vue';
 // import { IconPark } from "@icon-park/vue-next/es/all";
-// import axios from 'axios';
+import axios from 'axios';
 
 export default defineComponent({
     name:"EnterpriseTable",
@@ -22,10 +22,22 @@ export default defineComponent({
         'table-filter':TableFilter
     },
     data() {
-        return {}
+        return {
+            filter_data:{}
+        }
     },
     setup() {
         return {}
+    },
+    mounted() {
+        this.getFilterData();
+    },
+    methods:{
+        async getFilterData() {
+            const filter_res = await axios.get('http://localhost:8080/demo/table/table-filter.json');
+            this.filter_data = filter_res.data
+            // console.log(this.filter_data)
+        }
     }
 })
 

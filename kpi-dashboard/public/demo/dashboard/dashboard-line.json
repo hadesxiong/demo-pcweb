@@ -7,10 +7,9 @@
         },
         "db_option":{
             "grid": {
-                "left": "0%",
-                "right": "4%",
-                "bottom": "3%",
-                "width": "100%",
+                "left": 6,
+                "right":6,
+                "bottom": 12,
                 "height": "100%",
                 "containLabel": true
             },
@@ -24,13 +23,22 @@
                     }
                 },
                 "axisLabel": {
+                    "interval":0,
                     "color": "#86909C",
-                    "type:": "dashed"
+                    "type:": "dashed",
+                    "align":"center",
+                    "rich":{
+                        "start":{"padding":[0,0,0,35]},
+                        "end":{"padding":[0,35,0,0]}
+                    }
                 },
-                "boundaryGap":true
+                "boundaryGap":false
             },
             "yAxis":{
                 "type":"value",
+                "axisLabel":{
+                    "margin":24
+                },
                 "splitLine":{
                     "lineStyle":{
                         "type":"dashed"

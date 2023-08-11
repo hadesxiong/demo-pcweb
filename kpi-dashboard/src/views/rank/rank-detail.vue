@@ -193,6 +193,15 @@ export default defineComponent({
                 { offset: 0, color: 'rgba(131, 100, 255, 0.12)' },
                 { offset: 1, color: 'rgba(80, 52, 255, 0.01)' }
             ])
+            myChart_option.xAxis.axisLabel.formatter = function(value,index) {
+                if(index===0) {
+                    return '{start|' + value + '}';
+                } else if(index == myChart_option.xAxis.data.length-1) {
+                    return '{end|' + value + '}';
+                } else {
+                    return value;
+                }
+            };
             myChart.setOption(myChart_option);
             // 添加自适应
             window.addEventListener('resize', function () {

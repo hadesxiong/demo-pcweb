@@ -75,6 +75,7 @@
     background-color: #165DFF;
     border: 2px solid #BEDAFF;
 }
+
 .purple_dot {
     width: 10px;
     height: 10px;
@@ -82,7 +83,6 @@
     background-color: #722ED1;
     border: 2px solid #F5E8FF;
 }
-
 </style>
 
 <script>
@@ -130,7 +130,16 @@ export default defineComponent({
             myChart_option.series[1].areaStyle.color = new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
                 { offset: 0, color: 'rgba(131, 100, 255, 0.12)' },
                 { offset: 1, color: 'rgba(80, 52, 255, 0.01)' }
-            ])
+            ]);
+            myChart_option.xAxis.axisLabel.formatter = function(value,index) {
+                if(index===0) {
+                    return '{start|' + value + '}';
+                } else if(index == myChart_option.xAxis.data.length-1) {
+                    return '{end|' + value + '}';
+                } else {
+                    return value;
+                }
+            }
             myChart.setOption(myChart_option);
             // 添加自适应
             window.addEventListener('resize', function () {

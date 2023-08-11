@@ -1,6 +1,6 @@
 <template>
     <div class="d_flex gap_20 lh_30">
-        <div class="custom-checkbox d_flex fai_c br_100 pil_15 cursor_p" v-for="option in options" :key="option.value"
+        <div class="custom-checkbox d_flex fai_c br_100 pil_15 cursor_p" v-for="option in custom_options" :key="option.value"
             :class="{ 'selected': isSelected(option.value) }" @click="toggleOption(option.value)">
             <span class="checkbox-label">{{ option.label }}</span>
             <span class="close-icon" v-if="isSelected(option.value)" @click="deselectOption(option.value)">
