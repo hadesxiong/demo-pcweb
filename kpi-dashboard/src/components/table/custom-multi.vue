@@ -1,9 +1,10 @@
 <template>
-    <div class="d_flex gap_20 lh_30">
-        <div class="custom-checkbox d_flex fai_c br_100 pil_15 cursor_p" v-for="option in custom_options" :key="option.value"
-            :class="{ 'selected': isSelected(option.value) }" @click="toggleOption(option.value)">
+    <div class="d_flex gap_20 lh_30 fwrap_w">
+        <div class="custom-checkbox d_flex fai_c br_100 pil_15 cursor_p" v-for="option in custom_options"
+            :key="option.value" :class="{ 'selected': isSelected(option.value) }" @click="toggleOption(option.value)">
             <span class="checkbox-label">{{ option.label }}</span>
-            <span class="close-icon" v-if="isSelected(option.value)" @click="deselectOption(option.value)">
+            <span class="close-icon" v-if="isSelected(option.value) && option.value != 'all'"
+                @click="deselectOption(option.value)">
                 <icon-park type="Close" size="12" class="d_flex"></icon-park>
             </span>
         </div>
@@ -21,11 +22,12 @@
     font-weight: 500;
 }
 
-.custom-checkbox .checkbox-label {
-    margin-right: 8px;
-}
+/* .custom-checkbox .checkbox-label { */
+    /* margin-right: 8px; */
+/* } */
 
 .custom-checkbox .close-icon {
+    margin-left: 8px;
     cursor: pointer;
 }
 </style>
@@ -33,6 +35,8 @@
 <script>
 import { defineComponent } from "vue";
 import { IconPark } from "@icon-park/vue-next/es/all";
+
+// 方法
 
 export default defineComponent({
 
@@ -47,38 +51,49 @@ export default defineComponent({
     },
     data() {
         return {
-            options: [
-                { label: '全部', value: 'all' },
-                { label: '选项1', value: 'option1' },
-                { label: '选项2', value: 'option2' },
-                { label: '选项3', value: 'option3' },
-                { label: '选项4', value: 'option4' },
-            ],
             selectedOptions: [],
         };
+    },
+    watch: {
+        custom_options(newOptions) {
+            // console.log(newOptions)
+            // console.log(this.selectedOptions);
+            // console.log(newOptions)
+            // 传入的newOptions要做map
+            const newOptionsValue = newOptions.map((x)=>(x.value));
+            // console.log(newOptionsValue);
+            this.selectedOptions = this.selectedOptions.filter(option => newOptionsValue.includes(option));
+            // 补偿机制,如果长度为0，添加all
+            if(this.selectedOptions.length == 0) {
+                this.selectedOptions.push('all')
+            }
+        }
+    },
+    setup() { },
+    mounted() {
+        // 默认选择全部选项
+        this.toggleOption('all');
     },
     methods: {
         isSelected(optionValue) {
             return this.selectedOptions.includes(optionValue);
         },
-        // toggleOption(optionValue) {
-        //     if (this.isSelected(optionValue)) {
-        //         this.deselectOption(optionValue);
-        //     } else {
-        //         this.selectedOptions.push(optionValue);
-        //     }
-        // },
         toggleOption(optionValue) {
-            if (this.isSelected(optionValue)) {
+            if (this.isSelected(optionValue) && optionValue != 'all') {
                 this.deselectOption(optionValue);
             } else {
-                if (optionValue === 'all') {
+                if (optionValue == 'all') {
                     this.selectedOptions = [];
                 } else {
                     this.deselectOption('all');
                 }
                 this.selectedOptions.push(optionValue);
             }
+            // 补偿机制:如果selectOptions为空，那么选择全部
+            if (this.selectedOptions.length == 0) {
+                this.selectedOptions.push('all')
+            }
+            this.$emit('getSelectedOptions', this.selectedOptions);
         },
         deselectOption(optionValue) {
             this.selectedOptions = this.selectedOptions.filter(value => value !== optionValue);

@@ -21,7 +21,7 @@
                     查看方式:{{ detail_data.table_view }}
                 </div>
             </div>
-            <div class="v-detail_header-right">
+            <div>
                 <a-button class="br_2 fai_c d_flex fc_l5 bg_brand6 mr_8">
                     <template #icon>
                         <icon-park type="Download" size="14" class="btn_icon"></icon-park>
@@ -47,7 +47,7 @@
                 </template>
             </a-table>
         </div>
-        <a-drawer :width="850" :placement="right" :visible="draw_visible" @close="onClose" :closable="false">
+        <a-drawer :width="850" :visible="draw_visible" @close="onClose" :closable="false">
             <template #title>
                 <div class="d_flex gap_12 fai_c">
                     <div class="font_16 fc_l1 fw_500">历史数据</div>
@@ -105,7 +105,7 @@
 .btn_icon {
     margin-right: 8px;
     height: 14px;
-    line-height: 14px;
+    line-height: 1px;
 }
 
 .bak_btn {
@@ -170,7 +170,6 @@ export default defineComponent({
             const detail_res = await axios.get('http://localhost:8080/demo/rank/rank-detail.json');
             // console.log(detail_res.data);
             this.detail_data = detail_res.data;
-            this.detail_data.table_column[0].customCell = (_, index) => { if (index === 0) { return { rowSpan: 12 } } else { return { rowSpan: 0 } } }
             // console.log(this.detail_data);
         },
         async showDrawer() {

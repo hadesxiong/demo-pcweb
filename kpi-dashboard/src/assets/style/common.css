@@ -4,6 +4,21 @@
 .w_p100 {
   width: 100%;
 }
+.w_auto {
+  width: auto;
+}
+.w_180 {
+  width: 180px;
+}
+.w_280 {
+  width: 280px;
+}
+.w_360 {
+  width: 360px;
+}
+.minw_100 {
+  min-width: 100px;
+}
 .minw_p100 {
   min-width: 100%;
 }
@@ -15,6 +30,9 @@
 }
 .h_30 {
   height: 30px;
+}
+.h_32 {
+  height: 32px;
 }
 /* display部分 */
 
@@ -78,6 +96,9 @@
 .pt_4 {
   padding-top: 4px;
 }
+.pt_5 {
+  padding-top: 5px;
+}
 .pt_8 {
   padding-top: 8px;
 }
@@ -93,8 +114,14 @@
 .pt_20 {
   padding-top: 20px;
 }
+.pl_12 {
+  padding-left: 12px;
+}
 .pl_20 {
   padding-left: 20px;
+}
+.pr_12 {
+  padding-right: 12px;
 }
 .pr_20 {
   padding-right: 20px;
@@ -104,6 +131,9 @@
 }
 .pb_4 {
   padding-bottom: 4px;
+}
+.pb_5 {
+  padding-bottom: 5px;
 }
 .pb_8 {
   padding-bottom: 8px;
@@ -122,6 +152,12 @@
 }
 
 /* 行高部分 */
+.lh_1 {
+  line-height: 1px;
+}
+.lh_14 {
+  line-height: 14px;
+}
 .lh_20 {
   line-height: 20px;
 }
@@ -268,6 +304,9 @@
 .bb_w1c2_so {
   border-bottom: 1px solid var(--color-border-2);
 }
+.b_n {
+  border: none;
+}
 
 /* 对齐部分 */
 .ta_l {
@@ -367,6 +406,9 @@
 .bg_l3 {
   background-color: var(--color-fill-3);
 }
+.bg_l2 {
+  background-color: var(--color-fill-2);
+}
 .bg_brand6 {
   background-color: var(--brand-1-6);
 }
@@ -437,4 +479,7 @@
 }
 .tover_ell {
   text-overflow: ellipsis;
+}
+.ws_no {
+  white-space: nowrap;
 }

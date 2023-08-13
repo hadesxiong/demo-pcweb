@@ -11,29 +11,36 @@
                 </a-radio-group>
             </div>
             <div class="d_flex gap_20">
-                <a-dropdown class="v-input_style">
-                    <a>全部分类<a-icon style="dropdown_icon" type="down"></a-icon></a>
-                    <a-menu>
-                        <a-menu-item>1st menu item</a-menu-item>
-                        <a-menu-item>2nd menu item</a-menu-item>
-                        <a-menu-item>3rd menu item</a-menu-item>
-                    </a-menu>
+                <a-dropdown class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180" @click="handleClass">
+                    <a>全部分类<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                    <template #overlay>
+                        <a-menu>
+                            <a-menu-item>全部分类</a-menu-item>
+                            <a-menu-item>财务效益</a-menu-item>
+                            <a-menu-item>客户建设</a-menu-item>
+                            <a-menu-item>转型与质量发展</a-menu-item>
+                            <a-menu-item>风险合规</a-menu-item>
+                            <a-menu-item>社会责任</a-menu-item>
+                        </a-menu>
+                    </template>
                 </a-dropdown>
-                <a-dropdown class="v-input_style">
-                    <a>全部分类<a-icon style="dropdown_icon" type="down"></a-icon></a>
-                    <a-menu>
-                        <a-menu-item>1st menu item</a-menu-item>
-                        <a-menu-item>2nd menu item</a-menu-item>
-                        <a-menu-item>3rd menu item</a-menu-item>
-                    </a-menu>
+                <a-dropdown class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180" @click="handleClass">
+                    <a>按区域中心支行查看<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                    <template #overlay>
+                        <a-menu>
+                            <a-menu-item>按区域中心支行查看</a-menu-item>
+                            <a-menu-item>按分支机构查看</a-menu-item>
+                            <a-menu-item>按战略客户部查看</a-menu-item>
+                            <a-menu-item>按单点支行查看</a-menu-item>
+                        </a-menu>
+                    </template>
                 </a-dropdown>
-                <a-dropdown class="v-input_style">
-                    <a>全部分类<a-icon style="dropdown_icon" type="down"></a-icon></a>
-                    <a-menu>
-                        <a-menu-item>1st menu item</a-menu-item>
-                        <a-menu-item>2nd menu item</a-menu-item>
-                        <a-menu-item>3rd menu item</a-menu-item>
-                    </a-menu>
+                <a-dropdown class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
+                    <a-date-picker picker="month" :placeholder="'数据日期'" :allowClear="false">
+                        <template #suffixIcon>
+                            <icon-park type="CalendarThirty" fill="#86909C" size="14"></icon-park>
+                        </template>
+                    </a-date-picker>
                 </a-dropdown>
             </div>
         </div>
@@ -54,59 +61,47 @@
 
 /* radio部分 */
 .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
-  color: #165dff;
-  background-color: #f2f3f5;
+    color: #165dff;
+    background-color: #f2f3f5;
 }
 
 .ant-radio-button-wrapper:last-child {
-  border-start-end-radius: 100px;
-  border-end-end-radius: 100px;
+    border-start-end-radius: 100px;
+    border-end-end-radius: 100px;
 }
 
 .ant-radio-button-wrapper:first-child {
-  border-inline-start: 0;
-  border-start-start-radius: 100px;
-  border-end-start-radius: 100px;
+    border-inline-start: 0;
+    border-start-start-radius: 100px;
+    border-end-start-radius: 100px;
 }
 
 .ant-radio-button-wrapper {
-  border: none;
-}
-.ant-radio-button-wrapper:not(:first-child)::before {
-  width: 0;
-  inset-block-start: 0;
-  inset-block-end: 0;
-  padding-block: 0;
-  background-color: transparent;
-}
-.ant-radio-button-wrapper:not(:first-child)::before {
-  color: #165dff;
-  background-color: #f2f3f5;
-  border-color: transparent;
-}
-.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-  background-color: #f2f3f5;
-  color: #165dff;
-  border-color: transparent;
-  font-weight: 500;
+    border: none;
 }
 
-.v-input_style {
+.ant-radio-button-wrapper:not(:first-child)::before {
+    width: 0;
+    inset-block-start: 0;
+    inset-block-end: 0;
+    padding-block: 0;
+    background-color: transparent;
+}
+
+.ant-radio-button-wrapper:not(:first-child)::before {
+    color: #165dff;
     background-color: #f2f3f5;
-    width: 180px;
-    min-width: 100px;
-    border-radius: 0.125rem;
-    display: block;
-    height: 2rem;
+    border-color: transparent;
+}
+
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    background-color: #f2f3f5;
+    color: #165dff;
+    border-color: transparent;
+    font-weight: 500;
+}
+.ant-picker-input input {
     text-align: left;
-    padding: 0.3125rem 0.75rem;
-    color: #1D2129;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 /* 表格覆写部分 */
@@ -115,17 +110,29 @@
     font-size: 13px;
 }
 
+/* 下拉按钮部分 */
+.ant-picker {
+  background-color: var(--color-fill-2);
+  border: none;
+  border-radius: 2px;
+}
+.ant-picker-focused {
+    box-shadow: none;
+}
+
 </style>
 
 <script>
 import { defineComponent, ref } from 'vue';
+import { IconPark } from "@icon-park/vue-next/es/all";
 import RankMain from '../../components/rank/rank-main';
 import axios from 'axios';
 
 export default defineComponent({
     name: 'rank-important',
     components: {
-        'rank-main': RankMain
+        'rank-main': RankMain,
+        'icon-park': IconPark
     },
     data() {
         return {
@@ -147,6 +154,9 @@ export default defineComponent({
             // console.log(rank_res);
             this.rank_list = rank_res.data;
             // console.log(this.rank_list)
+        },
+        handleClass(e) {
+            console.log(e)
         }
     }
 });
