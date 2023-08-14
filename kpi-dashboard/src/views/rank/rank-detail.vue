@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div>
-                <a-button class="br_2 fai_c d_flex fc_l5 bg_brand6 mr_8">
+                <a-button class="br_2 fai_c d_flex fc_l5 bg_brand6">
                     <template #icon>
                         <icon-park type="Download" size="14" class="btn_icon"></icon-park>
                     </template>

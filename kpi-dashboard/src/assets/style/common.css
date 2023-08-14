@@ -10,6 +10,9 @@
 .w_180 {
   width: 180px;
 }
+.w_240 {
+  width: 240px;
+}
 .w_280 {
   width: 280px;
 }
@@ -258,6 +261,9 @@
 .font_14 {
   font-size: 14px;
 }
+.font_13 {
+  font-size: 13px;
+}
 .font_12 {
   font-size: 12px;
 }
@@ -412,6 +418,9 @@
 .bg_brand6 {
   background-color: var(--brand-1-6);
 }
+.bg_warn6 {
+  background-color: var(--color-warning-6);
+}
 
 /* 常用字体色 */
 .fc_l2 {
@@ -431,6 +440,12 @@
 }
 .fc_brand6 {
   color: var(--brand-1-6);
+}
+.fc_danger6 {
+  color: var(--color-danger-6);
+}
+.fc_success6 {
+  color: var(--color-success-6);
 }
 
 /* 其他复用 */

@@ -2,7 +2,7 @@
     <div class="w_p100 h_p100 bg_white">
         <div class="d_flex jc_sb pt_20 pl_20 pr_20">
             <div class="d_flex">
-                <a-radio-group v-model:value="default_line" button-style="solid" class="d_flex gap_12">
+                <a-radio-group v-model:value="default_line" button-style="solid" class="d_flex gap_12 h_30 lh_30">
                     <a-radio-button value="all" class="br_100 of_h tover_ell">全部</a-radio-button>
                     <a-radio-button value="enterprise" class="br_100 of_h tover_ell">企金指标</a-radio-button>
                     <a-radio-button value="retail" class="br_100 of_h tover_ell">零售指标</a-radio-button>

@@ -28,6 +28,13 @@ const routes = [
     }
   },
   {
+    path: "/data-manage/data-detail",
+    component: () => import("../views/manage/data-detail.vue"),
+    meta:{
+      breadcrumb:['数据管理','数据导入','导入数据详情']
+    }
+  },
+  {
     path: "/org-manage",
     component: () => import("../views/manage/org-manage.vue"),
     meta:{

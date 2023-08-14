@@ -77,7 +77,7 @@
                     <template #bodyCell="{ column }">
                         <template v-if="column.dataIndex === 'operation'">
                             <div class="fc_brand6 d_iflex gap_8">
-                                <a id="detail_btn">查看详情</a>
+                                <router-link to="/data-manage/data-detail" class="fc_brand6 font_14">查看详情</router-link>
                             </div>
                         </template>
                     </template>
@@ -94,7 +94,7 @@
                         <a-dropdown
                             class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180"
                             @click="handleClass">
-                            <a-input v-model="inputValue" class="w_180">
+                            <a-input v-model="inputValue" class="w_240">
                                 全部分类
                                 <template #suffix>
                                     <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="d_flex fai_c gap_16">
                         <div class="fc_l2 font_14">通报月份</div>
-                        <a-date-picker picker="month" class="w_180" allowClear="false">
+                        <a-date-picker picker="month" class="w_240" :allowClear="false">
 
                         </a-date-picker>
                     </div>
@@ -125,10 +125,11 @@
                 <div class="d_flex fd_r fai_c jc_sb gap_20">
                     <div class="d_flex fai_c gap_16">
                         <div class="fc_l2 font_14">导入文件</div>
-                        <a-input placeholder="请上传导入文件"
+                        <!-- <a-input placeholder="请上传导入文件"
                             class="b_n fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
 
-                        </a-input>
+                        </a-input> -->
+                        <file-input></file-input>
                     </div>
                     <div class="d_flex fai_c gap_16">
                         <a class="fc_brand6 font_14">下载模版</a>
@@ -154,22 +155,28 @@
 .ant-btn .ant-btn-default {
     border-radius: 2px !important;
 }
+
 </style>
 
 <script>
 import { defineComponent, ref } from 'vue';
 import { IconPark } from '@icon-park/vue-next/es/all';
 import axios from 'axios';
+import { RouterLink } from 'vue-router';
+import FileInput from '../../components/other/file-input.vue';
 
 export default defineComponent({
     name: "DataManage",
     components: {
-        'icon-park': IconPark
+        'icon-park': IconPark,
+        'router-link': RouterLink,
+        'file-input':FileInput
     },
     setup() {
         return {
             upload_data: ref({}),
-            modal_visible: ref(false)
+            modal_visible: ref(false),
+            inputValue: ref(''),
         }
     },
     mounted() {
@@ -179,7 +186,7 @@ export default defineComponent({
         async getUploadList() {
             const upload_res = await axios.get('http://localhost:8080/demo/manage/data-manage.json');
             this.upload_data = upload_res.data;
-            console.log(this.upload_data)
+            // console.log(this.upload_data)
         },
         showModal() {
             this.modal_visible = true;

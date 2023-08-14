@@ -1,0 +1,194 @@
+{
+    "detail_id": "DL_202304300002",
+    "tag_class": "tag_pink_purple",
+    "tag_name": "企金数据",
+    "detail_update": "2023.06.03",
+    "data_month": "2023.03月",
+    "exec_user": "企金管理员-000002",
+    "now_status": false,
+    "table_columns": [
+        {
+            "title": "数据月份",
+            "dataIndex": "data_month",
+            "key": "data_month",
+            "fixed": "left",
+            "width": 130,
+            "filters": [],
+            "sorter": true
+        },
+        {
+            "title": "机构名称",
+            "dataIndex": "org_name",
+            "key": "org_name",
+            "filters": []
+        },
+        {
+            "title": "营业净收入(单位:万元)",
+            "children": [
+                {
+                    "title": "期末",
+                    "dataIndex": "yyjsr_cterm",
+                    "key": "yyjsr_cterm",
+                    "sorter": true,
+                    "align": "right"
+                },
+                {
+                    "title": "上年",
+                    "dataIndex": "yyjsr_lyear",
+                    "key": "yyjsr_lyear",
+                    "sorter": true,
+                    "align": "right"
+                },
+                {
+                    "title": "期末比上年",
+                    "dataIndex": "yyjsr_comp",
+                    "key": "yyjsr_comp",
+                    "sorter": true,
+                    "align": "right"
+                },
+                {
+                    "title": "计划",
+                    "dataIndex": "yyjsr_plan",
+                    "key": "yyjsr_plan",
+                    "sorter": true,
+                    "align": "right"
+                },
+                {
+                    "title": "计划完成率",
+                    "dataIndex": "yyjsr_rate",
+                    "key": "yyjsr_rate",
+                    "sorter": true,
+                    "align": "right"
+                }
+            ]
+        },
+        {
+            "title": "EVA(单位:万元)",
+            "children": [
+                {
+                    "title": "期末",
+                    "dataIndex": "eva_cterm",
+                    "key": "eva_cterm",
+                    "sorter": true,
+                    "align": "right"
+                },
+                {
+                    "title": "上年",
+                    "dataIndex": "eva_lyear",
+                    "key": "eva_lyear",
+                    "sorter": true,
+                    "align": "right"
+                },
+                {
+                    "title": "期末比上年",
+                    "dataIndex": "eva_comp",
+                    "key": "eva_comp",
+                    "sorter": true,
+                    "align": "right"
+                },
+                {
+                    "title": "计划",
+                    "dataIndex": "eva_plan",
+                    "key": "eva_plan",
+                    "sorter": true,
+                    "align": "right"
+                },
+                {
+                    "title": "计划完成率",
+                    "dataIndex": "eva_rate",
+                    "key": "eva_rate",
+                    "sorter": true,
+                    "align": "right"
+                }
+            ]
+        }
+    ],
+    "table_data": [
+        {
+            "key": "1",
+            "data_month": "2023.06",
+            "org_name": "徐汇区域中心支行",
+            "yyjsr_cterm": 20000.00,
+            "yyjsr_lyear": 30000.00,
+            "yyjsr_comp": -10000.00,
+            "yyjsr_plan": 40000.00,
+            "yyjsr_rate": "50.00%",
+            "eva_cterm": 20000.00,
+            "eva_lyear": 30000.00,
+            "eva_comp": -10000.00,
+            "eva_plan": 40000.00,
+            "eva_rate": "50.00%"
+        },
+        {
+            "key": "2",
+            "data_month": "2023.06",
+            "org_name": "虹口区域中心支行",
+            "yyjsr_cterm": 20000.00,
+            "yyjsr_lyear": 30000.00,
+            "yyjsr_comp": -10000.00,
+            "yyjsr_plan": 40000.00,
+            "yyjsr_rate": "50.00%",
+            "eva_cterm": 20000.00,
+            "eva_lyear": 30000.00,
+            "eva_comp": -10000.00,
+            "eva_plan": 40000.00,
+            "eva_rate": "50.00%"
+        },
+        {
+            "key": "3",
+            "data_month": "2023.06",
+            "org_name": "黄浦区域中心支行",
+            "yyjsr_cterm": 20000.00,
+            "yyjsr_lyear": 30000.00,
+            "yyjsr_comp": -10000.00,
+            "yyjsr_plan": 40000.00,
+            "yyjsr_rate": "50.00%",
+            "eva_cterm": 20000.00,
+            "eva_lyear": 30000.00,
+            "eva_comp": -10000.00,
+            "eva_plan": 40000.00,
+            "eva_rate": "50.00%"
+        }
+    ],
+    "history_columns": [
+        {
+            "title": "操作日期",
+            "key": "exec_date",
+            "dataIndex": "exec_date",
+            "sorter": true
+        },
+        {
+            "title": "操作人",
+            "key": "exec_user",
+            "dataIndex": "exec_user"
+        },
+        {
+            "title": "数据文件",
+            "key": "exec_files",
+            "dataIndex": "exec_files"
+        }
+    ],
+    "history_data": [
+        {
+            "exec_date": "2023.06.09",
+            "exec_user": "企金管理员-000002",
+            "exec_files": "新建Microsoft Excel文件.xlsx",
+            "isthis_publish": true,
+            "files_link": "https://www.baidu.com"
+        },
+        {
+            "exec_date": "2023.06.08",
+            "exec_user": "企金管理员-000003",
+            "exec_files": "新建Microsoft Excel文件(2).xlsx",
+            "isthis_publish": false,
+            "files_link": "https://www.baidu.com"
+        },
+        {
+            "exec_date": "2023.06.08",
+            "exec_user": "企金管理员-000003",
+            "exec_files": "新建Microsoft Excel文件(3).xlsx",
+            "isthis_publish": false,
+            "files_link": "https://www.baidu.com"
+        }
+    ]
+}
