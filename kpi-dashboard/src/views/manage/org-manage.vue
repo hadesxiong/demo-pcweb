@@ -91,7 +91,114 @@
                 </a-table>
             </div>
         </div>
+    </div>
+    <div class="modalCon" ref="modal">
+        <a-modal v-model:open='modal_visible' width="auto" title="新增机构" @ok="confirmUpload" centered>
+            <div class="d_flex fai_c pt_20 pb_10 jc_sb">
+                <div class="d_flex fd_r fai_c jc_sb gap_20 w_p100">
+                    <div class="d_flex fai_c gap_16">
+                        <div class="fc_l2 font_14">机构编号</div>
+                        <a-dropdown
+                            class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180"
+                            @click="handleClass">
+                            <a-input v-model="inputValue" class="w_240">
+                                <template #suffix></template>
+                            </a-input>
+                        </a-dropdown>
+                    </div>
+                    <div class="d_flex fai_c gap_16">
+                        <div class="fc_l2 font_14">机构名称</div>
+                        <a-dropdown
+                            class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180"
+                            @click="handleClass">
+                            <a-input v-model="inputValue" class="w_240">
+                                <template #suffix></template>
+                            </a-input>
+                        </a-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="d_flex fai_c pt_20 pb_10 jc_sb">
+                <div class="d_flex fd_r fai_c jc_sb gap_20 w_p100">
+                    <div class="d_flex fai_c gap_16">
+                        <div class="fc_l2 font_14">机构分组</div>
+                        <a-dropdown
+                            class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180"
+                            @click="handleClass">
+                            <a-input v-model="inputValue" class="w_240">
+                                区域中心支行组
+                                <template #suffix>
+                                    <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park>
+                                </template>
+                            </a-input>
+                            <template #overlay>
+                                <a-menu>
+                                    <a-menu-item>区域中心支行组</a-menu-item>
+                                    <a-menu-item>战略客户部组</a-menu-item>
+                                    <a-menu-item>单点支行组</a-menu-item>
+                                    <a-menu-item>四级支行组</a-menu-item>
+                                </a-menu>
+                            </template>
+                        </a-dropdown>
+                    </div>
+                    <div class="d_flex fai_c gap_16">
+                        <div class="fc_l2 font_14">机构层级</div>
+                        <a-dropdown
+                            class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180"
+                            @click="handleClass">
+                            <a-input v-model="inputValue" class="w_240">
+                                01级
+                                <template #suffix>
+                                    <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park>
+                                </template>
+                            </a-input>
+                            <template #overlay>
+                                <a-menu>
+                                    <a-menu-item>01级</a-menu-item>
+                                    <a-menu-item>02级</a-menu-item>
+                                    <a-menu-item>03级</a-menu-item>
+                                    <a-menu-item>04级</a-menu-item>
+                                </a-menu>
+                            </template>
+                        </a-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="d_flex fai_c pt_20 pb_20 jc_sb">
+                <div class="d_flex fd_r fai_c jc_sb gap_20 w_p100">
+                    <div class="d_flex fai_c gap_16">
+                        <div class="fc_l2 font_14">上级机构</div>
+                        <a-dropdown
+                            class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180"
+                            @click="handleClass">
+                            <a-input v-model="inputValue" class="w_240">
+                                上海分行
+                                <template #suffix>
+                                    <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park>
+                                </template>
+                            </a-input>
 
+                            <template #overlay>
+                                <a-menu>
+                                    <a-menu-item>上海分行</a-menu-item>
+                                    <a-menu-item>其他区域中心支行</a-menu-item>
+                                </a-menu>
+                            </template>
+                        </a-dropdown>
+                    </div>
+                    <div class="d_flex fai_c gap_16 jc_sb">
+                        <div class="fc_l2 font_14">负责人</div>
+                        <a-dropdown
+                            class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180"
+                            @click="handleClass">
+                            <a-input v-model="inputValue" class="w_240">
+                                <template #suffix></template>
+                            </a-input>
+                        </a-dropdown>
+                    </div>
+                </div>
+            </div>
+        </a-modal>
     </div>
 </template>
 
@@ -104,9 +211,11 @@
     max-width: 100%;
     overflow: hidden;
 }
+
 .input-container .ant-input {
-  width: 100%;
+    width: 100%;
 }
+
 .input-container .input-wrapper {
     max-width: 100%;
     overflow: hidden;
@@ -127,6 +236,7 @@
     color: #C9CDD4;
     border-radius: 0px;
 }
+
 :where(.css-dev-only-do-not-override-eq3tly).ant-input:focus {
     color: #165dff;
 }
@@ -146,11 +256,13 @@ export default defineComponent({
     setup() {
         const table_data = ref({});
         const dataSource = ref(table_data);
+        const modal_visible = ref(false);
         const editableData = reactive({});
         return {
             table_data,
             editableData,
-            dataSource
+            dataSource,
+            modal_visible
         }
     },
     mounted() {
@@ -175,9 +287,12 @@ export default defineComponent({
         handleClass(e) {
             console.log(e);
         },
-        showModal(e) {
-            console.log(e)
-        }
+        showModal() {
+            this.modal_visible = true;
+        },
+        confirmUpload() {
+            this.modal_visible = false;
+        },
     }
 });
 
