@@ -90,7 +90,7 @@
             <div class="d_flex fai_c pt_20 pb_10 jc_sb">
                 <div class="d_flex fd_r fai_c jc_sb gap_20">
                     <div class="d_flex fai_c gap_16">
-                        <div class="fc_l2 font_14">数据分类</div>
+                        <div class="fc_l2 font_14 minw_60">数据分类</div>
                         <a-dropdown
                             class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180"
                             @click="handleClass">
@@ -114,7 +114,7 @@
                         </a-dropdown>
                     </div>
                     <div class="d_flex fai_c gap_16">
-                        <div class="fc_l2 font_14">通报月份</div>
+                        <div class="fc_l2 font_14 minw_60">通报月份</div>
                         <a-date-picker picker="month" class="w_240" :allowClear="false">
 
                         </a-date-picker>
@@ -124,7 +124,7 @@
             <div class="d_flex fai_c pt_20 pb_20 jc_fs">
                 <div class="d_flex fd_r fai_c jc_sb gap_20">
                     <div class="d_flex fai_c gap_16">
-                        <div class="fc_l2 font_14">导入文件</div>
+                        <div class="fc_l2 font_14 minw_60">导入文件</div>
                         <!-- <a-input placeholder="请上传导入文件"
                             class="b_n fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
 

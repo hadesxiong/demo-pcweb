@@ -19,6 +19,9 @@
 .w_360 {
   width: 360px;
 }
+.minw_60 {
+  min-width: 60px
+}
 .minw_100 {
   min-width: 100px;
 }
