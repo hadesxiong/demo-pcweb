@@ -2,14 +2,14 @@
     <div class="bg_white d_flex p_20 fd_c gap_20 br_4">
         <div class="d_flex fd_r jc_sb">
             <div class="d_flex gap_20 fai_c jc_fs">
-                <div class="font_16 fw_500 fc_l1">{{ retailCustomer_data.db_title }}</div>
-                <div :class="retailCustomer_data.tag_class" class="br_4">{{retailCustomer_data.tag_name}}</div>
+                <div class="font_16 fw_500 fc_l1">{{ card_data.db_title }}</div>
+                <div :class="card_data.tag_class" class="br_4">{{card_data.tag_name}}</div>
             </div>
             <div class="filter"></div>
         </div>
         <div>
             <a-row :gutter="['20']">
-                <a-col :span="6" v-for="(item,index) in retailCustomer_data.card_data" :key="index">
+                <a-col :span="24 / card_data.card_data.length" v-for="(item,index) in card_data.card_data" :key="index">
                     <div class="bg_l1 d_flex fd_c p_16 gap_10">
                         <div class="d_flex jc_fs fc_l2 font_14">{{ item.card_title }}</div>
                         <div class="d_flex jc_sb fai_b">
@@ -38,7 +38,7 @@ import {defineComponent} from 'vue';
 export default defineComponent({
     name:'DBNCard1',
     props:{
-        retailCustomer_data:{
+        card_data:{
             type:Object
         }
     }

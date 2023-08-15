@@ -1,6 +1,16 @@
 <template>
     <div>
-        <db-card1 :retailCustomer_data="dbCard1_data"></db-card1>
+        <a-row :gutter="[20, 20]">
+            <a-col :span="24">
+                <db-card1 :card_data="dbCard1_data"></db-card1>
+            </a-col>
+            <a-col :span="12">
+                <db-bar2 v-if="dbBar2_data.db_id" :aum_data="dbBar2_data" :db_id="dbBar2_data.db_id"></db-bar2>
+            </a-col>
+            <a-col :span="12">
+                <db-card1 :card_data="dbCard2_data"></db-card1>
+            </a-col>
+        </a-row>
     </div>
 </template>
 
@@ -10,27 +20,44 @@
 </style>
 
 <script>
-import {defineComponent, ref} from 'vue';
-import DBNCard1 from '../../components/dashboard-new/dbn-card1'
+import { defineComponent, ref } from 'vue';
+import DBNCard1 from '../../components/dashboard-new/dbn-card1';
+import DBNBar2 from '../../components/dashboard-new/dbn-bar2';
 import axios from 'axios';
 
 export default defineComponent({
-    name:'DashboardOther',
-    components:{
-        'db-card1': DBNCard1
+    name: 'DashboardOther',
+    components: {
+        'db-card1': DBNCard1,
+        'db-bar2': DBNBar2
     },
-    setup(){
+    setup() {
         return {
-            dbCard1_data:ref({})
+            dbCard1_data: ref({}),
+            dbBar2_data: ref({}),
+            dbCard2_data: ref({})
         }
     },
     mounted() {
-      this.getRetailData();  
+        this.getRetailData();
+        this.getAUMData();
+        this.getEnterPriseData();
     },
-    methods:{
+    methods: {
+
+        // 获取零售客户建设情况
         async getRetailData() {
-            const retailData_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-card1.json')
-            this.dbCard1_data = retailData_res.data
+            const rtc_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-card1.json');
+            this.dbCard1_data = rtc_res.data;
+        },
+        async getAUMData() {
+            const AUMData_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-bar2.json');
+            this.dbBar2_data = AUMData_res.data;
+            console.log(this.dbBar2_data)
+        },
+        async getEnterPriseData() {
+            const epc_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-card2.json');
+            this.dbCard2_data = epc_res.data;
         }
     }
 });
