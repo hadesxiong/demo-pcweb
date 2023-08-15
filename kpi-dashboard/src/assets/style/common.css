@@ -412,6 +412,9 @@
 .bg_black {
   background-color: var(--color-text-1);
 }
+.bg_l1 {
+  background-color: var(--color-fill-1);
+}
 .bg_l3 {
   background-color: var(--color-fill-3);
 }
