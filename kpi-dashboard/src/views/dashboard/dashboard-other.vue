@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a-row :gutter="[20, 20]">
+        <a-row :gutter="[20, 20]" style="display: flex; align-items: stretch;">
             <a-col :span="24">
                 <db-card1 :card_data="dbCard1_data"></db-card1>
             </a-col>

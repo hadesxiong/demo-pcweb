@@ -214,6 +214,9 @@
 .fai_b {
   align-items: baseline;
 }
+.fai_s {
+  align-items: stretch;
+}
 .jc_fs {
   justify-content: flex-start;
 }

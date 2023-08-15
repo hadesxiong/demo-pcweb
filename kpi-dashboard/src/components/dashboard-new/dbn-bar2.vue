@@ -1,5 +1,5 @@
 <template>
-    <div class="bg_white d_flex p_20 fd_c gap_20 br_4">
+    <div class="bg_white d_flex p_20 fd_c gap_20 br_4 w_p100 h_p100">
         <div class="d_flex fd_r jc_sb">
             <div class="d_flex gap_20 fai_c jc_fs">
                 <div class="font_16 fw_500 fc_l1">{{ aum_data.db_title }}</div>
@@ -7,9 +7,9 @@
             </div>
             <div class="filter"></div>
         </div>
-        <div class="d_flex jc_c fai_c ">
+        <div class="d_flex jc_c fai_c w_p100 h_p100">
             <div class="d_flex jc_sb fai_c w_p100">
-                <div :style="{ height: db_height, width: db_width }" :id="db_id"></div>
+                <div :style="{ height: db_height, width: db_width }" :id="db_id" class="w_p100 h_p100"></div>
             </div>
         </div>
     </div>
