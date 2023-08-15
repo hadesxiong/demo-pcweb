@@ -486,6 +486,9 @@
 .of_a {
   overflow: auto;
 }
+.ofy_a {
+  overflow-y: auto;
+}
 .of_s {
   overflow: scroll;
 }

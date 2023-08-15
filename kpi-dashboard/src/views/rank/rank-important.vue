@@ -3,11 +3,11 @@
         <div class="d_flex jc_sb pt_20 pl_20 pr_20">
             <div class="d_flex">
                 <a-radio-group v-model:value="default_line" button-style="solid" class="d_flex gap_12 h_30 lh_30">
-                    <a-radio-button value="all" class="br_100 of_h tover_ell">全部</a-radio-button>
-                    <a-radio-button value="enterprise" class="br_100 of_h tover_ell">企金指标</a-radio-button>
-                    <a-radio-button value="retail" class="br_100 of_h tover_ell">零售指标</a-radio-button>
-                    <a-radio-button value="bank" class="br_100 of_h tover_ell">同业指标</a-radio-button>
-                    <a-radio-button value="other" class="br_100 of_h tover_ell">其他指标</a-radio-button>
+                    <a-radio-button value="all" class="br_100 h_30 lh_30 of_h tover_ell">全部</a-radio-button>
+                    <a-radio-button value="enterprise" class="br_100 h_30 lh_30 of_h tover_ell">企金指标</a-radio-button>
+                    <a-radio-button value="retail" class="br_100 h_30 lh_30 of_h tover_ell">零售指标</a-radio-button>
+                    <a-radio-button value="bank" class="br_100 h_30 lh_30 of_h tover_ell">同业指标</a-radio-button>
+                    <a-radio-button value="other" class="br_100 h_30 lh_30 of_h tover_ell">其他指标</a-radio-button>
                 </a-radio-group>
             </div>
             <div class="d_flex gap_20">
@@ -44,9 +44,7 @@
                 </a-dropdown>
             </div>
         </div>
-        <div class="p_20">
-            <a-row>
-            </a-row>
+        <div class="mt_20 ml_20 mr_20">
             <rank-main v-if="rank_list" :rank_list="rank_list"></rank-main>
         </div>
     </div>
@@ -118,6 +116,20 @@
 }
 .ant-picker-focused {
     box-shadow: none;
+}
+
+:where(.css-dev-only-do-not-override-eq3tly).ant-collapse .ant-collapse-content>.ant-collapse-content-box {
+    padding-left: 0;
+    padding-right: 0;
+}
+:where(.css-dev-only-do-not-override-eq3tly).ant-collapse-borderless >.ant-collapse-item>.ant-collapse-content>.ant-collapse-content-box {
+    padding-top: 20px;
+}
+:where(.css-dev-only-do-not-override-eq3tly).ant-collapse-borderless {
+    background-color: transparent;
+}
+:where(.css-dev-only-do-not-override-eq3tly).ant-collapse-borderless >.ant-collapse-item .ant-collapse-header {
+    background-color: #f2f3f5;
 }
 
 </style>
