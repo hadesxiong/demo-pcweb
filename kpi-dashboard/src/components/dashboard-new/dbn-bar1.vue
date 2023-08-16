@@ -2,8 +2,8 @@
     <div class="d_flex fd_c bd_4 bg_white w_p100 h_p100">
         <div class="d_flex jc_sb">
             <div class="d_flex">
-                <div class="d_iflex font_16 fw_500 fc_l1 lh_20 m_20">{{ db_data.db_title }}</div>
-                <div class="d_iflex br_4" :class="db_data.db_tag.tag_class">{{ db_data.db_tag.tag_name }}</div>
+                <div class="d_iflex font_16 fw_500 fc_l1 lh_20 m_20">{{ bar_data.db_title }}</div>
+                <div class="d_iflex br_4" :class="bar_data.db_tag.tag_class">{{ bar_data.db_tag.tag_name }}</div>
             </div>
             <div class="c-data_filter"></div>
         </div>
@@ -15,9 +15,7 @@
     </div>
 </template>
 
-<style>
-
-</style>
+<style></style>
 
 <script>
 let echarts = require("echarts/lib/echarts");
@@ -36,16 +34,13 @@ export default defineComponent(
                 type: String,
                 default: "retail-income"
             },
-            db_data: {
+            bar_data: {
                 type: Object,
             },
-            title: {
-                type: String,
-            }
         },
         data() {
             return {
-                db_height: '100%',
+                db_height: '250px',
                 db_width: '100%'
             };
         },
@@ -56,7 +51,11 @@ export default defineComponent(
             async drawLine() {
                 // console.log(this.id);
                 let myChart = echarts.init(document.getElementById(this.id));
-                myChart.setOption(this.db_data.db_option)
+                myChart.setOption(this.bar_data.db_option);
+                // 添加自适应
+                document.getElementById(this.id).addEventListener('resize', function () {
+                    myChart.resize();
+                })
             }
         }
     }

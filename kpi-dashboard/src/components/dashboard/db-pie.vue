@@ -1,5 +1,5 @@
 <template>
-    <div class="d_flex fd_c bd_4 bg_white">
+    <div class="d_flex fd_c bd_4 bg_white w_p100 h_p100">
         <div class="d_flex jc_sb">
             <div class="d_flex jc_sb">
                 <div class="d_iflex gap_10 font_16 fw_500 fc_l1 lh_20 m_20">{{db_data.db_title}}</div>
@@ -46,10 +46,10 @@
     max-width: calc(50% - 10px);
 } */
 .dbpie_con {
-    min-width: 174px;
+    min-width: '100%';
 }
 .dbpie-card_con {
-    max-width: 450px;
+    max-width: '100%';
 }
 
 .linear_blue {

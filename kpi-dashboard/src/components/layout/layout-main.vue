@@ -17,7 +17,7 @@
                     <icon-park v-else type="MenuUnfoldOne" theme="filled" size="16" fill="#4E5969"></icon-park>
                 </template>
             </a-layout-sider>
-            <a-layout-content class="mt_60 #content_con">
+            <a-layout-content class="mt_60" id="content_con">
                 <div class="c-bread_con">
                     <a-breadcrumb>
                         <a-breadcrumb-item v-for="(item, index) in breadcrumb" :key="index">{{ item }}</a-breadcrumb-item>

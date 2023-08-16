@@ -20,13 +20,13 @@
             </div>
         </div>
         <div class="d_flex fd_r lh_30 gap_20 fai_fs jc_sb">
-            <dvi class="d_flex fd_r gap_20">
+            <di v class="d_flex fd_r gap_20">
                 <div class="fc_l3 filter_title ta_l">指标分类</div>
                 <div class="d_flex">
                     <custom-multi v-if="filter_data.index_class" :custom_options="filter_data.index_class"
                         @getSelectedOptions="execIndexList"></custom-multi>
                 </div>
-            </dvi>
+            </di>
             <div>
                 <a-button v-if="label_collaspe" type="text" class="br_2 fai_c d_flex fc_brand6"
                     style="width:auto;padding: 4px 15px;" @click="toggleIndex">

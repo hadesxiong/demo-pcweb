@@ -23,6 +23,7 @@
                 0,
                 0.01
             ],
+            
             "splitLine": {
                 "lineStyle": {
                     "color": "#e5e8ef"
@@ -36,7 +37,7 @@
         "yAxis": {
             "type": "category",
             "data": [
-                "企金AUM","零售AUM"
+                "企金","零售"
             ],
             "axisLine": {
                 "lineStyle": {
@@ -51,6 +52,7 @@
             {
                 "name": "企金",
                 "type": "bar",
+                "barCategoryGap": "25%",
                 "data": [
                     18203.00,
                     {

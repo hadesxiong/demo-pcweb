@@ -1,5 +1,5 @@
 <template>
-    <div class="d_flex fd_c bd_4 bg_white">
+    <div class="d_flex fd_c bd_4 bg_white w_p100 h_p100">
         <div class="d_flex jc_sb">
             <div class="d_flex">
                 <div class="d_iflex font_16 fw_500 fc_l1 lh_20 m_20">{{ db_data.db_title }}</div>
@@ -23,8 +23,8 @@
                 </div>
             </div>
         </div>
-        <div class="d_flex jc_c fai_c pl_20 pr_20 pb_10 pt_10">
-            <div class="d_flex jc_sb fai_c">
+        <div class="d_flex jc_c fai_c pl_20 pr_20 pb_10 pt_10  w_p100 h_p100">
+            <div class="d_flex jc_sb fai_c  w_p100 h_p100">
                 <div :style="{ height: db_height, width: db_width }" :id="id"></div>
             </div>
         </div>

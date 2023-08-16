@@ -1,5 +1,5 @@
 <template>
-    <a-row type="flex" :gutter="[20,20]">
+    <a-row type="flex" :gutter="[20,20]" style="display: flex; align-items: stretch;">
         <a-col flex="auto">
             <db-pie v-if="pie_data.db_option" :db_data="pie_data"></db-pie>
         </a-col>

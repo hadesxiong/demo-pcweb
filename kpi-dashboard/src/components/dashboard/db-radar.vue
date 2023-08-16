@@ -1,5 +1,5 @@
 <template>
-    <div class="c-data_con d_flex fd_c bd_4 bg_white">
+    <div class="c-data_con d_flex fd_c bd_4 bg_white w_p100 h_p100">
         <div class="d_flex jc_sb">
             <div class="d_flex jc_sb">
                 <div class="d_iflex gap_10 font_16 fw_500 fc_l1 lh_20 m_20">机构画像</div>
@@ -37,8 +37,8 @@ export default {
     },
     data() {
         return {
-            radar_height:"200px",
-            radar_width:"446px"
+            radar_height:"100%",
+            radar_width:"100%"
         };
     },
     mounted() {

@@ -1,5 +1,5 @@
 <template>
-    <div class="d_flex fd_c bd_4 bg_white">
+    <div class="d_flex fd_c bd_4 bg_white w_p100 h_p100">
         <div class="d_flex jc_sb">
             <div class="d_flex">
                 <div class="d_iflex font_16 fw_500 fc_l1 lh_20 m_20">{{ db_data.db_title }}</div>
