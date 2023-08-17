@@ -73,6 +73,9 @@
 .mb_16 {
   margin-bottom: 16px;
 }
+.mb_20 {
+  margin-bottom: 20px;
+}
 .ml_4 {
   margin-left: 4px;
 }
@@ -246,6 +249,9 @@
 }
 .gap_20 {
   gap: 20px;
+}
+.gap_32 {
+  gap: 32px;
 }
 .fwrap_w {
   flex-wrap: wrap;

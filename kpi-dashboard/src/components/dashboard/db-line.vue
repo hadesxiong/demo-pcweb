@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <div class="d_flex jc_c fai_c pl_20 pr_20 pb_10 pt_10  w_p100 h_p100">
+        <div class="d_flex jc_c fai_c pl_20 pr_20 pb_10 pt_10 w_p100 h_p100">
             <div class="d_flex jc_sb fai_c  w_p100 h_p100">
                 <div :style="{ height: db_height, width: db_width }" :id="id"></div>
             </div>
@@ -106,8 +106,8 @@ export default defineComponent({
     },
     data() {
         return {
-            db_width: "600px",
-            db_height: "250px"
+            db_width: "100%",
+            db_height: "100%"
         };
     },
     setup() {

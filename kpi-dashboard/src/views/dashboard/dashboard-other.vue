@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="of_h">
         <a-row :gutter="[20, 20]" style="display: flex; align-items: stretch;">
             <a-col :span="24">
                 <db-card1 :card_data="dbCard1_data"></db-card1>
@@ -11,7 +11,13 @@
                 <db-card1 :card_data="dbCard2_data"></db-card1>
             </a-col>
             <a-col :span="12">
-                <db-bar1 v-if="dbBar1_data.db_id" :bar_data="dbBar1_data" :db_id="dbBar1_data.db_id"></db-bar1>
+                <db-line v-if="dbLine_data.db_id" :db_data="dbLine_data" :db_id="dbLine_data.db_id"></db-line>
+            </a-col>
+            <a-col :span="12">
+                <db-bar1 v-if="dbBar1_data.db_id" :bar_data="dbBar1_data"></db-bar1>
+            </a-col>
+            <a-col :span="12">
+                <db-bar1 v-if="dbBar1_2_data.db_id" :bar_data="dbBar1_2_data"></db-bar1>
             </a-col>
         </a-row>
     </div>
@@ -20,13 +26,18 @@
 <style>
 @import url('../../assets/style/colorset.css');
 @import url('../../assets/style/common.css');
+
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
+}
 </style>
 
 <script>
 import { defineComponent, ref } from 'vue';
 import DBNCard1 from '../../components/dashboard-new/dbn-card1';
 import DBNBar2 from '../../components/dashboard-new/dbn-bar2';
-import DBNBar1 from '../../components/dashboard-new/dbn-bar1'
+import DBNBar1 from '../../components/dashboard-new/dbn-bar1';
+import DBLine from '../../components/dashboard/db-line.vue';
 import axios from 'axios';
 
 export default defineComponent({
@@ -34,7 +45,8 @@ export default defineComponent({
     components: {
         'db-card1': DBNCard1,
         'db-bar2': DBNBar2,
-        'db-bar1': DBNBar1
+        'db-bar1': DBNBar1,
+        'db-line': DBLine
     },
     setup() {
         return {
@@ -42,6 +54,8 @@ export default defineComponent({
             dbBar2_data: ref({}),
             dbCard2_data: ref({}),
             dbBar1_data: ref({}),
+            dbLine_data: ref({}),
+            dbBar1_2_data: ref({}),
         }
     },
     mounted() {
@@ -49,6 +63,8 @@ export default defineComponent({
         this.getAUMData();
         this.getEnterPriseData();
         this.getIncomeData();
+        this.getHoldData();
+        this.getEVAData();
     },
     methods: {
 
@@ -69,6 +85,14 @@ export default defineComponent({
         async getIncomeData() {
             const income_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-bar1.json');
             this.dbBar1_data = income_res.data;
+        },
+        async getHoldData() {
+            const dbline_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-line.json');
+            this.dbLine_data = dbline_data.data;
+        },
+        async getEVAData() {
+            const eva_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-bar1-2.json');
+            this.dbBar1_2_data = eva_res.data;
         }
     }
 });
