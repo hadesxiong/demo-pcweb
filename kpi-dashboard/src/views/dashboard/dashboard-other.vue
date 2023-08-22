@@ -19,6 +19,9 @@
             <a-col :span="12">
                 <db-bar1 v-if="dbBar1_2_data.db_id" :bar_data="dbBar1_2_data"></db-bar1>
             </a-col>
+            <a-col :span="12">
+                <db-card1 v-if="dbCard3_data.db_id" :card_data="dbCard3_data"></db-card1>
+            </a-col>
         </a-row>
     </div>
 </template>
@@ -56,6 +59,7 @@ export default defineComponent({
             dbBar1_data: ref({}),
             dbLine_data: ref({}),
             dbBar1_2_data: ref({}),
+            dbCard3_data: ref({})
         }
     },
     mounted() {
@@ -65,6 +69,7 @@ export default defineComponent({
         this.getIncomeData();
         this.getHoldData();
         this.getEVAData();
+        this.getLCData();
     },
     methods: {
 
@@ -93,6 +98,10 @@ export default defineComponent({
         async getEVAData() {
             const eva_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-bar1-2.json');
             this.dbBar1_2_data = eva_res.data;
+        },
+        async getLCData() {
+            const lc_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-card3.json');
+            this.dbCard3_data = lc_res.data;
         }
     }
 });

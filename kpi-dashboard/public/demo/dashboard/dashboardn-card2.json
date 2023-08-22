@@ -3,6 +3,7 @@
     "db_title": "企金客户建设情况",
     "tag_name": "客户建设",
     "tag_class": "tag_pink_purple",
+   "card_col":12,
     "card_data": [
         {
             "card_title":"企金动户数",

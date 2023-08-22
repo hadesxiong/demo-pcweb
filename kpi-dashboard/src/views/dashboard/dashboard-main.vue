@@ -65,7 +65,7 @@ export default defineComponent({
         'db-radar':DashboardRadar,
         'db-card1':DashboardCard1,
         'db-card2':DashboardCard2,
-        'db-line':DashboardLine
+        'db-line':DashboardLine,
     },
     data() {
         return {
@@ -75,7 +75,8 @@ export default defineComponent({
             card1_data:{},
             card2_data:{},
             bar2_data:{},
-            line_data:{}
+            line_data:{},
+            card3_data:{}
         }
     },
     mounted(){

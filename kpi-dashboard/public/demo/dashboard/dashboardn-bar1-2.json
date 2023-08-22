@@ -49,7 +49,7 @@
                 "name": "企金条线",
                 "type": "bar",
                 "stack": "total",
-                "barCategoryGap": "55%",
+                "barCategoryGap": "65%",
                 "label": {
                     "show": false
                 },

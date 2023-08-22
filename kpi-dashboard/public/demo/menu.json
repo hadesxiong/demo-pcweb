@@ -8,7 +8,7 @@
                 "menu_key": "dashboard-main",
                 "menu_title": "重要指标分析",
                 "menu_icon": "",
-                "menu_path": "/dashboard-main"
+                "menu_path": "/dashboard-other"
             },
             {
                 "menu_key": "dashboard-other",

@@ -3,13 +3,34 @@
         <div class="d_flex fd_r jc_sb">
             <div class="d_flex gap_20 fai_c jc_fs">
                 <div class="font_16 fw_500 fc_l1">{{ card_data.db_title }}</div>
-                <div :class="card_data.tag_class" class="br_4">{{card_data.tag_name}}</div>
+                <div :class="card_data.tag_class" class="br_4">{{ card_data.tag_name }}</div>
             </div>
-            <div class="filter"></div>
+            <div class="d_flex fai_c jc_fe gap_8">
+                <a-dropdown>
+                    <a class="d_flex fai_c gap_8">
+                        上海分行
+                        <icon-park type="Down" size="14" class="d_flex fai_c"></icon-park>
+                    </a>
+                    <template #overlay>
+                        <a-menu>
+                            <a-menu-item>1st menu item</a-menu-item>
+                            <a-menu-item>2nd menu item</a-menu-item>
+                            <a-sub-menu key="sub1" title="sub menu">
+                                <a-menu-item>3rd menu item</a-menu-item>
+                                <a-menu-item>4th menu item</a-menu-item>
+                            </a-sub-menu>
+                            <a-sub-menu key="sub2" title="disabled sub menu" disabled>
+                                <a-menu-item>5d menu item</a-menu-item>
+                                <a-menu-item>6th menu item</a-menu-item>
+                            </a-sub-menu>
+                        </a-menu>
+                    </template>
+                </a-dropdown>
+            </div>
         </div>
         <div>
-            <a-row :gutter="['20']">
-                <a-col :span="24 / card_data.card_data.length" v-for="(item,index) in card_data.card_data" :key="index">
+            <a-row :gutter="['20', '20']">
+                <a-col :span="card_data.card_col" v-for="(item, index) in card_data.card_data" :key="index">
                     <div class="bg_l1 d_flex fd_c p_16 gap_10">
                         <div class="d_flex jc_fs fc_l2 font_14">{{ item.card_title }}</div>
                         <div class="d_flex jc_sb fai_b">
@@ -19,7 +40,8 @@
                             </div>
                             <div class="d_flex gap_4 fc_l3">
                                 较上期
-                                <div :class="item.value_status === 0 ? 'compare_plus' : 'compare_minus'" class="ml_4 fw_700">{{item.value_compare}}</div>
+                                <div :class="item.value_status === 0 ? 'compare_plus' : 'compare_minus'"
+                                    class="ml_4 fw_700">{{ item.value_compare }}</div>
                             </div>
                         </div>
                     </div>
@@ -29,17 +51,20 @@
     </div>
 </template>
 
-<style>
-</style>
+<style></style>
 
 <script>
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
+import { IconPark } from '@icon-park/vue-next/es/all';
 
 export default defineComponent({
-    name:'DBNCard1',
-    props:{
-        card_data:{
-            type:Object
+    name: 'DBNCard1',
+    components: {
+        'icon-park': IconPark
+    },
+    props: {
+        card_data: {
+            type: Object
         }
     }
 });
