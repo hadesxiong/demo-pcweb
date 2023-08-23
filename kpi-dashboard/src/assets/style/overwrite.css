@@ -166,10 +166,6 @@
   /* text-align: center; */
 }
 
-.ant-picker-input-active {
-  background-color: var(--color-fill-2);
-}
-
 .ant-picker-range .ant-picker-active-bar {
   display: none;
 }

@@ -1,13 +1,42 @@
 <template>
-    <div class="d_flex fd_c bd_4 bg_white w_p100 h_p100">
+    <div class="bg_white d_flex p_20 fd_c gap_20 br_4 w_p100 h_p100">
         <div class="d_flex jc_sb">
-            <div class="d_flex">
-                <div class="d_iflex font_16 fw_500 fc_l1 lh_20 m_20">{{ db_data.db_title }}</div>
+            <div class="d_flex gap_20 fai_c jc_fs">
+                <div class="d_iflex font_16 fw_500 fc_l1 lh_20">{{ db_data.db_title }}</div>
                 <div class="d_iflex br_4" :class="db_data.db_tag.tag_class"> {{ db_data.db_tag.tag_name }} </div>
             </div>
-            <div class="data_filter"></div>
+            <div class="d_flex fai_c jc_fe gap_16">
+                <a-dropdown>
+                    <a class="d_flex fai_c gap_8 fc_brand6">
+                        上海分行
+                        <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                    </a>
+                    <template #overlay>
+                        <a-menu>
+                            <a-menu-item>1st menu item</a-menu-item>
+                            <a-menu-item>2nd menu item</a-menu-item>
+                            <a-sub-menu key="sub1" title="sub menu">
+                                <a-menu-item>3rd menu item</a-menu-item>
+                                <a-menu-item>4th menu item</a-menu-item>
+                            </a-sub-menu>
+                            <a-sub-menu key="sub2" title="disabled sub menu" disabled>
+                                <a-menu-item>5d menu item</a-menu-item>
+                                <a-menu-item>6th menu item</a-menu-item>
+                            </a-sub-menu>
+                        </a-menu>
+                    </template>
+                </a-dropdown>
+                <a-range-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false">
+                    <template #suffixIcon>
+                        <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                    </template>
+                    <template #separator>
+                        <icon-park type="Minus" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                    </template>
+                </a-range-picker>
+            </div>
         </div>
-        <div class="d_flex jc_sb pl_20 pr_20 pb_4 pt_4">
+        <div class="d_flex jc_sb">
             <a-radio-group v-model:value="chosen_value" button-style="solid">
                 <a-radio-button value="enterprise">企金</a-radio-button>
                 <a-radio-button value="retial">零售</a-radio-button>
@@ -23,7 +52,7 @@
                 </div>
             </div>
         </div>
-        <div class="d_flex jc_c fai_c pl_20 pr_20 pb_10 pt_10 w_p100 h_p100">
+        <div class="d_flex jc_c fai_c w_p100 h_p100">
             <div class="d_flex jc_sb fai_c  w_p100 h_p100">
                 <div :style="{ height: db_height, width: db_width }" :id="id"></div>
             </div>
@@ -83,10 +112,25 @@
     background-color: #722ED1;
     border: 2px solid #F5E8FF;
 }
+.custom_dp {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.custom_dp input {
+    color: #165fdd !important;
+    width: 55px !important;
+}
+.custom_dp span {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
 </style>
 
 <script>
 import { defineComponent, ref } from 'vue';
+import { IconPark } from '@icon-park/vue-next/es/all';
+
+import { echartsResize } from '@/utils/echartsResize.js';
 
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/component/tooltip");
@@ -95,6 +139,9 @@ require('echarts/lib/chart/line');
 
 export default defineComponent({
     name: "DashboardLine",
+    components: {
+            'icon-park': IconPark
+        },
     props: {
         id: {
             type: String,
@@ -144,7 +191,8 @@ export default defineComponent({
             // 添加自适应
             window.addEventListener('resize', function () {
                 myChart.resize();
-            })
+            });
+            echartsResize(document.getElementById(this.id), myChart);
         }
     }
 });

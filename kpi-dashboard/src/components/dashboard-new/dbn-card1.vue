@@ -5,11 +5,11 @@
                 <div class="font_16 fw_500 fc_l1">{{ card_data.db_title }}</div>
                 <div :class="card_data.tag_class" class="br_4">{{ card_data.tag_name }}</div>
             </div>
-            <div class="d_flex fai_c jc_fe gap_8">
+            <div class="d_flex fai_c jc_fe gap_16">
                 <a-dropdown>
-                    <a class="d_flex fai_c gap_8">
+                    <a class="d_flex fai_c gap_8 fc_brand6">
                         上海分行
-                        <icon-park type="Down" size="14" class="d_flex fai_c"></icon-park>
+                        <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
                     </a>
                     <template #overlay>
                         <a-menu>
@@ -26,6 +26,11 @@
                         </a-menu>
                     </template>
                 </a-dropdown>
+                <a-date-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false">
+                    <template #suffixIcon>
+                        <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                    </template>
+                </a-date-picker>
             </div>
         </div>
         <div>
@@ -51,7 +56,20 @@
     </div>
 </template>
 
-<style></style>
+<style>
+.custom_dp {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.custom_dp input {
+    color: #165fdd !important;
+    width: 55px !important;
+}
+.custom_dp span {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+</style>
 
 <script>
 import { defineComponent } from 'vue';
