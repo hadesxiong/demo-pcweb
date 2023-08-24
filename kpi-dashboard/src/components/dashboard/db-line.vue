@@ -8,22 +8,24 @@
             <div class="d_flex fai_c jc_fe gap_16">
                 <a-dropdown>
                     <a class="d_flex fai_c gap_8 fc_brand6">
-                        {{ cur_org }}
+                        {{ choose_org }}
                         <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
                     </a>
                     <template #overlay>
                         <a-menu>
                             <div v-for="(item, index) in org_filter" :key="index">
                                 <a-sub-menu v-if="item.children" :key="item.org_key" :title="item.org_name">
-                                    <a-menu-item v-for="sub_item in item.children" :key="sub_item.org_key">{{
-                                        sub_item.org_name }}</a-menu-item>
+                                    <a-menu-item v-for="sub_item in item.children" :key="sub_item.org_key"
+                                        @click="chooseOrg(sub_item)">{{
+                                            sub_item.org_name }}</a-menu-item>
                                 </a-sub-menu>
-                                <a-menu-item v-else>{{ item.org_name }}</a-menu-item>
+                                <a-menu-item v-else @click="chooseOrg(item)">{{ item.org_name }}</a-menu-item>
                             </div>
                         </a-menu>
                     </template>
                 </a-dropdown>
-                <a-range-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false" v-model:value="date_value">
+                <a-range-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false"
+                    v-model:value="date_value">
                     <template #suffixIcon>
                         <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
                     </template>
@@ -164,7 +166,9 @@ export default defineComponent({
         const chosen_value = ref('enterprise');
         return {
             chosen_value,
-            date_value:ref(props.cur_date)
+            date_value: ref(props.cur_date),
+            selectedKeys: ref([]),
+            choose_org: ref(props.cur_org)
         }
     },
     mounted() {
@@ -197,6 +201,15 @@ export default defineComponent({
                 myChart.resize();
             });
             echartsResize(document.getElementById(this.id), myChart);
+        },
+        handlePickerClose(status) {
+            if (!status) {
+                console.log(this.date_value)
+            }
+        },
+        chooseOrg(item) {
+            this.selectedKeys.push(item.org_key);
+            this.choose_org = item.org_name;
         }
     }
 });
