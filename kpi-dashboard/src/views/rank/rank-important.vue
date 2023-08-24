@@ -2,41 +2,29 @@
     <div class="w_p100 h_p100 bg_white">
         <div class="d_flex jc_sb pt_20 pl_20 pr_20">
             <div class="d_flex">
-                <a-radio-group v-model:value="default_line" button-style="solid" class="d_flex gap_12 h_30 lh_30">
-                    <a-radio-button value="all" class="br_100 h_30 lh_30 of_h tover_ell">全部</a-radio-button>
-                    <a-radio-button value="enterprise" class="br_100 h_30 lh_30 of_h tover_ell">企金指标</a-radio-button>
-                    <a-radio-button value="retail" class="br_100 h_30 lh_30 of_h tover_ell">零售指标</a-radio-button>
-                    <a-radio-button value="bank" class="br_100 h_30 lh_30 of_h tover_ell">同业指标</a-radio-button>
-                    <a-radio-button value="other" class="br_100 h_30 lh_30 of_h tover_ell">其他指标</a-radio-button>
+                <a-radio-group v-model:value="choose_line" button-style="solid" class="d_flex gap_12 h_30 lh_30" @change="changeLine">
+                    <a-radio-button v-for="item in line_data" :key="item.key" :value="item.key" class="br_100 h_30 lh_30 of_h tover_ell">{{ item.value }}</a-radio-button>
                 </a-radio-group>
             </div>
             <div class="d_flex gap_20">
-                <a-dropdown class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180" @click="handleClass">
-                    <a>全部分类<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                <a-dropdown class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
+                    <a>{{ choose_class.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
                     <template #overlay>
-                        <a-menu>
-                            <a-menu-item>全部分类</a-menu-item>
-                            <a-menu-item>财务效益</a-menu-item>
-                            <a-menu-item>客户建设</a-menu-item>
-                            <a-menu-item>转型与质量发展</a-menu-item>
-                            <a-menu-item>风险合规</a-menu-item>
-                            <a-menu-item>社会责任</a-menu-item>
-                        </a-menu>
-                    </template>
-                </a-dropdown>
-                <a-dropdown class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180" @click="handleClass">
-                    <a>按区域中心支行查看<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
-                    <template #overlay>
-                        <a-menu>
-                            <a-menu-item>按区域中心支行查看</a-menu-item>
-                            <a-menu-item>按分支机构查看</a-menu-item>
-                            <a-menu-item>按战略客户部查看</a-menu-item>
-                            <a-menu-item>按单点支行查看</a-menu-item>
+                        <a-menu v-model:value="choose_class">
+                            <a-menu-item v-for="item in class_data" :key="item.key" @click="chooseIndex(item,'class')">{{ item.value }}</a-menu-item>
                         </a-menu>
                     </template>
                 </a-dropdown>
                 <a-dropdown class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                    <a-date-picker picker="month" :placeholder="'数据日期'" :allowClear="false">
+                    <a>{{ choose_group.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                    <template #overlay>
+                        <a-menu v-model:value="choose_group">
+                            <a-menu-item v-for="item in group_data" :key="item.key" @click="chooseIndex(item,'group')">{{ item.value }}</a-menu-item>
+                        </a-menu>
+                    </template>
+                </a-dropdown>
+                <a-dropdown class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
+                    <a-date-picker picker="month" :placeholder="'数据日期'" :allowClear="false" v-model:value="date_value">
                         <template #suffixIcon>
                             <icon-park type="CalendarThirty" fill="#86909C" size="14"></icon-park>
                         </template>
@@ -140,6 +128,12 @@ import { IconPark } from "@icon-park/vue-next/es/all";
 import RankMain from '../../components/rank/rank-main';
 import axios from 'axios';
 
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
+
+dayjs.locale('zh-cn');
+
 export default defineComponent({
     name: 'rank-important',
     components: {
@@ -148,13 +142,37 @@ export default defineComponent({
     },
     data() {
         return {
-            rank_list: []
+            rank_list: [],
+            line_data:[
+                {key:"all",value:"全部指标"},
+                {key:"enterprise",value:"企金指标"},
+                {key:"retail",value:"零售指标"},
+                {key:"bank",value:"同业指标"},
+                {key:"other",value:"其他指标"},
+            ],
+            class_data: [
+                {key:"all",value:"全部分类"},
+                {key:"cwxy",value:"财务效益"},
+                {key:"khjs",value:"客户建设"},
+                {key:"zxfz",value:"转型与发展质量"},
+                {key:"fxhg",value:"风险合规"},
+                {key:"shzr",value:"社会责任"}
+            ],
+            group_data: [
+                {key:"qyzxzh",value:"按区域中心支行查看"},
+                {key:"ddzh",value:"按单点支行查看"},
+                {key:"zlkhb",value:"按战略客户部查看"},
+                {key:"fzjg",value:"按4级分支机构查看"}
+            ]
         }
     },
     setup() {
-        const default_line = ref('all');
         return {
-            default_line
+            locale,
+            choose_line: ref('all'),
+            choose_class: ref({key:"all",value:"全部分类"}),
+            choose_group: ref({key:"qyzxzh",value:"按区域中心支行查看"}),
+            date_value: ref(dayjs())
         }
     },
     mounted() {
@@ -167,8 +185,17 @@ export default defineComponent({
             this.rank_list = rank_res.data;
             // console.log(this.rank_list)
         },
-        handleClass(e) {
-            console.log(e)
+        chooseIndex(item,section) {
+            console.log(item,section);
+            if (section=='class') {
+                this.choose_class = item;
+            } else if (section=='group') {
+                this.choose_group = item;
+            }
+        },
+        changeLine(e) {
+            console.log(e.target.value);
+            this.choose_line = e.target.value
         }
     }
 });
