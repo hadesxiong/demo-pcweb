@@ -8,25 +8,23 @@
             <div class="d_flex fai_c jc_fe gap_16">
                 <a-dropdown>
                     <a class="d_flex fai_c gap_8 fc_brand6">
-                        上海分行
+                        {{ choose_org }}
                         <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
                     </a>
                     <template #overlay>
                         <a-menu>
-                            <a-menu-item>1st menu item</a-menu-item>
-                            <a-menu-item>2nd menu item</a-menu-item>
-                            <a-sub-menu key="sub1" title="sub menu">
-                                <a-menu-item>3rd menu item</a-menu-item>
-                                <a-menu-item>4th menu item</a-menu-item>
-                            </a-sub-menu>
-                            <a-sub-menu key="sub2" title="disabled sub menu" disabled>
-                                <a-menu-item>5d menu item</a-menu-item>
-                                <a-menu-item>6th menu item</a-menu-item>
-                            </a-sub-menu>
+                            <div v-for="(item, index) in org_filter" :key="index">
+                                <a-sub-menu v-if="item.children" :key="item.org_key" :title="item.org_name">
+                                    <a-menu-item v-for="sub_item in item.children" :key="sub_item.org_key" @click="chooseOrg(sub_item)">{{
+                                        sub_item.org_name }}</a-menu-item>
+                                </a-sub-menu>
+                                <a-menu-item v-else @click="chooseOrg(item)">{{ item.org_name }}</a-menu-item>
+                            </div>
                         </a-menu>
                     </template>
                 </a-dropdown>
-                <a-range-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false">
+                <a-range-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false"
+                    v-model:value="date_value" @openChange="handlePickerClose">
                     <template #suffixIcon>
                         <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
                     </template>
@@ -69,14 +67,17 @@
 .eg_3 {
     background-color: #81E2FF;
 }
+
 .custom_dp {
     padding-left: 0px;
     padding-right: 0px;
 }
+
 .custom_dp input {
     color: #165fdd !important;
     width: 55px !important;
 }
+
 .custom_dp span {
     padding-left: 0px !important;
     padding-right: 0px !important;
@@ -89,10 +90,12 @@ require("echarts/lib/chart/bar");
 require("echarts/lib/component/tooltip");
 require("echarts/lib/component/grid");
 
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { IconPark } from '@icon-park/vue-next/es/all';
 
 import { echartsResize } from '@/utils/echartsResize.js';
+
+
 
 
 export default defineComponent(
@@ -102,15 +105,24 @@ export default defineComponent(
             'icon-park': IconPark
         },
         props: {
-            bar_data: {
-                type: Object,
-            },
+            bar_data: { type: Object },
+            org_filter: { type: Object },
+            cur_org: { type: String },
+            cur_date: { type: Array }
         },
         data() {
             return {
                 db_height: '250px',
                 db_width: '100%'
             };
+        },
+        setup(props) {
+            const date_value = ref(props.cur_date);
+            return {
+                date_value,
+                selectedKeys: ref([]),
+                choose_org:ref(props.cur_org)
+            }
         },
         mounted() {
             this.drawLine();
@@ -125,6 +137,15 @@ export default defineComponent(
                     myChart.resize();
                 });
                 echartsResize(document.getElementById(this.bar_data.db_id), myChart);
+            },
+            handlePickerClose(status) {
+                if (!status) {
+                    console.log(this.date_value)
+                }
+            },
+            chooseOrg(item) {
+                this.selectedKeys.push(item.org_key);
+                this.choose_org = item.org_name;
             }
         }
     }

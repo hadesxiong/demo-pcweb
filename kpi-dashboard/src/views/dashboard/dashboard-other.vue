@@ -2,25 +2,25 @@
     <div class="of_h">
         <a-row :gutter="[20, 20]" style="display: flex; align-items: stretch;">
             <a-col :span="24">
-                <db-card1 :card_data="dbCard1_data"></db-card1>
+                <db-card1 v-if="dbCard1_data.db_id" :card_data="dbCard1_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-card1>
             </a-col>
             <a-col :span="12">
-                <db-bar2 v-if="dbBar2_data.db_id" :bar_data="dbBar2_data" :db_id="dbBar2_data.db_id"></db-bar2>
+                <db-bar2 v-if="dbBar2_data.db_id" :bar_data="dbBar2_data" :db_id="dbBar2_data.db_id" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-bar2>
             </a-col>
             <a-col :span="12">
-                <db-card1 :card_data="dbCard2_data"></db-card1>
+                <db-card1 v-if="dbCard2_data.db_id" :card_data="dbCard2_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-card1>
             </a-col>
             <a-col :span="12">
-                <db-line v-if="dbLine_data.db_id" :db_data="dbLine_data" :db_id="dbLine_data.db_id"></db-line>
+                <db-line v-if="dbLine_data.db_id" :db_data="dbLine_data" :db_id="dbLine_data.db_id" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-line>
             </a-col>
             <a-col :span="12">
-                <db-bar1 v-if="dbBar1_data.db_id" :bar_data="dbBar1_data"></db-bar1>
+                <db-bar1 v-if="dbBar1_data.db_id" :bar_data="dbBar1_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-bar1>
             </a-col>
             <a-col :span="12">
-                <db-bar1 v-if="dbBar1_2_data.db_id" :bar_data="dbBar1_2_data"></db-bar1>
+                <db-bar1 v-if="dbBar1_2_data.db_id" :bar_data="dbBar1_2_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-bar1>
             </a-col>
             <a-col :span="12">
-                <db-card1 v-if="dbCard3_data.db_id" :card_data="dbCard3_data"></db-card1>
+                <db-card1 v-if="dbCard3_data.db_id" :card_data="dbCard3_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-card1>
             </a-col>
         </a-row>
     </div>
@@ -43,6 +43,12 @@ import DBNBar1 from '../../components/dashboard-new/dbn-bar1';
 import DBLine from '../../components/dashboard/db-line.vue';
 import axios from 'axios';
 
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
+
+dayjs.locale('zh-cn');
+
 export default defineComponent({
     name: 'DashboardOther',
     components: {
@@ -59,7 +65,11 @@ export default defineComponent({
             dbBar1_data: ref({}),
             dbLine_data: ref({}),
             dbBar1_2_data: ref({}),
-            dbCard3_data: ref({})
+            dbCard3_data: ref({}),
+            orgFilter_data: ref({}),
+            current_org: ref('徐汇区域中心支行'),
+            current_date: ref([dayjs().add(-5,'month'),dayjs()]),
+            locale
         }
     },
     mounted() {
@@ -70,6 +80,7 @@ export default defineComponent({
         this.getHoldData();
         this.getEVAData();
         this.getLCData();
+        this.getOrgFilter('123');
     },
     methods: {
 
@@ -102,6 +113,13 @@ export default defineComponent({
         async getLCData() {
             const lc_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-card3.json');
             this.dbCard3_data = lc_res.data;
+        },
+        
+        // 获取机构筛选,传入org_id用作匹配
+        async getOrgFilter(org_id) {
+            console.log(org_id);
+            const orgFilter_res = await axios.get('http://localhost:8080/demo/filter/org_filter.json');
+            this.orgFilter_data = orgFilter_res.data;
         }
     }
 });

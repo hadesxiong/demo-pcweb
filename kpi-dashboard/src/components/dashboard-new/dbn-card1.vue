@@ -8,32 +8,27 @@
             <div class="d_flex fai_c jc_fe gap_16">
                 <a-dropdown>
                     <a class="d_flex fai_c gap_8 fc_brand6">
-                        上海分行
+                        {{ choose_org }}
                         <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
                     </a>
                     <template #overlay>
-                        <a-menu>
-                            <a-menu-item>1st menu item</a-menu-item>
-                            <a-menu-item>2nd menu item</a-menu-item>
-                            <a-sub-menu key="sub1" title="sub menu">
-                                <a-menu-item>3rd menu item</a-menu-item>
-                                <a-menu-item>4th menu item</a-menu-item>
-                            </a-sub-menu>
-                            <a-sub-menu key="sub2" title="disabled sub menu" disabled>
-                                <a-menu-item>5d menu item</a-menu-item>
-                                <a-menu-item>6th menu item</a-menu-item>
-                            </a-sub-menu>
+                        <a-menu v-model:selectedKeys="selectedKeys">
+                            <div v-for="(item, index) in org_filter" :key="index">
+                                <a-sub-menu v-if="item.children" :key="item.org_key" :title="item.org_name">
+                                    <a-menu-item v-for="sub_item in item.children" :key="sub_item.org_key" @click="chooseOrg(sub_item)">{{
+                                        sub_item.org_name }}</a-menu-item>
+                                </a-sub-menu>
+                                <a-menu-item v-else @click="chooseOrg(item)">{{ item.org_name }}</a-menu-item>
+                            </div>
                         </a-menu>
                     </template>
                 </a-dropdown>
-                <a-config-provider :locale="locale">
-                    <a-date-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false" v-model:value="date_value" @openChange="handlePickerClose">
-                        <template #suffixIcon>
-                            <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
-                        </template>
-                    </a-date-picker>
-                </a-config-provider>
-
+                <a-date-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false"
+                    v-model:value="date_value[1]" @openChange="handlePickerClose">
+                    <template #suffixIcon>
+                        <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                    </template>
+                </a-date-picker>
             </div>
         </div>
         <div>
@@ -80,11 +75,6 @@
 import { defineComponent, ref } from 'vue';
 import { IconPark } from '@icon-park/vue-next/es/all';
 
-import dayjs from 'dayjs';
-import 'dayjs/locale/zh-cn';
-import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
-
-dayjs.locale('zh-cn');
 
 export default defineComponent({
     name: 'DBNCard1',
@@ -92,21 +82,28 @@ export default defineComponent({
         'icon-park': IconPark
     },
     props: {
-        card_data: {
-            type: Object
-        }
+        card_data: { type: Object },
+        org_filter: { type: Object },
+        cur_org: { type: String },
+        cur_date: { type: Array }
     },
-    setup() {
+    setup(props) {
+        const date_value = ref(props.cur_date);
         return {
-            locale,
-            date_value: ref(dayjs())
+            date_value,
+            selectedKeys: ref([]),
+            choose_org:ref(props.cur_org)
         }
     },
-    methods:{
+    methods: {
         handlePickerClose(status) {
-            if(!status) {
-                console.log(this.date_value,this.date_value.format('YYYY-MM'))
+            if (!status) {
+                console.log(this.date_value)
             }
+        },
+        chooseOrg(item) {
+            this.selectedKeys.push(item.org_key);
+            this.choose_org = item.org_name;
         }
     }
 });

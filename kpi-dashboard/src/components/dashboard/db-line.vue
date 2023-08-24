@@ -8,25 +8,22 @@
             <div class="d_flex fai_c jc_fe gap_16">
                 <a-dropdown>
                     <a class="d_flex fai_c gap_8 fc_brand6">
-                        上海分行
+                        {{ cur_org }}
                         <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
                     </a>
                     <template #overlay>
                         <a-menu>
-                            <a-menu-item>1st menu item</a-menu-item>
-                            <a-menu-item>2nd menu item</a-menu-item>
-                            <a-sub-menu key="sub1" title="sub menu">
-                                <a-menu-item>3rd menu item</a-menu-item>
-                                <a-menu-item>4th menu item</a-menu-item>
-                            </a-sub-menu>
-                            <a-sub-menu key="sub2" title="disabled sub menu" disabled>
-                                <a-menu-item>5d menu item</a-menu-item>
-                                <a-menu-item>6th menu item</a-menu-item>
-                            </a-sub-menu>
+                            <div v-for="(item, index) in org_filter" :key="index">
+                                <a-sub-menu v-if="item.children" :key="item.org_key" :title="item.org_name">
+                                    <a-menu-item v-for="sub_item in item.children" :key="sub_item.org_key">{{
+                                        sub_item.org_name }}</a-menu-item>
+                                </a-sub-menu>
+                                <a-menu-item v-else>{{ item.org_name }}</a-menu-item>
+                            </div>
                         </a-menu>
                     </template>
                 </a-dropdown>
-                <a-range-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false">
+                <a-range-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false" v-model:value="date_value">
                     <template #suffixIcon>
                         <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
                     </template>
@@ -112,14 +109,17 @@
     background-color: #722ED1;
     border: 2px solid #F5E8FF;
 }
+
 .custom_dp {
     padding-left: 0px;
     padding-right: 0px;
 }
+
 .custom_dp input {
     color: #165fdd !important;
     width: 55px !important;
 }
+
 .custom_dp span {
     padding-left: 0px !important;
     padding-right: 0px !important;
@@ -140,8 +140,8 @@ require('echarts/lib/chart/line');
 export default defineComponent({
     name: "DashboardLine",
     components: {
-            'icon-park': IconPark
-        },
+        'icon-park': IconPark
+    },
     props: {
         id: {
             type: String,
@@ -149,7 +149,10 @@ export default defineComponent({
         },
         db_data: {
             type: Object
-        }
+        },
+        org_filter: { type: Object },
+        cur_org: { type: String },
+        cur_date: { type: Array }
     },
     data() {
         return {
@@ -157,10 +160,11 @@ export default defineComponent({
             db_height: "100%"
         };
     },
-    setup() {
+    setup(props) {
         const chosen_value = ref('enterprise');
         return {
-            chosen_value
+            chosen_value,
+            date_value:ref(props.cur_date)
         }
     },
     mounted() {
@@ -178,10 +182,10 @@ export default defineComponent({
                 { offset: 0, color: 'rgba(131, 100, 255, 0.12)' },
                 { offset: 1, color: 'rgba(80, 52, 255, 0.01)' }
             ]);
-            myChart_option.xAxis.axisLabel.formatter = function(value,index) {
-                if(index===0) {
+            myChart_option.xAxis.axisLabel.formatter = function (value, index) {
+                if (index === 0) {
                     return '{start|' + value + '}';
-                } else if(index == myChart_option.xAxis.data.length-1) {
+                } else if (index == myChart_option.xAxis.data.length - 1) {
                     return '{end|' + value + '}';
                 } else {
                     return value;

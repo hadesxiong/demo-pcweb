@@ -8,25 +8,23 @@
             <div class="d_flex fai_c jc_fe gap_16">
                 <a-dropdown>
                     <a class="d_flex fai_c gap_8 fc_brand6">
-                        上海分行
+                        {{ cur_org }}
                         <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
                     </a>
                     <template #overlay>
                         <a-menu>
-                            <a-menu-item>1st menu item</a-menu-item>
-                            <a-menu-item>2nd menu item</a-menu-item>
-                            <a-sub-menu key="sub1" title="sub menu">
-                                <a-menu-item>3rd menu item</a-menu-item>
-                                <a-menu-item>4th menu item</a-menu-item>
-                            </a-sub-menu>
-                            <a-sub-menu key="sub2" title="disabled sub menu" disabled>
-                                <a-menu-item>5d menu item</a-menu-item>
-                                <a-menu-item>6th menu item</a-menu-item>
-                            </a-sub-menu>
+                            <div v-for="(item, index) in org_filter" :key="index">
+                                <a-sub-menu v-if="item.children" :key="item.org_key" :title="item.org_name">
+                                    <a-menu-item v-for="sub_item in item.children" :key="sub_item.org_key">{{
+                                        sub_item.org_name }}</a-menu-item>
+                                </a-sub-menu>
+                                <a-menu-item v-else>{{ item.org_name }}</a-menu-item>
+                            </div>
                         </a-menu>
                     </template>
                 </a-dropdown>
-                <a-date-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false">
+                <a-date-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false"
+                    v-model:value="date_value[1]" @openChange="handlePickerClose">
                     <template #suffixIcon>
                         <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
                     </template>
@@ -59,7 +57,7 @@
 </style>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent,ref } from 'vue';
 import { IconPark } from '@icon-park/vue-next/es/all';
 
 import { echartsResize } from '@/utils/echartsResize.js';
@@ -74,12 +72,11 @@ export default defineComponent({
         'icon-park': IconPark,
     },
     props: {
-        db_id: {
-            type: String
-        },
-        bar_data: {
-            type: Object
-        }
+        db_id: {type: String},
+        bar_data: {type: Object},
+        org_filter: { type: Object },
+        cur_org: { type: String },
+        cur_date: { type: Array }
     },
     data() {
         return {
@@ -87,7 +84,12 @@ export default defineComponent({
             db_height: "100%"
         };
     },
-    setup() { },
+    setup(props) {
+        const date_value = ref(props.cur_date);
+        return {
+            date_value
+        }
+     },
     mounted() {
         this.drawLine();
     },

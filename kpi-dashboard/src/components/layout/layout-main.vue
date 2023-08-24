@@ -19,18 +19,18 @@
             </a-layout-sider>
             <a-layout-content class="mt_60" id="content_con">
                 <div class="c-bread_con">
-                    <!-- <a-breadcrumb>
+                    <a-breadcrumb>
                         <a-breadcrumb-item v-for="(item, index) in breadcrumb" :key="index">
                             {{ item }}
                         </a-breadcrumb-item>
-                    </a-breadcrumb> -->
+                    </a-breadcrumb>
                     
-                    <a-breadcrumb :routes="breadcrumb">
+                    <!-- <a-breadcrumb :routes="breadcrumb">
                         <template #itemRender="{ route,  paths }">
                             <span v-if="breadcrumb.indexOf(route) === breadcrumb.length - 1">{{ route.name }}</span>
                             <router-link v-else :to="paths.join('/')">{{ route.name }}</router-link>
                         </template>
-                    </a-breadcrumb>
+                    </a-breadcrumb> -->
                 </div>
                 <div class="c-main_con mt_20">
                     <router-view></router-view>
@@ -107,28 +107,23 @@ export default defineComponent({
     computed: {
         breadcrumb() {
             const matchedRoutes = this.$route.matched;
-
-            console.log(matchedRoutes)
             const breadcrumb = [];
 
-            // matchedRoutes.forEach(route => {
-            //     if (route.meta && route.meta.breadcrumb) {
-            //         // 将每个路由的 breadcrumb 数组合并到总的面包屑数组中
-            //         breadcrumb.push(...route.meta.breadcrumb);
-            //     }
-            // });
-
-            // 
             matchedRoutes.forEach(route => {
-
-                    breadcrumb.push({
-                        name:route.name,
-                        path:route.path
-                    })
-
+                if (route.meta && route.meta.breadcrumb) {
+                    // 将每个路由的 breadcrumb 数组合并到总的面包屑数组中
+                    breadcrumb.push(...route.meta.breadcrumb);
+                }
             });
 
-            console.log(breadcrumb)
+            // 
+            // matchedRoutes.forEach(route => {
+            //         breadcrumb.push({
+            //             name:route.name,
+            //             path:route.path
+            //         })
+
+            // });
 
             return breadcrumb;
         }
