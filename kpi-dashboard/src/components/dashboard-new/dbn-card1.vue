@@ -26,11 +26,14 @@
                         </a-menu>
                     </template>
                 </a-dropdown>
-                <a-date-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false">
-                    <template #suffixIcon>
-                        <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
-                    </template>
-                </a-date-picker>
+                <a-config-provider :locale="locale">
+                    <a-date-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false" v-model:value="date_value" @openChange="handlePickerClose">
+                        <template #suffixIcon>
+                            <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                        </template>
+                    </a-date-picker>
+                </a-config-provider>
+
             </div>
         </div>
         <div>
@@ -61,10 +64,12 @@
     padding-left: 0px;
     padding-right: 0px;
 }
+
 .custom_dp input {
     color: #165fdd !important;
     width: 55px !important;
 }
+
 .custom_dp span {
     padding-left: 0px !important;
     padding-right: 0px !important;
@@ -72,8 +77,14 @@
 </style>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { IconPark } from '@icon-park/vue-next/es/all';
+
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
+
+dayjs.locale('zh-cn');
 
 export default defineComponent({
     name: 'DBNCard1',
@@ -83,6 +94,19 @@ export default defineComponent({
     props: {
         card_data: {
             type: Object
+        }
+    },
+    setup() {
+        return {
+            locale,
+            date_value: ref(dayjs())
+        }
+    },
+    methods:{
+        handlePickerClose(status) {
+            if(!status) {
+                console.log(this.date_value,this.date_value.format('YYYY-MM'))
+            }
         }
     }
 });

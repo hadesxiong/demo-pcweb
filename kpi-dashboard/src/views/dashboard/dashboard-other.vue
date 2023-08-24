@@ -81,7 +81,7 @@ export default defineComponent({
         async getAUMData() {
             const AUMData_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-bar2.json');
             this.dbBar2_data = AUMData_res.data;
-            console.log(this.dbBar2_data)
+            // console.log(this.dbBar2_data)
         },
         async getEnterPriseData() {
             const epc_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-card2.json');

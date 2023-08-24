@@ -1,9 +1,9 @@
 <template>
     <div class="w_p100 bg_white br_4 d_flex fd_c minw_p100">
-        <div class="h_60 d_flex jc_sb pl_20 pr_20 pt_16 pb_16 fai_c bb_w1c2_so">
+        <div class="h_60 d_flex jc_sb pl_20 pr_20 pt_20 pb_20 fai_c bb_w1c2_so">
             <div class="d_iflex gap_12 fai_c lh_30">
                 <div>
-                    <a-button class="bak_btn">
+                    <a-button class="bak_btn" @click="goBack">
                         <template #icon>
                             <icon-park type="Left" size="16" class="btn_icon bak_icon" theme="outline"></icon-park>
                         </template>
@@ -144,6 +144,9 @@ export default defineComponent({
             const dataAll_res = await axios.get('http://localhost:8080/demo/manage/data-detail.json')
             // console.log(dataAll_res.data);
             this.detail_data = dataAll_res.data
+        },
+        goBack() {
+            this.$router.go(-1)
         }
     }
 });

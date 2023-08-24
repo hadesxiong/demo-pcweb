@@ -1,6 +1,6 @@
 <template>
   <div class="side_con">
-    <a-menu mode="inline" class="menu_con">
+    <a-menu mode="inline" class="menu_con" v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys">
       <a-sub-menu v-for="item in menu_data" :key="item.menu_key">
         <template #icon><icon-park :type="item.menu_icon" theme="outline" size="16"></icon-park></template>
         <template #title>{{ item.menu_title }}</template>
@@ -48,8 +48,8 @@ export default defineComponent({
   setup() {
     const state = reactive({
       // menu_collapsed: false,
-      selectedKeys: [],
-      openKeys: [],
+      selectedKeys: ['dashboard-other'],
+      openKeys: ['dashboard'],
       preOpenKeys: [],
     });
     
@@ -60,7 +60,6 @@ export default defineComponent({
   methods:{
     async getMenuData() {
       const menu_res = await axios.get('http://localhost:8080/demo/menu.json');
-      // console.log(menu_res.data);
       this.menu_data = menu_res.data;
     }
   },
