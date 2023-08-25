@@ -7,6 +7,7 @@ const routes = [
     redirect: "/dashboard-other",
   },
   {
+    name:"dashboard-main",
     path: "/dashboard-main",
     component: () => import("../views/dashboard/dashboard-main.vue"),
     meta:{
@@ -28,6 +29,7 @@ const routes = [
     }
   },
   {
+    name:"data-detail",
     path: "/data-manage/data-detail",
     component: () => import("../views/manage/data-detail.vue"),
     meta:{
@@ -56,7 +58,8 @@ const routes = [
     }
   },
   {
-    path:"/rank-important/rank-detail",
+    name:"rank-detail",
+    path:"/rank-important/rank-detail/:rank_id",
     component: () => import("../views/rank/rank-detail.vue"),
     meta:{
       breadcrumb:['业绩排行','重要指标排行','业绩详情']

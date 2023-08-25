@@ -14,9 +14,9 @@
                     <a-tag :class="detail_data.tag_class">{{ detail_data.tag_title }}</a-tag>
                 </div>
                 <a-divider type="vertical" style="height: 18px; border-color: #E5E6EB; top: 0;"></a-divider>
-                <div class="fc_l3">
+                <!-- <div class="fc_l3">
                     数据更新于:{{ detail_data.table_update }}
-                </div>
+                </div> -->
                 <div class="fc_l3">
                     查看方式:{{ detail_data.table_view }}
                 </div>
@@ -37,10 +37,10 @@
                         <!-- <a @click="toggleExpand(record)">展开</a> -->
                     </span>
                 </template>
-                <template #bodyCell="{ column }">
+                <template #bodyCell="{ column,record }">
                     <template v-if="column.dataIndex === 'data_operation'">
                         <div class="fc_brand6 d_iflex gap_8">
-                            <a id="history_btn" @click="showHistoryData">查看历史</a>
+                            <a id="history_btn" @click="showHistoryData(record)">查看历史</a>
                             <!-- <a id="belong_btn">查看下属机构</a> -->
                         </div>
                     </template>
@@ -116,27 +116,30 @@
     display: block !important;
     margin: 0 auto;
 }
+
 .blue_dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 10px;
-  background-color: #165DFF;
-  border: 2px solid #BEDAFF;
-}
-.purple_dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 10px;
-  background-color: #722ED1;
-  border: 2px solid #F5E8FF;
+    width: 6px;
+    height: 6px;
+    border-radius: 10px;
+    background-color: #165DFF;
+    border: 2px solid #BEDAFF;
 }
 
+.purple_dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 10px;
+    background-color: #722ED1;
+    border: 2px solid #F5E8FF;
+}
 </style>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { IconPark } from "@icon-park/vue-next/es/all";
 import axios from 'axios';
+
+import { useRoute } from 'vue-router';
 
 let echarts = require("echarts/lib/echarts");
 require("echarts/lib/component/tooltip");
@@ -159,7 +162,11 @@ export default defineComponent({
         }
     },
     setup() {
-        return {}
+        const route = useRoute();
+        console.log(route.params.rank_id);
+        return {
+            index_id: ref(route.params.rank_id)
+        }
     },
     mounted() {
         this.getRankDetailData();
@@ -175,7 +182,10 @@ export default defineComponent({
         async showDrawer() {
             this.draw_visible = true;
         },
-        async showHistoryData() {
+        async showHistoryData(record) {
+
+            console.log(record)
+
             this.draw_visible = true;
             const history_data = await axios.get('http://localhost:8080/demo/rank/history-data.json');
             // console.log(history_data.data);
@@ -192,10 +202,10 @@ export default defineComponent({
                 { offset: 0, color: 'rgba(131, 100, 255, 0.12)' },
                 { offset: 1, color: 'rgba(80, 52, 255, 0.01)' }
             ])
-            myChart_option.xAxis.axisLabel.formatter = function(value,index) {
-                if(index===0) {
+            myChart_option.xAxis.axisLabel.formatter = function (value, index) {
+                if (index === 0) {
                     return '{start|' + value + '}';
-                } else if(index == myChart_option.xAxis.data.length-1) {
+                } else if (index == myChart_option.xAxis.data.length - 1) {
                     return '{end|' + value + '}';
                 } else {
                     return value;

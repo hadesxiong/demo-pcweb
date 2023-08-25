@@ -388,7 +388,7 @@
 }
 .tag_cyan {
   background-color: var(--cyan-level-1);
-  color: var(--cyan-level-1);
+  color: var(--cyan-level-6);
   border: 1px solid var(--cyan-level-1);
   margin: auto;
   padding-left: 8px;
