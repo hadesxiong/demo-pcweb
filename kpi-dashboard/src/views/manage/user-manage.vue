@@ -1,5 +1,5 @@
 <template>
-    <div class="d_flex fd_c gap_20">
+    <div class="d_flex fd_c gap_20 h_p100">
         <div class="d_flex p_20 bg_white fd_r gap_20 fai_c jc_sb">
             <div class="d_flex gap_20">
                 <a-dropdown
@@ -76,9 +76,9 @@
             </div>
 
         </div>
-        <div class="p_20 bg_white">
-            <div class="b_w1c2_so br_4 of_a h_p100">
-                <a-table :columns="table_data.table_columns" :data-source="table_data.table_data">
+        <div class="p_20 bg_white h_p100 d_flex fd_c gap_20">
+            <div class="of_a fg_1">
+                <a-table :columns="table_data.table_columns" :data-source="table_data.table_data" class="b_w1c2_so br_4" :pagination="false">
                     <template #bodyCell="{ column, text, record }">
                         <template
                             v-if="['user_notesid', 'user_name', 'user_character', 'user_class', 'user_org'].includes(column.dataIndex)">
@@ -105,6 +105,9 @@
                     </template>
                 </a-table>
             </div>
+            <div class="d_flex fai_c jc_fe">
+            <a-pagination :current="page_obj.current" :total="page_obj.total" :pageSize="page_obj.pageSize" @change="handlePageChange"></a-pagination>
+        </div>
         </div>
     </div>
     <div class="modalCon" ref="modal">
@@ -298,7 +301,12 @@ export default defineComponent({
             editableData,
             dataSource,
             modal_visible,
-            create_type
+            create_type,
+            page_obj: ref({
+                current:1,
+                pageSize:10,
+                total:100
+            })
         }
     },
     mounted() {
@@ -329,6 +337,10 @@ export default defineComponent({
         confirmUpload() {
             this.modal_visible = false;
         },
+        handlePageChange(page) {
+            console.log(page)
+            this.page_obj.current= page
+        }
     }
 });
 

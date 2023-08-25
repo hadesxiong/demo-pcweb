@@ -1,5 +1,5 @@
 <template>
-    <div class="w_p100 bg_white br_4 d_flex fd_c minw_p100">
+    <div class="w_p100 bg_white br_4 d_flex fd_c minw_p100 h_p100">
         <div class="h_60 d_flex jc_sb pl_20 pr_20 pt_20 pb_20 fai_c bb_w1c2_so">
             <div class="d_iflex gap_12 fai_c lh_30">
                 <div>
@@ -46,16 +46,21 @@
             </div>
         </div>
         <div class=" d_flex fd_c m_20 br4 of_a h_p100 ">
-            <a-tabs v-model:activeKey="active_tab" tab-position="top">
-                <a-tab-pane key="data_table" tab="数据详情">
-                    <div class="b_w1c2_so br_4 of_a h_p100">
-                        <a-table :columns="detail_data.table_columns" :data-source="detail_data.table_data"></a-table>
+            <a-tabs v-model:activeKey="active_tab" tab-position="top" class="h_p100">
+                <a-tab-pane key="data_table" tab="数据详情" class="h_p100 d_flex fd_c gap_20">
+                    <div class="of_a h_p100">
+                        <a-table :columns="detail_data.table_columns" :data-source="detail_data.table_data"
+                            :pagination="false" class="b_w1c2_so br_4"></a-table>
                     </div>
-
+                    <div class="d_flex fai_c jc_fe">
+                        <a-pagination :current="cur_page_obj.current" :total="cur_page_obj.total"
+                            :pageSize="cur_page_obj.pageSize" @change="(page,pageSize) => handlePageChange(page, pageSize,'cur')"></a-pagination>
+                    </div>
                 </a-tab-pane>
-                <a-tab-pane key="data_history" tab="历史记录">
-                    <div class="b_w1c2_so br_4 of_a h_p100">
-                        <a-table :columns="detail_data.history_columns" :data-source="detail_data.history_data">
+                <a-tab-pane key="data_history" tab="历史记录" class="h_p100 d_flex fd_c gap_20">
+                    <div class="of_a h_p100">
+                        <a-table :columns="detail_data.history_columns" :data-source="detail_data.history_data"
+                            :pagination="false" class="b_w1c2_so br_4">
                             <template #bodyCell="{ record, column, text }">
                                 <template v-if="record.isthis_publish && column.dataIndex == 'exec_date'">
                                     <div class="d_iflex gap_16 fai_c">
@@ -68,12 +73,17 @@
                                 <template v-if="column.dataIndex == 'exec_files'">
                                     <div class="d_iflex fai_c jc_sb w_p100">
                                         <a :href="record.files_link">{{ text }}</a>
-                                        <a :href="record.files_link"><icon-park type="Download" fill="#165fdd"></icon-park></a>
+                                        <a :href="record.files_link"><icon-park type="Download"
+                                                fill="#165fdd"></icon-park></a>
                                     </div>
                                 </template>
                             </template>
-                            
+
                         </a-table>
+                    </div>
+                    <div class="d_flex fai_c jc_fe">
+                        <a-pagination :current="his_page_obj.current" :total="his_page_obj.total"
+                            :pageSize="his_page_obj.pageSize" @change="(page,pageSize) => handlePageChange(page, pageSize,'his')"></a-pagination>
                     </div>
                 </a-tab-pane>
             </a-tabs>
@@ -118,6 +128,11 @@
     background-color: #f53f3f;
     border: 2px solid #ffece8;
 }
+
+:where(.css-dev-only-do-not-override-eq3tly).ant-tabs .ant-tabs-content {
+    height: 100% !important;
+}
+
 </style>
 
 <script>
@@ -134,6 +149,16 @@ export default defineComponent({
         return {
             active_tab: ref('data_table'),
             detail_data: ref({}),
+            cur_page_obj: ref({
+                current: 1,
+                pageSize: 10,
+                total: 100
+            }),
+            his_page_obj: ref({
+                current: 1,
+                pageSize: 10,
+                total: 100
+            }),
         }
     },
     mounted() {
@@ -147,6 +172,13 @@ export default defineComponent({
         },
         goBack() {
             this.$router.go(-1)
+        },
+        handlePageChange(page,pageSize,type) {
+            if(type=='cur') {
+                this.cur_page_obj.current = page
+            } else if(type=='his') {
+                this.his_page_obj.current = page
+            }
         }
     }
 });

@@ -82,7 +82,7 @@
 .ant-table-wrapper .ant-table-tbody > tr > td,
 .ant-table-wrapper tfoot > tr > th,
 .ant-table-wrapper tfoot > tr > td {
-  padding: 10px 16px;
+  padding: 12px 16px;
 }
 
 .ant-table-wrapper .ant-table {
@@ -125,6 +125,13 @@
   > td:last-child {
   border-end-end-radius: 0px;
   border-start-end-radius: 0px;
+}
+
+:where(.css-dev-only-do-not-override-eq3tly).ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:first-child {
+  border-start-start-radius: 2px;
+}
+:where(.css-dev-only-do-not-override-eq3tly).ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:last-child {
+  border-start-end-radius:2px;
 }
 
 /* 下拉选项部分 */
@@ -313,4 +320,31 @@
 
 :where(.css-dev-only-do-not-override-eq3tly).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: #165dff;
+}
+:where(.css-dev-only-do-not-override-eq3tly).ant-tabs .ant-tabs-content {
+  height: 100%;
+}
+
+/* 分页器部分 */
+:where(.css-dev-only-do-not-override-eq3tly).ant-pagination .ant-pagination-item a{
+  color: #4E5969;
+}
+:where(.css-dev-only-do-not-override-eq3tly).ant-pagination .ant-pagination-item-active {
+  background-color: #E8F3FF;
+  border: none;
+}
+:where(.css-dev-only-do-not-override-eq3tly).ant-pagination .ant-pagination-item-active a {
+  color: #165dff;
+}
+:where(.css-dev-only-do-not-override-eq3tly).ant-pagination .ant-pagination-prev button span  {
+  color: #4E5969;
+}
+:where(.css-dev-only-do-not-override-eq3tly).ant-pagination .ant-pagination-next button span  {
+  color: #4E5969;
+}
+:where(.css-dev-only-do-not-override-eq3tly).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border: none ;
+  background-color: #F2F3F5 ;
+  color: #4E5969 ;
+  border-radius: 2px;
 }

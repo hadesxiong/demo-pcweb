@@ -40,6 +40,9 @@
 .h_32 {
   height: 32px;
 }
+.minh_120 {
+  min-height: 120px;
+}
 /* display部分 */
 
 /* 外边距部分 */

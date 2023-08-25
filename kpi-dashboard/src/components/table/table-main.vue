@@ -1,9 +1,9 @@
 <template>
-    <div class="w_p100 bg_white p_20 d_flex fd_c gap_20">
+    <div class="w_p100 bg_white p_20 d_flex fd_c gap_20 fg_1">
         <div class="d_flex fd_c">
             <div class="d_flex fd_r jc_sb">
-                <a-range-picker :placeholder="['起始月份', '截止月份']" format="YYYY-MM" :value="data_range" :mode='pannel_mode'
-                    @panelChange="handlePannelChange" @change="handleChange" :allowClear="false">
+                <a-range-picker :placeholder="['起始月份', '截止月份']" format="YYYY-MM" :value="date_value" :mode='["month", "month"]'
+                    @panelChange="handlePannelChange" @openChange="handleChange" :allowClear="false">
                     <template #separator>
                         <icon-park type="RightSmall" fill="#86909C"></icon-park>
                     </template>
@@ -19,15 +19,16 @@
                 </a-button>
             </div>
         </div>
-        <div class="b_w1c2_so br_4 of_a h_p100">
-            <a-table :columns="table_data.table_columns" :data-source="table_data.table_data" :expandIconColumnIndex="1"
-                :expandIconAsCell="false" :indentSize="0" :pagination="{
-                    pageSize: 10
-                }" expand="expandRows">
+        <div class="of_a h_p100">
+            <a-table :columns="table_data.table_columns" :data-source="table_data.table_data" :expandIconColumnIndex="1" :pagination="false"
+                :expandIconAsCell="false" :indentSize="0" expand="expandRows" class="b_w1c2_so br_2">
                 <template #customFilterIcon>
                     <icon-park type="Filter" size='14' fill="#C9CDD4" theme="filled" class="d_flex"></icon-park>
                 </template>
             </a-table>
+        </div>
+        <div class="d_flex fai_c jc_fe">
+            <a-pagination :current="page_obj.current" :total="page_obj.total" :pageSize="page_obj.pageSize" @change="handlePageChange"></a-pagination>
         </div>
     </div>
 </template>
@@ -51,6 +52,12 @@
 import { defineComponent, ref } from 'vue';
 import { IconPark } from "@icon-park/vue-next/es/all";
 
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
+
+dayjs.locale('zh-cn');
+
 export default defineComponent({
     name: 'TableMain',
     props: {
@@ -63,9 +70,15 @@ export default defineComponent({
     },
     setup() {
         return {
-            data_range: ref(),
+            locale,
             pannel_mode: ref(['month', 'month']),
+            date_value: ref([dayjs().add(-5,'month'),dayjs()]),
             w_table_data: ref({}),
+            page_obj: ref({
+                current:1,
+                pageSize:10,
+                total:100
+            })
         }
     },
     mounted() {
@@ -79,16 +92,23 @@ export default defineComponent({
     methods: {
         handlePannelChange: function (value, mode) {
             // console.log(value, mode);
-            this.data_range = value;
+            this.date_value = value;
             this.pannel_mode = [mode[0] === 'date' ? 'month' : mode[0], mode[1] === 'date' ? 'month' : mode[1]];
-
+            // console.log('handlePannel',value)
         },
-        handleChange: function (value) {
-            this.data_range = value;
-            // console.log(value);
+        handleChange: function (status) {
+            // console.log('handle',status,this.date_value);
+            if(!status) {
+                // console.log(this.date_value)
+                this.$emit('getFilterOptions',{date_range:this.date_value})
+            }
         },
         expandRows: function(expanded,record) {
             console.log(expanded,record)
+        },
+        handlePageChange(page) {
+            console.log(page)
+            this.page_obj.current= page
         }
     }
 });

@@ -6,7 +6,8 @@
         <template #title>{{ item.menu_title }}</template>
         <a-menu-item v-for="sub_item in item.sub_menu" :key="sub_item.menu_key">
           {{ sub_item.menu_title }}
-          <router-link :to="{path: sub_item.menu_path}"></router-link>
+          <!-- <router-link :to="{path: sub_item.menu_path}"></router-link> -->
+          <router-link :to="{name:sub_item.menu_name,params:sub_item.menu_params}"></router-link>
         </a-menu-item>
       </a-sub-menu>
     </a-menu>

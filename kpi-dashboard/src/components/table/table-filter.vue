@@ -1,5 +1,5 @@
 <template>
-    <div class="d_flex w_p100 fd_c bg_white p_20 gap_20"  :class="label_collaspe ? 'normal_height' : 'collapse_height'">
+    <div class="d_flex w_p100 fd_c bg_white p_20 gap_20 fs_0 minh_120" :class="label_collaspe ? 'normal_height' : 'collapse_height'">
         <div class="d_flex fd_r lh_30 gap_20 h_30 fai_c jc_sb">
             <div class="d_flex fd_r gap_20">
                 <div class="fc_l3 filter_title ta_l">查看方式</div>
@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div>
-                <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6">
+                <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="handleSearch(default_org,filterIndexList)">
                     <template #icon>
                         <icon-park type="Find" size="14" class="mr_8 lh_1"></icon-park>
                     </template>
@@ -19,12 +19,12 @@
                 </a-button>
             </div>
         </div>
-        <div class="d_flex fd_r lh_30 gap_20 fai_fs jc_sb">
+        <div class="d_flex fd_r lh_30 gap_20 h_30 fai_c jc_sb">
             <div class="d_flex fd_r gap_20">
                 <div class="fc_l3 filter_title ta_l">指标分类</div>
                 <div class="d_flex">
                     <custom-multi v-if="filter_data.index_class" :custom_options="filter_data.index_class"
-                        @getSelectedOptions="execIndexList"></custom-multi>
+                        :option_type="'class'" @getSelectedOptions="execIndexList"></custom-multi>
                 </div>
             </div>
             <div>
@@ -48,7 +48,8 @@
             <div class="d_flex fd_r gap_20">
                 <div class="fc_l3 filter_title ta_l">指标名称</div>
                 <div class="d_flex">
-                    <custom-multi v-if="selectedIndexList" :custom_options="selectedIndexList"></custom-multi>
+                    <custom-multi v-if="selectedIndexList" :custom_options="selectedIndexList"
+                        :option_type="'index'" @getSelectedOptions="execIndexList"></custom-multi>
                 </div>
             </div>
         </div>
@@ -132,50 +133,57 @@ export default defineComponent({
 
     },
     data() {
-        return {
-            selectedIndexList: []
-        }
+        return {}
     },
     setup() {
-        const default_org = ref('qyzxzh');
-        const label_collaspe = ref(false);
         return {
-            default_org,
-            label_collaspe
+            default_org: ref('qyzxzh'),
+            label_collaspe: ref(false),
+            selectedIndexList: ref([]),
+            filterIndexList: ref([])
         }
     },
     mounted() { },
     methods: {
-        execIndexList(selected_class) {
+        execIndexList(selected_object) {
 
-            // 处理逻辑
-            // 1.selected_class每次选择过一次全部后，需要清空一次selectedIndexList的选中状态
+            // 处理逻辑(指标拉平)
+            // 1.selected_object每次选择过一次全部后，需要清空一次selectedIndexList的选中状态
             // 2.每次优先添加全部选项
             // 3.然后按照选中的指标分类逐步完成添加
 
-            let target_data = [];
-            this.selectedIndexList = target_data
-            if (selected_class.includes('all') || selected_class.length == 0) {
-                this.filter_data.index_list.forEach(function (each_class) {
-                    each_class.label_list.forEach(function (each_label) {
-                        target_data.push(each_label);
-                    })
-                });
-            } else {
-                // console.log('222');
-                target_data.push({ "label": "全部", "value": "all" });
-                // console.log(this.filter_data.index_list,selected_class)
-                this.filter_data.index_list.filter(function (each_class) {
-                    if (selected_class.includes(each_class.class)) {
-                        // console.log(each_class.label_list)
-                        target_data = target_data.concat(each_class.label_list)
-                    }
-                });
+            if (selected_object.class == 'class') {
+                let target_data = [];
+                this.selectedIndexList = target_data
+                if (selected_object.list.includes('all') || selected_object.list.length == 0) {
+                    this.filter_data.index_list.forEach(function (each_class) {
+                        each_class.label_list.forEach(function (each_label) {
+                            target_data.push(each_label);
+                        })
+                    });
+                } else {
+                    // console.log('222');
+                    target_data.push({ "label": "全部", "value": "all" });
+                    // console.log(this.filter_data.index_list,selected_object.list)
+                    this.filter_data.index_list.filter(function (each_class) {
+                        if (selected_object.list.includes(each_class.class)) {
+                            // console.log(each_class.label_list)
+                            target_data = target_data.concat(each_class.label_list)
+                        }
+                    });
+                }
+                this.selectedIndexList = target_data;
+            } else if (selected_object.class=='index') {
+                // console.log(selected_object.class,selected_object.list)
+                this.filterIndexList = selected_object.list;
             }
-            this.selectedIndexList = target_data;
         },
         toggleIndex() {
             this.label_collaspe = !this.label_collaspe;
+        },
+        handleSearch(org,list) {
+            console.log(org,list);
+            this.$emit('getFilterOptions',{org:org,list:list})
         }
     }
 });

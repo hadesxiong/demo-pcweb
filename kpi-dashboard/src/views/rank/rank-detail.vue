@@ -1,5 +1,5 @@
 <template>
-    <div class="w_p100 bg_white br_4 d_flex fd_c minw_p100">
+    <div class="w_p100 bg_white br_4 d_flex fd_c minw_p100 h_p100">
         <div class="h_60 d_flex jc_sb pl_20 pr_20 pt_16 pb_16 fai_c bb_w1c2_so">
             <div class="d_iflex gap_12 fai_c lh_30">
                 <div>
@@ -29,9 +29,9 @@
                     导出</a-button>
             </div>
         </div>
-        <div class="m_20 b_w1c2_so br_4 of_a h_p100">
+        <div class="m_20 of_a h_p100">
             <a-table :columns="detail_data.table_column" :data-source="detail_data.table_data" :pagination="false"
-                :scroll="{ y: 680 }" :expandIconColumnIndex="1" :expandIconAsCell="false" :indentSize="0">
+                :scroll="{ y: auto }" :expandIconColumnIndex="1" :expandIconAsCell="false" :indentSize="0" class="b_w1c2_so br_2">
                 <template #innerExpand="{ record }">
                     <span v-if="record.children">
                         <!-- <a @click="toggleExpand(record)">展开</a> -->
@@ -46,6 +46,9 @@
                     </template>
                 </template>
             </a-table>
+        </div>
+        <div class="d_flex fai_c jc_fe p_20">
+            <a-pagination :current="page_obj.current" :total="page_obj.total" :pageSize="page_obj.pageSize" @change="handlePageChange"></a-pagination>
         </div>
         <a-drawer :width="850" :visible="draw_visible" @close="onClose" :closable="false">
             <template #title>
@@ -163,9 +166,13 @@ export default defineComponent({
     },
     setup() {
         const route = useRoute();
-        console.log(route.params.rank_id);
         return {
-            index_id: ref(route.params.rank_id)
+            index_id: ref(route.params.rank_id),
+            page_obj: ref({
+                current:1,
+                pageSize:10,
+                total:100
+            })
         }
     },
     mounted() {
@@ -223,6 +230,10 @@ export default defineComponent({
         },
         goBack() {
             this.$router.go(-1)
+        },
+        handlePageChange(page) {
+            console.log(page)
+            this.page_obj.current= page
         }
     }
 

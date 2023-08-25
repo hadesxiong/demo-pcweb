@@ -45,9 +45,8 @@ export default defineComponent({
         'icon-park': IconPark,
     },
     props: {
-        custom_options: {
-            type: Array
-        }
+        custom_options: {type: Array},
+        option_type:{type:String}
     },
     data() {
         return {
@@ -93,7 +92,7 @@ export default defineComponent({
             if (this.selectedOptions.length == 0) {
                 this.selectedOptions.push('all')
             }
-            this.$emit('getSelectedOptions', this.selectedOptions);
+            this.$emit('getSelectedOptions', {class:this.option_type,list:this.selectedOptions});
         },
         deselectOption(optionValue) {
             this.selectedOptions = this.selectedOptions.filter(value => value !== optionValue);

@@ -1,5 +1,5 @@
 <template>
-    <div class="d_flex fd_c gap_20">
+    <div class="d_flex fd_c gap_20 h_p100">
         <div class="d_flex p_20 bg_white fd_r gap_20 fai_c jc_sb">
             <div class="d_flex gap_20">
                 <a-dropdown
@@ -71,9 +71,9 @@
             </div>
 
         </div>
-        <div class="p_20 bg_white">
-            <div class="b_w1c2_so br_4 of_a h_p100">
-                <a-table :columns="upload_data.table_columns" :data-source="upload_data.table_data">
+        <div class="p_20 bg_white h_p100 d_flex fd_c gap_20">
+            <div class="of_a h_p100">
+                <a-table :columns="upload_data.table_columns" :data-source="upload_data.table_data" :pagination="false" class="b_w1c2_so br_4">
                     <template #bodyCell="{ column }">
                         <template v-if="column.dataIndex === 'operation'">
                             <div class="fc_brand6 d_iflex gap_8">
@@ -83,6 +83,9 @@
                     </template>
                 </a-table>
             </div>
+            <div class="d_flex fai_c jc_fe">
+            <a-pagination :current="page_obj.current" :total="page_obj.total" :pageSize="page_obj.pageSize" @change="handlePageChange"></a-pagination>
+        </div>
         </div>
     </div>
     <div class="modalCon" ref="modal">
@@ -177,6 +180,11 @@ export default defineComponent({
             upload_data: ref({}),
             modal_visible: ref(false),
             inputValue: ref(''),
+            page_obj: ref({
+                current:1,
+                pageSize:10,
+                total:100
+            })
         }
     },
     mounted() {
@@ -196,6 +204,10 @@ export default defineComponent({
         },
         handleClass(e) {
             console.log(e)
+        },
+        handlePageChange(page) {
+            console.log(page)
+            this.page_obj.current= page
         }
     }
 });

@@ -1,7 +1,7 @@
 <template>
-    <div class="d_flex fd_c gap_20">
-        <table-filter v-if="filter_data.index_class" :filter_data="filter_data"></table-filter>
-        <table-main v-if="table_data.table_id" :table_data="table_data"></table-main>
+    <div class="d_flex fd_c gap_20 h_p100">
+        <table-filter v-if="filter_data.index_class" :filter_data="filter_data" @getFilterOptions="execSearch"></table-filter>
+        <table-main v-if="table_data.table_id" :table_data="table_data" @getFilterOptions="execSearch"></table-main>
     </div>
 </template>
 
@@ -12,11 +12,12 @@
 </style>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent,ref } from 'vue';
 import TableFilter from '../../components/table/table-filter.vue';
 import TableMain from '../../components/table/table-main.vue';
-// import { IconPark } from "@icon-park/vue-next/es/all";
+
 import axios from 'axios';
+import { useRoute } from 'vue-router';
 
 
 export default defineComponent({
@@ -26,13 +27,17 @@ export default defineComponent({
         'table-main':TableMain,
     },
     data() {
-        return {
-            filter_data:{},
-            table_data:{}
-        }
+        return {}
     },
     setup() {
-        return {}
+        const route= useRoute();
+        console.log(route.params.table_class)
+        return {
+            filter_data:ref([]),
+            table_data:ref([]),
+            query_data:ref({}),
+            table_class:ref(route.params.table_class),
+        }
     },
     mounted() {
         this.getFilterData();
@@ -42,11 +47,13 @@ export default defineComponent({
         async getFilterData() {
             const filter_res = await axios.get('http://localhost:8080/demo/table/table-filter.json');
             this.filter_data = filter_res.data
-            // console.log(this.filter_data)
         },
         async getTableData() {
             const table_res = await axios.get('http://localhost:8080/demo/table/table-main.json');
             this.table_data = table_res.data;
+        },
+        async execSearch(item) {
+            console.log(item);
         }
     }
 })
