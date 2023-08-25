@@ -85,4 +85,20 @@ const router = createRouter({
   routes,
 });
 
+// 导航守卫
+
+router.beforeEach((to, from, next) => {
+  const openKey = "数据看板"; // 菜单的 openKey
+
+  const foundRoute = routes.find(route => {
+    return route.name === to.name && route.meta.breadcrumb.includes(openKey);
+  });
+
+  if (foundRoute) {
+    next({path:to.path}); // 执行跳转
+  } else {
+    next({ path: "/dashboard-other" }); // 默认跳转到指定路由
+  }
+});
+
 export default router;
