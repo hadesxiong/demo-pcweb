@@ -11,7 +11,7 @@
         <a-layout>
             <a-layout-sider :collapsedWidth="60" :collapsible="true" :min-width="220" :max-width="220" :width="220"
                 v-model:collapsed="menu_collapsed" class="c-layout_sider mt_60">
-                <sider-menu></sider-menu>
+                <sider-menu v-if="this.$route.name" :menu_data="menu_data" :menu_keys="menuKeys"></sider-menu>
                 <template #trigger>
                     <icon-park v-if="menu_collapsed" type="MenuFoldOne" theme="filled" size="16" fill="#4E5969"></icon-park>
                     <icon-park v-else type="MenuUnfoldOne" theme="filled" size="16" fill="#4E5969"></icon-park>
@@ -24,13 +24,6 @@
                             {{ item }}
                         </a-breadcrumb-item>
                     </a-breadcrumb>
-                    
-                    <!-- <a-breadcrumb :routes="breadcrumb">
-                        <template #itemRender="{ route,  paths }">
-                            <span v-if="breadcrumb.indexOf(route) === breadcrumb.length - 1">{{ route.name }}</span>
-                            <router-link v-else :to="paths.join('/')">{{ route.name }}</router-link>
-                        </template>
-                    </a-breadcrumb> -->
                 </div>
                 <div class="c-main_con mt_20">
                     <router-view></router-view>
@@ -87,6 +80,8 @@ import SiderMenu from './sider/sider-menu.vue';
 import { IconPark } from "@icon-park/vue-next/es/all";
 import { defineComponent, ref } from 'vue';
 
+import axios from 'axios';
+
 export default defineComponent({
     name: 'LayoutMain',
     components: {
@@ -96,19 +91,32 @@ export default defineComponent({
         'icon-park': IconPark
     },
     data() {
-        return {
-            menu_collapsed: ref(false),
-        }
+        return {}
     },
     setup() {
-        return {}
+        return {
+            menu_collapsed: ref(false),
+            menu_data: ref(),
+        }
+    },
+    methods: {
+        async getMenuData() {
+            const menu_res = await axios.get('http://localhost:8080/demo/menu.json');
+            this.menu_data = menu_res.data;
+        },
+    },
+    mounted() {
+        this.getMenuData();
+        
     },
     computed: {
         breadcrumb() {
+
+            console.log(this.$route)
+
             const matchedRoutes = this.$route.matched;
             const breadcrumb = [];
-
-            console.log(matchedRoutes);
+            // console.log(matchedRoutes);
 
             matchedRoutes.forEach(route => {
                 if (route.meta && route.meta.breadcrumb) {
@@ -117,19 +125,11 @@ export default defineComponent({
                 }
             });
 
-            // 传值给menu_key、subMenu_key
-            
-
-            // 
-            // matchedRoutes.forEach(route => {
-            //         breadcrumb.push({
-            //             name:route.name,
-            //             path:route.path
-            //         })
-
-            // });
-
             return breadcrumb;
+        },
+        menuKeys() {
+            const menu_keys = {openKeys: this.$route.name, selectedKeys: this.$route.meta.sub};
+            return menu_keys
         }
     }
 }

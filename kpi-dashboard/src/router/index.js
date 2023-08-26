@@ -96,5 +96,12 @@ const router = createRouter({
 
 // 导航守卫
 
+router.beforeEach((to, from, next) => {
+  // 在路由导航之前执行的逻辑
+
+  // console.log(to,from);
+  next()
+});
+
 
 export default router;

@@ -117,9 +117,9 @@ export default defineComponent({
         
         // 获取机构筛选,传入org_id用作匹配
         async getOrgFilter(org_id) {
-            console.log(org_id);
             const orgFilter_res = await axios.get('http://localhost:8080/demo/filter/org_filter.json');
             this.orgFilter_data = orgFilter_res.data;
+            return {org_id}
         }
     }
 });
