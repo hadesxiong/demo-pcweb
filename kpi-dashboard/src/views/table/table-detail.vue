@@ -31,7 +31,7 @@ export default defineComponent({
     },
     setup() {
         const route= useRoute();
-        console.log(route.params.table_class)
+        // console.log(route.params.table_class)
         return {
             filter_data:ref([]),
             table_data:ref([]),

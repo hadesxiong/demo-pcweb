@@ -31,7 +31,7 @@
         </div>
         <div class="m_20 of_a h_p100">
             <a-table :columns="detail_data.table_column" :data-source="detail_data.table_data" :pagination="false"
-                :scroll="{ y: auto }" :expandIconColumnIndex="1" :expandIconAsCell="false" :indentSize="0" class="b_w1c2_so br_2">
+                :scroll="{ y: true }" :expandIconColumnIndex="1" :expandIconAsCell="false" :indentSize="0" class="b_w1c2_so br_2">
                 <template #innerExpand="{ record }">
                     <span v-if="record.children">
                         <!-- <a @click="toggleExpand(record)">展开</a> -->

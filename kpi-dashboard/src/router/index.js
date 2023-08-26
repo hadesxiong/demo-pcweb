@@ -12,6 +12,7 @@ const routes = [
     component: () => import("@/views/dashboard/dashboard-main.vue"),
     meta: {
       breadcrumb: ["数据看板", "重要指标分析"],
+      sub:"dashboard"
     },
   },
   {
@@ -20,6 +21,7 @@ const routes = [
     component: () => import("@/views/dashboard/dashboard-other.vue"),
     meta: {
       breadcrumb: ["数据看板", "同业指标分析"],
+      sub:"dashboard"
     },
   },
   {
@@ -28,6 +30,7 @@ const routes = [
     component: () => import("@/views/rank/rank-important.vue"),
     meta: {
       breadcrumb: ["业绩排行", "重要指标排行"],
+      sub:"rank"
     },
   },
   {
@@ -36,6 +39,7 @@ const routes = [
     component: () => import("@/views/rank/rank-detail.vue"),
     meta: {
       breadcrumb: ["业绩排行", "重要指标排行", "业绩详情"],
+      sub:"rank"
     },
   },
   {
@@ -43,7 +47,8 @@ const routes = [
     path:"/table-detail/:table_class",
     component:()=> import('@/views/table/table-detail.vue'),
     meta:{
-      breadcrumb:['数据报表']
+      breadcrumb:['数据报表'],
+      sub:"table"
     }
   },
   {
@@ -52,6 +57,7 @@ const routes = [
     component: () => import("@/views/manage/data-manage.vue"),
     meta: {
       breadcrumb: ["数据管理", "数据导入"],
+      sub:"settings"
     },
   },
   {
@@ -60,6 +66,7 @@ const routes = [
     component: () => import("@/views/manage/data-detail.vue"),
     meta: {
       breadcrumb: ["数据管理", "数据导入", "导入数据详情"],
+      sub:"settings"
     },
   },
   {
@@ -68,6 +75,7 @@ const routes = [
     component: () => import("@/views/manage/org-manage.vue"),
     meta: {
       breadcrumb: ["数据管理", "机构管理"],
+      sub:"settings"
     },
   },
   {
@@ -76,6 +84,7 @@ const routes = [
     component: () => import("@/views/manage/user-manage.vue"),
     meta: {
       breadcrumb: ["数据管理", "用户管理"],
+      sub:"settings"
     },
   },
 ];
@@ -87,18 +96,5 @@ const router = createRouter({
 
 // 导航守卫
 
-router.beforeEach((to, from, next) => {
-  const openKey = "数据看板"; // 菜单的 openKey
-
-  const foundRoute = routes.find(route => {
-    return route.name === to.name && route.meta.breadcrumb.includes(openKey);
-  });
-
-  if (foundRoute) {
-    next({path:to.path}); // 执行跳转
-  } else {
-    next({ path: "/dashboard-other" }); // 默认跳转到指定路由
-  }
-});
 
 export default router;

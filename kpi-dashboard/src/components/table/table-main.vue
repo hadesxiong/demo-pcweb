@@ -85,9 +85,9 @@ export default defineComponent({
         this.w_table_data = this.$props.table_data;
         // console.log(this.$props.table_data);
         // console.log(this.w_table_data);
-        this.w_table_data.table_columns[0].customCell = function(record, index,column) {
-            console.log(record,index,column);
-        }
+        // this.w_table_data.table_columns[0].customCell = function(record, index,column) {
+        //     console.log(record,index,column);
+        // }
     },
     methods: {
         handlePannelChange: function (value, mode) {

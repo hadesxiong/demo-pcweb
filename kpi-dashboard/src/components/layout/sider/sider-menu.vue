@@ -29,17 +29,17 @@
 </style>
 
 <script>
-import { defineComponent, reactive, toRefs } from "vue";
+import { defineComponent, ref } from "vue";
 import { IconPark } from "@icon-park/vue-next/es/all";
 
 import axios from 'axios';
 
 export default defineComponent({
   name: "SiderMenu",
-  // props: ['icon'],
   components: {
     'icon-park': IconPark,
   },
+  props:{},
   data() {
     return {
       res_data:'',
@@ -47,15 +47,9 @@ export default defineComponent({
     };
   },
   setup() {
-    const state = reactive({
-      // menu_collapsed: false,
-      selectedKeys: ['dashboard-other'],
-      openKeys: ['dashboard'],
-      preOpenKeys: [],
-    });
-    
     return {
-      ...toRefs(state),
+      selectedKeys: ref([]),
+      openKeys: ref([]),
     };
   },
   methods:{

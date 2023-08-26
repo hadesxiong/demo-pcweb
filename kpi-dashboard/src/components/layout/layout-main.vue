@@ -87,7 +87,6 @@ import SiderMenu from './sider/sider-menu.vue';
 import { IconPark } from "@icon-park/vue-next/es/all";
 import { defineComponent, ref } from 'vue';
 
-
 export default defineComponent({
     name: 'LayoutMain',
     components: {
@@ -97,7 +96,6 @@ export default defineComponent({
         'icon-park': IconPark
     },
     data() {
-
         return {
             menu_collapsed: ref(false),
         }
@@ -110,12 +108,17 @@ export default defineComponent({
             const matchedRoutes = this.$route.matched;
             const breadcrumb = [];
 
+            console.log(matchedRoutes);
+
             matchedRoutes.forEach(route => {
                 if (route.meta && route.meta.breadcrumb) {
                     // 将每个路由的 breadcrumb 数组合并到总的面包屑数组中
                     breadcrumb.push(...route.meta.breadcrumb);
                 }
             });
+
+            // 传值给menu_key、subMenu_key
+            
 
             // 
             // matchedRoutes.forEach(route => {
