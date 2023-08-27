@@ -9,7 +9,7 @@
                         </template>
                     </a-button>
                 </div>
-                <div class="font_18 fw_500">{{ detail_data.detail_id }}</div>
+                <div class="font_18 fw_500">{{ data_id }}</div>
                 <div>
                     <a-tag :class="detail_data.tag_class">{{ detail_data.tag_name }}</a-tag>
                 </div>
@@ -33,11 +33,14 @@
                 </div>
             </div>
             <div class="d_flex gap_20">
-                <a-button class="br_2 fai_c d_flex fc_l5 bg_warn6">
-                    <template #icon>
-                        <icon-park type="Upload" size="14" class="btn_icon"></icon-park>
-                    </template>
-                    上传</a-button>
+                <a-upload :show-upload-list="false" :before-upload="beforeUpload" :on-success="onSuccess">
+                    <a-button class="br_2 fai_c d_flex fc_l5 bg_warn6">
+                        <template #icon>
+                            <icon-park type="Upload" size="14" class="btn_icon"></icon-park>
+                        </template>
+                        上传</a-button>
+                </a-upload>
+
                 <a-button class="br_2 fai_c d_flex fc_l5 bg_brand6">
                     <template #icon>
                         <icon-park type="Send" size="14" class="btn_icon"></icon-park>
@@ -54,7 +57,8 @@
                     </div>
                     <div class="d_flex fai_c jc_fe">
                         <a-pagination :current="cur_page_obj.current" :total="cur_page_obj.total"
-                            :pageSize="cur_page_obj.pageSize" @change="(page,pageSize) => handlePageChange(page, pageSize,'cur')"></a-pagination>
+                            :pageSize="cur_page_obj.pageSize"
+                            @change="(page, pageSize) => handlePageChange(page, pageSize, 'cur')"></a-pagination>
                     </div>
                 </a-tab-pane>
                 <a-tab-pane key="data_history" tab="历史记录" class="h_p100 d_flex fd_c gap_20">
@@ -83,7 +87,8 @@
                     </div>
                     <div class="d_flex fai_c jc_fe">
                         <a-pagination :current="his_page_obj.current" :total="his_page_obj.total"
-                            :pageSize="his_page_obj.pageSize" @change="(page,pageSize) => handlePageChange(page, pageSize,'his')"></a-pagination>
+                            :pageSize="his_page_obj.pageSize"
+                            @change="(page, pageSize) => handlePageChange(page, pageSize, 'his')"></a-pagination>
                     </div>
                 </a-tab-pane>
             </a-tabs>
@@ -132,7 +137,6 @@
 :where(.css-dev-only-do-not-override-eq3tly).ant-tabs .ant-tabs-content {
     height: 100% !important;
 }
-
 </style>
 
 <script>
@@ -140,13 +144,17 @@ import { defineComponent, ref } from 'vue';
 import { IconPark } from '@icon-park/vue-next/es/all';
 import axios from 'axios';
 
+import { useRoute } from 'vue-router';
+
 export default defineComponent({
     name: "DataDetail",
     components: {
         'icon-park': IconPark
     },
     setup() {
+        const route = useRoute();
         return {
+            data_id: ref(route.params.data_id),
             active_tab: ref('data_table'),
             detail_data: ref({}),
             cur_page_obj: ref({
@@ -173,13 +181,23 @@ export default defineComponent({
         goBack() {
             this.$router.go(-1)
         },
-        handlePageChange(page,pageSize,type) {
-            if(type=='cur') {
+        handlePageChange(page, pageSize, type) {
+            if (type == 'cur') {
                 this.cur_page_obj.current = page
-            } else if(type=='his') {
+            } else if (type == 'his') {
                 this.his_page_obj.current = page
             }
-        }
+        },
+        beforeUpload(file) {
+            // 在上传之前的处理逻辑，例如限制文件类型和大小
+            // 返回 false 可以取消上传
+            console.log("beforeUpload:", file);
+        },
+        onSuccess(response, file) {
+            // 上传成功后的处理逻辑
+            console.log("onSuccess:", response, file);
+            this.fileName = file.name; // 将上传成功的文件名展示在输入框中
+        },
     }
 });
 

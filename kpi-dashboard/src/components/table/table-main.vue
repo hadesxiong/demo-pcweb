@@ -90,20 +90,20 @@ export default defineComponent({
         // }
     },
     methods: {
-        handlePannelChange: function (value, mode) {
+        handlePannelChange(value, mode) {
             // console.log(value, mode);
             this.date_value = value;
             this.pannel_mode = [mode[0] === 'date' ? 'month' : mode[0], mode[1] === 'date' ? 'month' : mode[1]];
             // console.log('handlePannel',value)
         },
-        handleChange: function (status) {
+        handleChange(status) {
             // console.log('handle',status,this.date_value);
             if(!status) {
                 // console.log(this.date_value)
                 this.$emit('getFilterOptions',{date_range:this.date_value})
             }
         },
-        expandRows: function(expanded,record) {
+        expandRows(expanded,record) {
             console.log(expanded,record)
         },
         handlePageChange(page) {

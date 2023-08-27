@@ -99,6 +99,9 @@
 }
 
 /* 内边距部分 */
+.p_0 {
+  padding: 0;
+}
 .p_16 {
   padding: 16px;
 }
@@ -131,6 +134,9 @@
 }
 .pl_20 {
   padding-left: 20px;
+}
+.pr_10 {
+  padding-right: 10px;
 }
 .pr_12 {
   padding-right: 12px;

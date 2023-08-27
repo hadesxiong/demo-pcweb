@@ -21,18 +21,18 @@
         {"key":"fzjg","value":"按4级分支机构查看"}
     ],
     "org_level":[
-        {"key":"all","value":"全部机构"},
+        {"key":"all","value":"全部层级"},
         {"key":"04","value":"四级机构"},
         {"key":"03","value":"三级机构"},
         {"key":"02","value":"二级机构"},
         {"key":"01","value":"一级机构"}
     ],
     "org_group":[
-        {"key":"all","value":"全部层级"},
+        {"key":"all","value":"全部分组"},
         {"key":"qyzxzh","value":"区域中心支行"},
         {"key":"ddzh","value":"单点支行"},
         {"key":"zlkhb","value":"战略客户部"},
-        {"key":"fzjg","value":"4级分支机构"}
+        {"key":"fzjg","value":"分支机构"}
     ],
     "line_more":[
         {"key":"all","value":"全部序列"},
@@ -40,9 +40,11 @@
         {"key":"retail","value":"零售序列"},
         {"key":"bank","value":"同业序列"},
         {"key":"other","value":"其他序列"},
-        {"key":"manage","value":"管理序列"}
+        {"key":"manage","value":"管理序列"},
+        {"key":"other","value":"其他序列"}
     ],
     "charater_gourp":[
+        {"key":"all","value":"全部角色"},
         {"key":"00","value":"超级管理员"},
         {"key":"01","value":"管理员"},
         {"key":"02","value":"部门负责人"},

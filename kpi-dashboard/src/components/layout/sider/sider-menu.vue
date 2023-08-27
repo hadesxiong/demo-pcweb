@@ -1,7 +1,7 @@
 <template>
   <div class="side_con">
     <a-menu mode="inline" class="menu_con" v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys">
-      <a-sub-menu v-for="item in menu_data" :key="item.menu_key">
+      <a-sub-menu v-for="item in menu_data" :key="item.menu_key" @click="handleMenuClick">
         <template #icon><icon-park :type="item.menu_icon" theme="outline" size="16"></icon-park></template>
         <template #title>{{ item.menu_title }}</template>
         <a-menu-item v-for="sub_item in item.sub_menu" :key="sub_item.menu_key">
@@ -42,12 +42,10 @@ export default defineComponent({
     menu_keys: {type:Object}
   },
   data() {
-    return {
-      res_data:'',
-    };
+    return {};
   },
   setup(props) {
-    console.log(props.menu_keys);
+    // console.log(props.menu_keys);
     return {
       selectedKeys: ref([props.menu_keys.selectedKeys]),
       openKeys: ref([props.menu_keys.openKeys]),
@@ -58,18 +56,10 @@ export default defineComponent({
     //   const menu_res = await axios.get('http://localhost:8080/demo/menu.json');
     //   this.menu_data = menu_res.data;
     // },
+    handleMenuClick() {
+      console.log(this.selectedKeys,this.openKeys)
+    }
   },
-  mounted() {
-    // this.getMenuData();
-    // this.openKeys = [this.$route.matched];
-    // this.selectedKeys = [this.$route.name];
-    // console.log(this.$route.matched,1,this.$route.name)
-    // console.log(this.$route)
-      // console.log(this.$route);
-      // const current_path = this.$route.path;
-      // return current_path;
-    // console.log(this.menu_keys)
-    
-  }
+  mounted() {}
 });
 </script>

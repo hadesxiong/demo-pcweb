@@ -112,8 +112,7 @@ export default defineComponent({
     computed: {
         breadcrumb() {
 
-            console.log(this.$route)
-
+            // console.log(this.$route)
             const matchedRoutes = this.$route.matched;
             const breadcrumb = [];
             // console.log(matchedRoutes);
@@ -128,7 +127,8 @@ export default defineComponent({
             return breadcrumb;
         },
         menuKeys() {
-            const menu_keys = {openKeys: this.$route.name, selectedKeys: this.$route.meta.sub};
+            const menu_keys = {openKeys: this.$route.meta.sub, selectedKeys: this.$route.meta.menu};
+            // console.log(menu_keys)
             return menu_keys
         }
     }

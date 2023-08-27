@@ -12,7 +12,8 @@ const routes = [
     component: () => import("@/views/dashboard/dashboard-main.vue"),
     meta: {
       breadcrumb: ["数据看板", "重要指标分析"],
-      sub:"dashboard"
+      sub:"dashboard",
+      menu:"dashboard-main"
     },
   },
   {
@@ -21,7 +22,8 @@ const routes = [
     component: () => import("@/views/dashboard/dashboard-other.vue"),
     meta: {
       breadcrumb: ["数据看板", "同业指标分析"],
-      sub:"dashboard"
+      sub:"dashboard",
+      menu:"dashboard-other"
     },
   },
   {
@@ -30,7 +32,8 @@ const routes = [
     component: () => import("@/views/rank/rank-important.vue"),
     meta: {
       breadcrumb: ["业绩排行", "重要指标排行"],
-      sub:"rank"
+      sub:"rank",
+      menu:"rank-important"
     },
   },
   {
@@ -39,16 +42,17 @@ const routes = [
     component: () => import("@/views/rank/rank-detail.vue"),
     meta: {
       breadcrumb: ["业绩排行", "重要指标排行", "业绩详情"],
-      sub:"rank"
+      sub:"rank",
+      menu:"rank-important"
     },
   },
   {
     name:"table-detail",
-    path:"/table-detail/:table_class",
+    path:"/:table_class-table",
     component:()=> import('@/views/table/table-detail.vue'),
     meta:{
       breadcrumb:['数据报表'],
-      sub:"table"
+      sub:"table",
     }
   },
   {
@@ -57,16 +61,18 @@ const routes = [
     component: () => import("@/views/manage/data-manage.vue"),
     meta: {
       breadcrumb: ["数据管理", "数据导入"],
-      sub:"settings"
+      sub:"settings",
+      menu:"data-manage"
     },
   },
   {
     name: "data-detail",
-    path: "/data-manage/data-detail",
+    path: "/data-manage/data-detail/:data_id",
     component: () => import("@/views/manage/data-detail.vue"),
     meta: {
       breadcrumb: ["数据管理", "数据导入", "导入数据详情"],
-      sub:"settings"
+      sub:"settings",
+      menu:"data-manage"
     },
   },
   {
@@ -75,7 +81,8 @@ const routes = [
     component: () => import("@/views/manage/org-manage.vue"),
     meta: {
       breadcrumb: ["数据管理", "机构管理"],
-      sub:"settings"
+      sub:"settings",
+      menu:"org-manage"
     },
   },
   {
@@ -84,7 +91,8 @@ const routes = [
     component: () => import("@/views/manage/user-manage.vue"),
     meta: {
       breadcrumb: ["数据管理", "用户管理"],
-      sub:"settings"
+      sub:"settings",
+      menu:"user-manage"
     },
   },
 ];
@@ -98,8 +106,13 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   // 在路由导航之前执行的逻辑
+  // table动态赋值
+  if (to.name == 'table-detail') {
+    to.meta.menu = to.path.substring(1)
+  }
 
-  // console.log(to,from);
+
+  // 跳转
   next()
 });
 
