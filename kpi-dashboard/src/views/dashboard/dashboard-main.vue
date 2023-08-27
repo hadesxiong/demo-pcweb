@@ -1,132 +1,127 @@
 <template>
-    <a-row type="flex" :gutter="[20,20]" style="display: flex; align-items: stretch;">
-        <a-col flex="auto">
-            <db-pie v-if="pie_data.db_option" :db_data="pie_data"></db-pie>
-        </a-col>
-        <a-col flex="auto">
-            <db-radar v-if="radar_data.db_option" :db_data="radar_data"></db-radar>
-        </a-col>
-        <a-col flex="auto">
-            <db-bar v-if="bar_data.db_option" :db_data="bar_data"></db-bar>
-        </a-col>
-        <a-col :span="9">
-            <db-card1 v-if="card1_data.db_other" :db_data="card1_data"></db-card1>
-        </a-col>
-        <a-col flex="auto">
-            <db-card2 v-if="card2_data.db_other" :db_data="card2_data"></db-card2>
-        </a-col>
-        <a-col>
-            <db-bar2 v-if="bar2_data.db_option" :db_data="bar2_data"></db-bar2>
-        </a-col>
-        <a-col>
-            <db-line v-if="line_data.db_option" :db_data="line_data"></db-line>
-        </a-col>
-    </a-row>
-    <!-- <div class="v-db_con"> -->
-
-        <!-- <db-radar></db-radar>
-        
-        <db-card1></db-card1>
-
-        <db-bar2></db-bar2> -->
-    <!-- </div> -->
+    <div class="of_h">
+        <a-row :gutter="[20, 20]" style="display: flex; align-items: stretch;">
+            <a-col :span="24">
+                <db-card1 v-if="dbCard1_data.db_id" :card_data="dbCard1_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-card1>
+            </a-col>
+            <a-col :span="12">
+                <db-bar2 v-if="dbBar2_data.db_id" :bar_data="dbBar2_data" :db_id="dbBar2_data.db_id" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-bar2>
+            </a-col>
+            <a-col :span="12">
+                <db-card1 v-if="dbCard2_data.db_id" :card_data="dbCard2_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-card1>
+            </a-col>
+            <a-col :span="12">
+                <db-line v-if="dbLine_data.db_id" :db_data="dbLine_data" :db_id="dbLine_data.db_id" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-line>
+            </a-col>
+            <a-col :span="12">
+                <db-bar1 v-if="dbBar1_data.db_id" :bar_data="dbBar1_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-bar1>
+            </a-col>
+            <a-col :span="12">
+                <db-bar1 v-if="dbBar1_2_data.db_id" :bar_data="dbBar1_2_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-bar1>
+            </a-col>
+            <a-col :span="12">
+                <db-card1 v-if="dbCard3_data.db_id" :card_data="dbCard3_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-card1>
+            </a-col>
+        </a-row>
+    </div>
 </template>
 
 <style>
-@import url('../../assets/style/common.css');
 @import url('../../assets/style/colorset.css');
+@import url('../../assets/style/common.css');
 
-.v-db_con {
-    width: auto;
-    min-width: 1280px;
-    /* height: 100%; */
-    display: flex;
-    gap: 20px;
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
 }
 </style>
 
 <script>
-import DashboardBar from '../../components/dashboard/db-bar.vue';
-import DashboardBar2 from '../../components/dashboard/db-bar2.vue';
-import DashboardPie from '../../components/dashboard/db-pie.vue';
-import DashboardRadar from '../../components/dashboard/db-radar.vue';
-import DashboardCard1 from '../../components/dashboard/db-card.vue';
-import DashboardCard2 from '../../components/dashboard/db-card2.vue';
-import DashboardLine from '../../components/dashboard/db-line.vue';
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+import DBNCard1 from '../../components/dashboard-new/dbn-card1';
+import DBNBar2 from '../../components/dashboard-new/dbn-bar2';
+import DBNBar1 from '../../components/dashboard-new/dbn-bar1';
+import DBLine from '../../components/dashboard/db-line.vue';
 import axios from 'axios';
 
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
+
+dayjs.locale('zh-cn');
+
 export default defineComponent({
-    name:'dashboard-main',
-    components:{
-        'db-bar':DashboardBar,
-        'db-bar2':DashboardBar2,
-        'db-pie':DashboardPie,
-        'db-radar':DashboardRadar,
-        'db-card1':DashboardCard1,
-        'db-card2':DashboardCard2,
-        'db-line':DashboardLine,
+    name: 'DashboardOther',
+    components: {
+        'db-card1': DBNCard1,
+        'db-bar2': DBNBar2,
+        'db-bar1': DBNBar1,
+        'db-line': DBLine
     },
-    data() {
+    setup() {
         return {
-            bar_data:{},
-            pie_data:{},
-            radar_data:{},
-            card1_data:{},
-            card2_data:{},
-            bar2_data:{},
-            line_data:{},
-            card3_data:{}
+            dbCard1_data: ref({}),
+            dbBar2_data: ref({}),
+            dbCard2_data: ref({}),
+            dbBar1_data: ref({}),
+            dbLine_data: ref({}),
+            dbBar1_2_data: ref({}),
+            dbCard3_data: ref({}),
+            orgFilter_data: ref({}),
+            current_org: ref('徐汇区域中心支行'),
+            current_date: ref([dayjs().add(-5,'month'),dayjs()]),
+            locale
         }
     },
-    mounted(){
-        this.getDbData();
+    mounted() {
+        this.getRetailData();
+        this.getAUMData();
+        this.getEnterPriseData();
+        this.getIncomeData();
+        this.getHoldData();
+        this.getEVAData();
+        this.getLCData();
+        this.getOrgFilter('123');
     },
     methods: {
-        async getDbData() {
 
-            // db-bar
-            const dbbar_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-bar.json');
-            // console.log(dbbar_data.data);
-            this.bar_data = dbbar_data.data.db_bar;
-            // console.log(this.bar_data);
-
-            // db-pie
-            const dbpie_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-pie.json')
-            // console.log(dbpie_data.data)
-            this.pie_data = dbpie_data.data.db_pie;
-            // console.log(this.pie_data)
-
-            // db-radar
-            const dbradar_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-radar.json');
-            // console.log(dbradar_data.data.db_radar);
-            this.radar_data = dbradar_data.data.db_radar;
-            // console.log(this.radar_data);
-
-            // db-card1
-            const dbcard1_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-card1.json');
-            // console.log(dbcard1_data.data.db_card1)
-            this.card1_data = dbcard1_data.data.db_card1;
-            // console.log(this.card1_data);
-
-            // db-card2
-            const dbcard2_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-card2.json');
-            // console.log(dbcard2_data.data.db_card2);
-            this.card2_data = dbcard2_data.data.db_card2;
-            // console.log(this.card2_data);
-
-            // db-bar2
-            const dbbar2_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-bar2.json');
-            // console.log(dbbar2_data);
-            this.bar2_data = dbbar2_data.data.db_bar2;
-            // console.log(this.bar2_data);
-
-            // db-line
+        // 获取零售客户建设情况
+        async getRetailData() {
+            const rtc_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-card1.json');
+            this.dbCard1_data = rtc_res.data;
+        },
+        async getAUMData() {
+            const AUMData_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-bar2.json');
+            this.dbBar2_data = AUMData_res.data;
+            // console.log(this.dbBar2_data)
+        },
+        async getEnterPriseData() {
+            const epc_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-card2.json');
+            this.dbCard2_data = epc_res.data;
+        },
+        async getIncomeData() {
+            const income_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-bar1.json');
+            this.dbBar1_data = income_res.data;
+        },
+        async getHoldData() {
             const dbline_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-line.json');
-            console.log(dbline_data);
-            this.line_data = dbline_data.data.db_line;
-            console.log(this.line_data);
+            this.dbLine_data = dbline_data.data;
+        },
+        async getEVAData() {
+            const eva_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-bar1-2.json');
+            this.dbBar1_2_data = eva_res.data;
+        },
+        async getLCData() {
+            const lc_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-card3.json');
+            this.dbCard3_data = lc_res.data;
+        },
+        
+        // 获取机构筛选,传入org_id用作匹配
+        async getOrgFilter(org_id) {
+            const orgFilter_res = await axios.get('http://localhost:8080/demo/filter/org_filter.json');
+            this.orgFilter_data = orgFilter_res.data;
+            return {org_id}
         }
     }
-})
+});
+
 </script>

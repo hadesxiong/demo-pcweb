@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
-    redirect: "/dashboard-other",
+    redirect: "/dashboard-main",
   },
   {
     name: "dashboard-main",
@@ -16,16 +16,16 @@ const routes = [
       menu:"dashboard-main"
     },
   },
-  {
-    name: "dashboard-other",
-    path: "/dashboard-other",
-    component: () => import("@/views/dashboard/dashboard-other.vue"),
-    meta: {
-      breadcrumb: ["数据看板", "同业指标分析"],
-      sub:"dashboard",
-      menu:"dashboard-other"
-    },
-  },
+  // {
+  //   name: "dashboard-other",
+  //   path: "/dashboard-other",
+  //   component: () => import("@/views/dashboard/dashboard-other.vue"),
+  //   meta: {
+  //     breadcrumb: ["数据看板", "同业指标分析"],
+  //     sub:"dashboard",
+  //     menu:"dashboard-other"
+  //   },
+  // },
   {
     name: "rank-important",
     path: "/rank-important",

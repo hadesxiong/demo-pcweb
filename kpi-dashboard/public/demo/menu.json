@@ -8,14 +8,7 @@
                 "menu_key": "dashboard-main",
                 "menu_title": "重要指标分析",
                 "menu_icon": "",
-                "menu_name": "dashboard-other",
-                "menu_params":{}
-            },
-            {
-                "menu_key": "dashboard-other",
-                "menu_title": "同业指标分析",
-                "menu_icon": "",
-                "menu_name": "dashboard-other",
+                "menu_name": "dashboard-main",
                 "menu_params":{}
             }
         ]
