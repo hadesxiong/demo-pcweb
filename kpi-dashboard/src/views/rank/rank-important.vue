@@ -1,6 +1,6 @@
 <template>
-    <div class="w_p100 h_p100 bg_white">
-        <div class="d_flex jc_sb pt_20 pl_20 pr_20">
+    <div class="w_p100 h_p100 bg_white d_flex fd_c">
+        <div class="d_flex jc_sb pt_20 pl_20 pr_20 fs_0">
             <div class="d_flex">
                 <a-radio-group v-model:value="choose_line" button-style="solid" class="d_flex gap_12 h_30 lh_30" @change="changeLine">
                     <a-radio-button v-for="item in line_data" :key="item.key" :value="item.key" class="br_100 h_30 lh_30 of_h tover_ell">{{ item.value }}</a-radio-button>
@@ -32,7 +32,7 @@
                 </a-dropdown>
             </div>
         </div>
-        <div class="mt_20 ml_20 mr_20">
+        <div class="mt_20 ml_20 mr_20 fg_1 ofy_a ofx_h">
             <rank-main v-if="rank_list" :rank_list="rank_list"></rank-main>
         </div>
     </div>
