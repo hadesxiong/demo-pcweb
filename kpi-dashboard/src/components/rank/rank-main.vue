@@ -1,9 +1,9 @@
 <template>
-    <a-collapse :bordered="false">
+    <a-collapse :bordered="false" :activeKey="activePannel">
         <template #expandIcon="{ isActive }">
             <caret-right-outlined :rotate="isActive ? 90 : 0" />
         </template>
-        <a-collapse-panel>
+        <a-collapse-panel key="enterprise">
             <template #header>
                 <div class="d_flex fai_c gap_16">
                     <div class="fc_l2 font_16 fw_500">企金指标</div>
@@ -87,7 +87,8 @@ export default defineComponent({
     },
     setup() {
         return {
-            expandIconPosition: ref('right')
+            expandIconPosition: ref('right'),
+            activePannel:ref('enterprise')
         };
     }
 });

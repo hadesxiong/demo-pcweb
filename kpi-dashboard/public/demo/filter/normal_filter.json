@@ -39,8 +39,6 @@
         {"key":"enterprise","value":"企金序列"},
         {"key":"retail","value":"零售序列"},
         {"key":"bank","value":"同业序列"},
-        {"key":"other","value":"其他序列"},
-        {"key":"manage","value":"管理序列"},
         {"key":"other","value":"其他序列"}
     ],
     "charater_gourp":[
