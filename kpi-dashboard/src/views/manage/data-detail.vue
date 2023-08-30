@@ -174,7 +174,7 @@ export default defineComponent({
     },
     methods: {
         async getDataAll() {
-            const dataAll_res = await axios.get('http://localhost:8080/demo/manage/data-detail.json')
+            const dataAll_res = await axios.get('/demo/manage/data-detail.json')
             // console.log(dataAll_res.data);
             this.detail_data = dataAll_res.data
         },

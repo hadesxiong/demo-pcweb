@@ -181,7 +181,7 @@ export default defineComponent({
     },
     methods: {
         async getRankDetailData() {
-            const detail_res = await axios.get('http://localhost:8080/demo/rank/rank-detail.json');
+            const detail_res = await axios.get('/demo/rank/rank-detail.json');
             // console.log(detail_res.data);
             this.detail_data = detail_res.data;
             // console.log(this.detail_data);
@@ -194,7 +194,7 @@ export default defineComponent({
             console.log(record)
 
             this.draw_visible = true;
-            const history_data = await axios.get('http://localhost:8080/demo/rank/history-data.json');
+            const history_data = await axios.get('/demo/rank/history-data.json');
             // console.log(history_data.data);
             this.history_table = history_data.data.table_data;
             // console.log(this.history_table);

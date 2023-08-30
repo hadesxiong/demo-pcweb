@@ -333,11 +333,11 @@ export default defineComponent({
     },
     methods: {
         async getOrgData() {
-            const user_res = await axios.get('http://localhost:8080/demo/manage/user-manage.json');
+            const user_res = await axios.get('/demo/manage/user-manage.json');
             this.table_data = user_res.data
         },
         async getFilterData() {
-            const filter_res = await axios.get('http://localhost:8080/demo/filter/normal_filter.json');
+            const filter_res = await axios.get('/demo/filter/normal_filter.json');
             this.org_group = filter_res.data.org_group;
             this.charater_group = filter_res.data.charater_gourp;
             this.line_more = filter_res.data.line_more;

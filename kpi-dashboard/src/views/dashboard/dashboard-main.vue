@@ -86,38 +86,38 @@ export default defineComponent({
 
         // 获取零售客户建设情况
         async getRetailData() {
-            const rtc_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-card1.json');
+            const rtc_res = await axios.get('/demo/dashboard/dashboardn-card1.json');
             this.dbCard1_data = rtc_res.data;
         },
         async getAUMData() {
-            const AUMData_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-bar2.json');
+            const AUMData_res = await axios.get('/demo/dashboard/dashboardn-bar2.json');
             this.dbBar2_data = AUMData_res.data;
             // console.log(this.dbBar2_data)
         },
         async getEnterPriseData() {
-            const epc_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-card2.json');
+            const epc_res = await axios.get('/demo/dashboard/dashboardn-card2.json');
             this.dbCard2_data = epc_res.data;
         },
         async getIncomeData() {
-            const income_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-bar1.json');
+            const income_res = await axios.get('/demo/dashboard/dashboardn-bar1.json');
             this.dbBar1_data = income_res.data;
         },
         async getHoldData() {
-            const dbline_data = await axios.get('http://localhost:8080/demo/dashboard/dashboard-line.json');
+            const dbline_data = await axios.get('/demo/dashboard/dashboard-line.json');
             this.dbLine_data = dbline_data.data;
         },
         async getEVAData() {
-            const eva_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-bar1-2.json');
+            const eva_res = await axios.get('/demo/dashboard/dashboardn-bar1-2.json');
             this.dbBar1_2_data = eva_res.data;
         },
         async getLCData() {
-            const lc_res = await axios.get('http://localhost:8080/demo/dashboard/dashboardn-card3.json');
+            const lc_res = await axios.get('/demo/dashboard/dashboardn-card3.json');
             this.dbCard3_data = lc_res.data;
         },
         
         // 获取机构筛选,传入org_id用作匹配
         async getOrgFilter(org_id) {
-            const orgFilter_res = await axios.get('http://localhost:8080/demo/filter/org_filter.json');
+            const orgFilter_res = await axios.get('/demo/filter/org_filter.json');
             this.orgFilter_data = orgFilter_res.data;
             return {org_id}
         }

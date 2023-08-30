@@ -206,12 +206,12 @@ export default defineComponent({
     },
     methods: {
         async getFilterData() {
-            const filter_res = await axios.get('http://localhost:8080/demo/filter/normal_filter.json');
+            const filter_res = await axios.get('/demo/filter/normal_filter.json');
             this.class_data = filter_res.data.class_data;
             this.line_data = filter_res.data.line_data;
         },
         async getUploadList() {
-            const upload_res = await axios.get('http://localhost:8080/demo/manage/data-manage.json');
+            const upload_res = await axios.get('/demo/manage/data-manage.json');
             this.upload_data = upload_res.data;
             // console.log(this.upload_data)
         },

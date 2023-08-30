@@ -180,7 +180,7 @@ export default defineComponent({
     },
     methods: {
         async getRankData() {
-            const rank_res = await axios.get('http://localhost:8080/demo/rank/rank-important.json');
+            const rank_res = await axios.get('/demo/rank/rank-important.json');
             // console.log(rank_res);
             this.rank_list = rank_res.data;
             // console.log(this.rank_list)

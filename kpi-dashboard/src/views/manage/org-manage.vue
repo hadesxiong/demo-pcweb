@@ -288,11 +288,11 @@ export default defineComponent({
     },
     methods: {
         async getOrgData() {
-            const org_res = await axios.get('http://localhost:8080/demo/manage/org-manage.json');
+            const org_res = await axios.get('/demo/manage/org-manage.json');
             this.table_data = org_res.data
         },
         async getFilterData() {
-            const filter_res = await axios.get('http://localhost:8080/demo/filter/normal_filter.json');
+            const filter_res = await axios.get('/demo/filter/normal_filter.json');
             this.org_group = filter_res.data.org_group;
             this.org_level = filter_res.data.org_level;
         },

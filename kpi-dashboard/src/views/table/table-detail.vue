@@ -45,11 +45,11 @@ export default defineComponent({
     },
     methods:{
         async getFilterData() {
-            const filter_res = await axios.get('http://localhost:8080/demo/table/table-filter.json');
+            const filter_res = await axios.get('/demo/table/table-filter.json');
             this.filter_data = filter_res.data
         },
         async getTableData() {
-            const table_res = await axios.get('http://localhost:8080/demo/table/table-main.json');
+            const table_res = await axios.get('/demo/table/table-main.json');
             this.table_data = table_res.data;
         },
         async execSearch(item) {
