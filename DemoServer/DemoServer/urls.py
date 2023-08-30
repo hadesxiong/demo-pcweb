@@ -19,17 +19,13 @@ from django.urls import path,include
 
 from rest_framework_swagger.views import get_swagger_view
 
-from rest_framework.routers import DefaultRouter
-
 from kpi_server.views import UsersViewSet
 
-router = DefaultRouter()
-router.register(r'users',UsersViewSet)
 
 schema_view = get_swagger_view(title='API服务')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'users/',include(router.urls)),
+    path(r'',include('kpi_server.urls')),
     path(r'api/',schema_view)
 ]
