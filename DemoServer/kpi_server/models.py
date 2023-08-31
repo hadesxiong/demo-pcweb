@@ -6,7 +6,7 @@ from django.db import models
 
 class Users(models.Model):
 
-    notes_id = models.CharField('用户notesid',max_length=8,blank=False)
+    notes_id = models.CharField('用户notesid',max_length=8,blank=False,unique=True)
     user_name = models.CharField('用户姓名',max_length=64,blank=False)
     user_belong_org = models.CharField('用户归属机构',max_length=10)
     user_belong_group = models.IntegerField('用户所属分组/条线')
@@ -25,7 +25,7 @@ class Users(models.Model):
 
 class Org(models.Model):
 
-    org_num = models.CharField('机构编号',max_length=10,blank=False)
+    org_num = models.CharField('机构编号',max_length=10,blank=False,unique=True)
     org_name = models.CharField('机构名称',max_length=64,blank=False)
     parent_org_id = models.CharField('上级机构编号',max_length=8)
     org_level = models.IntegerField('机构层级')
@@ -45,7 +45,7 @@ class Org(models.Model):
 
 class Index(models.Model):
 
-    index_num = models.CharField('指标编号',max_length=10,blank=False)
+    index_num = models.CharField('指标编号',max_length=10,blank=False,unique=True)
     index_class = models.IntegerField('指标分类-财务效益等')
     belong_line = models.IntegerField('归属条线-企金、零售、同业其他等')
     index_unit = models.CharField('指标单位',max_length=10)
@@ -85,7 +85,7 @@ class IndexDetail(models.Model):
 
 class UploadRecord(models.Model):
 
-    record_id = models.CharField('上传记录编号',max_length=10)
+    record_id = models.CharField('上传记录编号',max_length=10,unique=True)
     record_class = models.IntegerField('上传记录分类')
     record_name = models.CharField('上传记录名称',max_length=64)
     record_update_user = models.CharField('上传用户notesid',max_length=10)
@@ -103,7 +103,7 @@ class UploadRecord(models.Model):
 
 class UploadHistory(models.Model):
 
-    history_id= models.CharField('历史记录编号',max_length=10)
+    history_id= models.CharField('历史记录编号',max_length=10,unique=True)
     record_name = models.CharField('上传记录名称',max_length=64)
     history_active = models.IntegerField('该版本是否对外生效')
     histroy_update_user = models.CharField('历史上传人员notesid',max_length=10)
