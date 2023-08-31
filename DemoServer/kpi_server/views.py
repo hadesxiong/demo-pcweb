@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from django.core.paginator import Paginator
 from django.db.models import Subquery,Q
+from django.db import IntegrityError
 
 from django.http.response import JsonResponse
 from rest_framework.decorators import api_view
@@ -125,7 +126,7 @@ def createUser(request):
         xls_files = load_workbook(body_data['update_file'])
         xls_sheet = xls_files['用户导入模板']
 
-        data = []
+        user_list = []
         for row in xls_sheet.iter_rows(min_row=7,values_only=True):
             each_user = {
                 'notes_id' : row[0],
@@ -136,18 +137,27 @@ def createUser(request):
                 'user_states':0,
                 'user_create': datetime.date.today().strftime("%Y-%m-%d")
             }
-            
-            data.append(each_user)
+            user_list.append(each_user)
 
-        # 逐行判断
-        # for each_user in data:
-            
+        # try:
+        #     # 批量添加
+        #     Users.objects.bulk_create(user_list)
 
-        re_msg = {'code':1}
+        # except IntegrityError as e:
+        #     # 唯一约束错误
+        #     print('唯一约束错误',e)
 
+        err_row_list = []
 
+        for index,each_user in enumerate(user_list):
+            obj,created = Users.objects.get_or_create(**each_user)
+            # 插入失败的存入err_row_list
+            if created:
+                pass
+            else:
+                err_row_list.append(index)
 
-        '''批量添加逻辑'''
+        re_msg = {'code':1,'err':err_row_list,'msg':'done'}
 
     else:
         # 查询notesid是否存在，

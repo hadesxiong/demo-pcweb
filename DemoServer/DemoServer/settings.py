@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'DemoServer.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'DEMO_SERVER',
+        'NAME':'demo_server',
         'USER':'root',
         'PASSWORD':'Faurecia614',
         # Z-INTRA
@@ -91,7 +91,7 @@ DATABASES = {
     },
     'kpi_dashboard_db':{
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'KPI_DASHBOARD',
+        'NAME':'kpi_dashboard',
         'USER':'root',
         'PASSWORD':'Faurecia614',
         # Z-INTRA
