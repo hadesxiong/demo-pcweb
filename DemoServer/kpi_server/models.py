@@ -13,7 +13,7 @@ class Users(models.Model):
     user_character = models.IntegerField('用户角色')
     user_create = models.DateField('创建时间',blank=False,auto_now_add=True,auto_now=False)
     user_update = models.DateField('修改时间',auto_now_add=False,auto_now=False)
-    user_states = models.IntegerField('用户状态')
+    user_state = models.IntegerField('用户状态')
     user_ext_info = models.CharField('用户信息补充字段',max_length=64)
 
     class Meta:
@@ -33,7 +33,7 @@ class Org(models.Model):
     org_manager = models.CharField('机构负责人id',max_length=8)
     org_create = models.DateField('创建时间',auto_now_add=True,auto_now=False,blank=False)
     org_update = models.DateField('修改时间',auto_now_add=False,auto_now=True)
-    org_status = models.IntegerField('机构状态')
+    org_state = models.IntegerField('机构状态')
     org_ext_info =  models.CharField('机构扩展字段',max_length=64)
 
     class Meta:
@@ -117,3 +117,17 @@ class UploadHistory(models.Model):
         
         app_label = 'kpi_server'
         db_table = 'upload_histroy'
+
+class Reference(models.Model):
+
+    ref_name = models.CharField('码值含义',max_length=64)
+    ref_code = models.IntegerField('码值')
+    ref_type = models.CharField('码值用途',max_length=64)
+    ref_state = models.IntegerField('是否有效')
+    ref_ext = models.CharField('码值额外描述',max_length=128)
+
+    class Meta:
+
+        app_label = 'kpi_server'
+        db_table = 'reference_code'
+        unique_together = (('ref_type','ref_code'))

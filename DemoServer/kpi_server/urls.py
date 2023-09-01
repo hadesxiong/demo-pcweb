@@ -4,5 +4,8 @@ from kpi_server import views
 urlpatterns = [
     path('api/usersList',views.getUsersList),
     path('api/updateUser',views.updateUser),
-    path('api/createUser',views.createUser)
+    path('api/createUser',views.createUser),
+    path('api/orgList',views.getOrgList),
+    path('api/updateOrg',views.updateOrg),
+    path('api/getFilter',views.getFilter)
 ]
