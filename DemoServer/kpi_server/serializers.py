@@ -3,7 +3,7 @@
 from rest_framework import serializers
 
 # 引入model
-from kpi_server.models import Users,Org,Reference
+from kpi_server.models import Users,Org,Reference,Index
 
 # 序列化
 class UsersSerializer(serializers.ModelSerializer):
@@ -44,3 +44,11 @@ class RefSerializer(serializers.ModelSerializer):
         model = Reference
         # fields = '__all__'
         fields = ('ref_code','ref_name','ref_type')
+
+class IndexSerializer(serializers.ModelSerializer):
+
+    class Meta:
+
+        model = Index
+        # fields = '__all__'
+        fields = ('index_num',)

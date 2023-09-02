@@ -7,11 +7,11 @@ from django.db import IntegrityError
 from django.http.response import JsonResponse
 from rest_framework.decorators import api_view
 
-from kpi_server.models import Users,Org,Reference
+from kpi_server.models import Users,Org,Reference,Index,IndexDetail
 
-from kpi_server.serializers import UsersSerializer,OrgSerializer,RefSerializer
+from kpi_server.serializers import UsersSerializer,OrgSerializer,RefSerializer,IndexSerializer
 
-import math,datetime
+import math,datetime,itertools
 
 from openpyxl import load_workbook
 # Create your views here.
@@ -19,7 +19,7 @@ from openpyxl import load_workbook
 '''查询用户列表'''
 
 @api_view(['GET'])
-def getUsersList(request):
+def getUserList(request):
 
     # params解析
     query_params = {
@@ -307,7 +307,69 @@ def getFilter(request):
         ref_queryset = Reference.objects.filter(ref_ext__in=type_list)
 
         ref_serializer = RefSerializer(ref_queryset,many=True)
+        ref_result = {}
+        for each_ref in ref_serializer.data:
+            ref_type = each_ref['ref_type']
+            if ref_type not in ref_result:
+                # setattr(ref_result,ref_type,{'ref_code':each_ref['ref_code'],'ref_name':each_ref['ref_name']})
+                ref_result[ref_type] = []
+            ref_result[ref_type].append({'ref_code':each_ref['ref_code'],'ref_name':each_ref['ref_name']})
 
-        re_msg = {'code':0,'data':ref_serializer.data}
+        print(ref_result)
+
+        re_msg = {'code':0,'data':ref_result}
+
+    return JsonResponse(re_msg,safe=False)
+
+'''测试生成假数据'''
+@api_view(['POST'])
+def generateDetail(request):
+
+    # 解析body
+    body_data = {
+        'detail_type':request.data.get('type',None),
+        'detail_class':request.data.get('class',1),
+        'detail_date':request.data.get('date',None),
+        'detail_belong':request.data.get('belong','all'),
+        'index_num':request.data.get('index','all')
+    }
+
+    if None in body_data.values():
+        re_msg = {'code':1,'msg':'err params.'}
+
+    else:
+
+        # 指标
+        if body_data['index_num'] == 'all':
+            index_list = IndexSerializer(Index.objects.all(),many=True).data
+            grouped_index = itertools.groupby(index_list,lambda x:x['index_num'])
+        
+        body_data['index_num'] = [item['index_num'] for _,group in grouped_index for item in group]
+
+        # 机构
+        if body_data['detail_belong'] == 'all':
+            org_queryset = Org.objects.filter(Q(org_level__gte=3) & Q(org_level__lt=5))
+            org_data = OrgSerializer(org_queryset,many=True).data
+            body_data['detail_belong'] = list(map(lambda x:x['org_num'],org_data))
+
+        # print(list(map(lambda x:x['org_num'],org_data)))
+
+
+        body_data['detail_create'] = body_data['detail_date']
+        body_data['detail_state'] = [0]
+        body_data['detail_value'] = [0]
+
+        keys = body_data.keys()
+        values = list(itertools.product(*body_data.values()))
+
+        result = [{k:v for k,v in zip(keys,value)} for value in values]
+
+        # for each_result in result:
+        #     IndexDetail.objects.get_or_create(**each_result)
+
+        objects = [IndexDetail(**item) for item in result]
+        IndexDetail.objects.bulk_create(objects)
+
+        re_msg = {'code':0,'msg':'done'}
 
     return JsonResponse(re_msg,safe=False)
