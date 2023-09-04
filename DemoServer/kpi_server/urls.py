@@ -9,5 +9,6 @@ urlpatterns = [
     path('api/updateOrg',views.updateOrg),
     path('api/getFilter',views.getFilter),
     path('api/generateDetail',views.generateDetail),
-    path('api/getRank',views.getRank)
+    path('api/getRank',views.getRank),
+    path('api/getRankV2',views.getRankV2)
 ]

@@ -89,3 +89,29 @@ class IndexDetailRankSerializer(serializers.ModelSerializer):
         # fields = '__all__'
         fields = ('index_num','detail_belong','detail_date','detail_value','index_name','org_name','detail_plan','detail_rate')
 
+
+class IndexDetailRank2Serializer(serializers.ModelSerializer):
+
+    # 查询Index,获取index_name
+    index_queryset = Index.objects.all().values('index_num','index_name')
+    index_dict = {entry['index_num']: entry['index_name'] for entry in index_queryset}
+
+    # 查询Org,获取org_name
+    org_queryset = Org.objects.all().values('org_num','org_name')
+    org_dict = {entry['org_num']:entry['org_name'] for entry in org_queryset}
+
+    # 关联机构/机构等其他数据
+    index_name = serializers.SerializerMethodField()
+    org_name = serializers.SerializerMethodField()
+
+    def get_index_name(self,obj):
+        return self.index_dict[obj.index_num]
+    
+    def get_org_name(self,obj):
+        return self.org_dict[obj.detail_belong]
+    
+    class Meta:
+        
+        model = IndexDetail
+        # fields = '__all__'
+        fields = ('index_num','detail_belong','detail_date','detail_value','index_name','org_name')

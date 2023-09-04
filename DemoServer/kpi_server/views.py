@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from django.core.paginator import Paginator
-from django.db.models import Subquery,Q
+from django.db.models import Subquery,Q,F,Value,DecimalField
 from django.db import IntegrityError,connections
 
 from django.http.response import JsonResponse
@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view
 
 from kpi_server.models import Users,Org,Reference,Index,IndexDetail
 
-from kpi_server.serializers import UsersSerializer,OrgSerializer,RefSerializer,IndexSerializer,IndexDetailRankSerializer
+from kpi_server.serializers import UsersSerializer,OrgSerializer,RefSerializer,IndexSerializer,IndexDetailRankSerializer,IndexDetailRank2Serializer
 
 import math,datetime,itertools
 
@@ -385,7 +385,8 @@ def getRank(request):
         # 'belong_line': request.query_params.get('line',0),
         'index_class': int(request.query_params.get('class',0)),
         'org_group': int(request.query_params.get('group',0)),
-        'data_date': request.query_params.get('date',None)
+        'data_date': request.query_params.get('date',None),
+        'page': int(request.query_params.get('page',1))
     }
 
     # 处理日期
@@ -481,8 +482,121 @@ def getRank(request):
         })
     # print(fetch_data)
 
-    rank_data = IndexDetailRankSerializer(fetch_data,many=True).data
+    # 分页
+    page_inator = Paginator(fetch_data,15)
+    page_max = math.ceil(len(fetch_data)/15)
+
+    if (query_params['page']<=page_max):
+        each_rank_list = page_inator.page(query_params['page'])
+        each_rank_data = IndexDetailRankSerializer(each_rank_list,many=True).data
+        
+        # merge data
+        temp_dict = {}
+        for item in each_rank_data:
+            index_num = item['index_num']
+            if index_num not in temp_dict:
+                temp_dict.setdefault(index_num,{
+                    'index_name':item['index_name'],
+                    'index_num':index_num,
+                    'detail_list':[]
+                })
+
+            temp_dict[index_num]['detail_list'].append({
+                'detail_belong':item['detail_belong'],
+                'detail_date':item['detail_date'],
+                'detail_value':item['detail_value'],
+                'detail_plan':item['detail_plan'],
+                'detail_rate':item['detail_rate'],
+                'org_name':item['org_name']
+            })
+
+        merge_data = list(temp_dict.values())
+
+        re_msg = {'data': merge_data,'code':0,'msg':'success','has_next':(query_params['page']<page_max)}
+    else:
+        re_msg = {'code':1,'msg':'err range'}
 
 
+    return JsonResponse(re_msg,safe=False)
 
-    return JsonResponse({'code':0,'data':rank_data},safe=False)
+@api_view(['GET'])
+def getRankV2(request):
+
+    # params解析
+    query_params = {
+        # 'belong_line': request.query_params.get('line',0),
+        'index_class': int(request.query_params.get('class',0)),
+        'org_group': int(request.query_params.get('group',0)),
+        'data_date': request.query_params.get('date',None),
+        'page': int(request.query_params.get('page',1))
+    }
+
+    # 处理日期
+    if None in query_params.values():
+        syym = datetime.date.today().replace(day=1) - datetime.timedelta(days=1)
+        query_params['data_date'] = syym.strftime("%Y-%m-%d")
+
+    # 指标筛选
+    # 分类数据
+    if query_params['index_class'] == 0:
+        index_condition = Q()
+        # 后续补充动态
+        # index_condition = f'SELECT index_num FROM index_info WHERE index_class in (1,2,3,4,5)'
+    else:
+        index_condition = Q(index_class=query_params['index_class'])
+        # index_condition = f'SELECT index_num FROM index_info WHERE index_class = {query_params["index_class"]}'
+
+    # print(index_condition)
+
+    # 是否重要数据补充
+    
+    # 机构筛选
+    if query_params['org_group'] == 0:
+        group_condition = Q(org_group__gte=1) & Q(org_group__lte=3)
+        # group_condition = f'SELECT org_num FROM org_info WHERE org_group in (1,2,3)'
+    else:
+        group_condition = Q(org_group=query_params['org_group'])
+        # group_condition = f'SELECT org_num FROM org_info WHERE org_group = {query_params["org_group"]}'
+
+    # print(group_condition)
+
+    # 获取计划筛选日期
+    this_year = int(query_params['data_date'].split('-')[0])
+    first_day = datetime.date(this_year,1,1).strftime("%Y-%m-%d")
+
+    # 查询逻辑
+    done_queryset = IndexDetail.objects.filter(
+        detail_date=query_params['data_date'],
+        detail_belong__in=Subquery(Org.objects.filter(group_condition).values('org_num')),
+        index_num__in=Subquery(Index.objects.filter(index_condition).values('index_num'))
+    ).values('index_num','detail_belong','detail_value')
+
+    plan_queryset = IndexDetail.objects.filter(
+        detail_date=first_day,
+        detail_belong__in=Subquery(Org.objects.filter(group_condition).values('org_num')),
+        index_num__in=Subquery(Index.objects.filter(index_condition).values('index_num'))
+    ).values('index_num','detail_belong','detail_value')
+
+    result = []
+
+    for done,plan in zip(done_queryset,plan_queryset):
+        index_num = done['index_num']
+        detail_belong = done['detail_belong']
+        value_done = done['detail_value']
+        value_plan = plan['detail_value']
+
+        result.append({
+            'index_num':index_num,'detail_belong':detail_belong,'value_done':value_done,'value_plan':value_plan
+        })
+
+    for each in result:
+        print(each)
+
+    # rank_serializer = IndexDetailRank2Serializer(rank_queryset,many=True)
+    # print(rank_serializer.data)
+
+    # re_msg = {'data':rank_serializer.data,'code':0}
+
+    
+
+    return JsonResponse({},safe=False)
