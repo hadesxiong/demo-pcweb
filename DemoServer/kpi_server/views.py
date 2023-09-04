@@ -420,7 +420,6 @@ def getRank(request):
     # 获取计划筛选日期
     this_year = int(query_params['data_date'].split('-')[0])
     first_day = datetime.date(this_year,1,1).strftime("%Y-%m-%d")
-    print(first_day)
 
     # 查询逻辑-sql
     set_var_query = '''
@@ -483,5 +482,7 @@ def getRank(request):
     # print(fetch_data)
 
     rank_data = IndexDetailRankSerializer(fetch_data,many=True).data
+
+
 
     return JsonResponse({'code':0,'data':rank_data},safe=False)
