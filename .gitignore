@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 # pyc files
 *.pyc
+
+# nohup
+*.out
