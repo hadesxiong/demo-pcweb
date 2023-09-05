@@ -1,14 +1,24 @@
 from django.urls import path
 from kpi_server import views
 
+
 urlpatterns = [
-    path('api/userList',views.getUserList),
-    path('api/updateUser',views.updateUser),
-    path('api/createUser',views.createUser),
-    path('api/orgList',views.getOrgList),
-    path('api/updateOrg',views.updateOrg),
-    path('api/getFilter',views.getFilter),
-    path('api/generateDetail',views.generateDetail),
-    path('api/getRank',views.getRank),
-    path('api/getRankV2',views.getRankV2)
+
+    # user
+    path('api/user/getUserList',views.getUserList),
+    path('api/user/updateUser',views.updateUser),
+    path('api/user/createuser',views.createUser),
+
+    # org
+    path('api/org/getOrgList',views.getOrgList),
+    path('api/org/updateOrg',views.updateOrg),
+
+    # other
+    path('api/other/getFilter',views.getFilter),
+    path('api/other/generateDetail',views.generateDetail),
+
+    # rank
+    path('api/rank/getRank',views.getRankV2),
+    path('api/rank/getSingleRank',views.getSingleRank)
+
 ]

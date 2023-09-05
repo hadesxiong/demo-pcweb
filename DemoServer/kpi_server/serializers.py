@@ -3,7 +3,7 @@
 from rest_framework import serializers
 
 # 引入model
-from kpi_server.models import Users,Org,Reference,Index,IndexDetail
+from kpi_server.models import Users,Org,Reference,Index,IndexDetail,Reference
 
 # 引入基本方法
 import math
@@ -16,15 +16,12 @@ class UsersSerializer(serializers.ModelSerializer):
     org_manager = serializers.SerializerMethodField()
 
     def get_org_name(self,obj):
-
         org_obj = Org.objects.get(org_num=obj.user_belong_org)
         return org_obj.org_name
     
     def get_org_manager(self,obj):
-
         org_obj = Org.objects.get(org_num=obj.user_belong_org)
         return org_obj.org_manager
-    
     
     class Meta:
 
@@ -92,26 +89,100 @@ class IndexDetailRankSerializer(serializers.ModelSerializer):
 
 class IndexDetailRank2Serializer(serializers.ModelSerializer):
 
+    # 查询RefCode中index_class
+    indexRef_queryset = Reference.objects.filter(ref_type='index_class').values('ref_code','ref_name')
+    indexRef_dict = {item['ref_code']:item['ref_name'] for item in indexRef_queryset}
+
     # 查询Index,获取index_name
-    index_queryset = Index.objects.all().values('index_num','index_name')
-    index_dict = {entry['index_num']: entry['index_name'] for entry in index_queryset}
+    index_queryset = Index.objects.all().values('index_num','index_name','index_class','belong_line')
+    index_dict = {
+        item['index_num']:{
+            'index_name':item['index_name'],
+            'index_class':item['index_class'],
+            'belong_line':item['belong_line']
+        }
+        for item in index_queryset
+    }
 
     # 查询Org,获取org_name
     org_queryset = Org.objects.all().values('org_num','org_name')
-    org_dict = {entry['org_num']:entry['org_name'] for entry in org_queryset}
+    org_dict = {item['org_num']:item['org_name'] for item in org_queryset}
 
-    # 关联机构/机构等其他数据
+    # 定义输出字段
     index_name = serializers.SerializerMethodField()
+    index_class = serializers.SerializerMethodField()
+    class_name = serializers.SerializerMethodField()
+    belong_line = serializers.SerializerMethodField()
     org_name = serializers.SerializerMethodField()
+    value_done = serializers.SerializerMethodField()
+    value_rate = serializers.SerializerMethodField()
 
     def get_index_name(self,obj):
-        return self.index_dict[obj.index_num]
+        return self.index_dict[obj['index_num']]['index_name']
+    
+    def get_index_class(self,obj):
+        return self.index_dict[obj['index_num']]['index_class']
+    
+    def get_belong_line(self,obj):
+        return self.index_dict[obj['index_num']]['belong_line']
+    
+    def get_class_name(self,obj):
+        return self.indexRef_dict[self.index_dict[obj['index_num']]['index_class']]
     
     def get_org_name(self,obj):
-        return self.org_dict[obj.detail_belong]
+        return self.org_dict[obj['detail_belong']]
+    
+    def get_value_done(self,obj):
+        return obj['value_done']
+    
+    def get_value_rate(self,obj):
+        return obj['value_rate']
     
     class Meta:
         
         model = IndexDetail
         # fields = '__all__'
-        fields = ('index_num','detail_belong','detail_date','detail_value','index_name','org_name')
+        fields = ('index_num','index_name','belong_line','index_class','class_name','detail_belong','org_name','value_done','value_rate')
+
+class RankSingleSerializer(serializers.Serializer):
+
+    # 查询Org,获取org_name
+    org_queryset = Org.objects.all().values('org_num','org_name')
+    org_dict = {item['org_num']:item['org_name'] for item in org_queryset}
+
+    # 定义输出字段
+    detail_belong = serializers.SerializerMethodField()
+    org_name = serializers.SerializerMethodField()
+    value_tm_done = serializers.SerializerMethodField()
+    value_ly_done = serializers.SerializerMethodField()
+    value_compare = serializers.SerializerMethodField()
+    value_ty_plan = serializers.SerializerMethodField()
+    value_rate = serializers.SerializerMethodField()
+
+    # 定义方法
+    def get_detail_belong(self,obj):
+        return obj['detail_belong']
+
+    def get_org_name(self,obj):
+        return self.org_dict[obj['detail_belong']]
+    
+    def get_value_tm_done(self,obj):
+        return obj['value_tm_done']
+    
+    def get_value_ly_done(self,obj):
+        return obj['value_ly_done']
+    
+    def get_value_compare(self,obj):
+        return obj['value_compare']
+    
+    def get_value_ty_plan(self,obj):
+        return obj['value_ty_plan']
+    
+    def get_value_rate(self,obj):
+        return obj['value_rate']
+    
+    class Meta:
+
+        model= IndexDetail
+        # fields = '__all__'
+        fields = ('detail_belong','org_name','value_tm_done','value_ly_done','value_compare','value_ty_plan','value_rate')
