@@ -94,12 +94,49 @@ def getSingleRank(request):
         re_msg = {'data':result,'code':0}
 
     else:
+        # 日期处理
+        # 获取计划筛选日期
+        this_year = int(query_params['data_date'].split('-')[0])
+        last_year = this_year -1
 
-        # 机构筛选
-        org_queryset = Org.objects.filter(org_num=query_params['rank_target'])
+        fd_ty = datetime.date(this_year,1,1).strftime("%Y-%m-%d")
+        ld_ly = datetime.date(last_year,12,31).strftime("%Y-%m-%d")
 
-        # 处理日期
+        rank_queryset = IndexDetail.objects.filter(
+            detail_belong=query_params['rank_target'],
+            detail_type=2,
+            index_num=query_params['index_num'],
+            detail_date__year=this_year
+        ).values('detail_date','detail_value')
+
+        value_plan = IndexDetail.objects.get(
+            detail_belong=query_params['rank_target'],
+            detail_type=1,
+            index_num=query_params['index_num'],
+            detail_date=fd_ty
+        )
+
+        value_last = IndexDetail.objects.get(
+            detail_belong=query_params['rank_target'],
+            detail_type=2,
+            index_num=query_params['index_num'],
+            detail_date=ld_ly
+        )
         
+        rank_data = []
+        for each in rank_queryset:
+            detail_date = each['detail_date']
+            value_tm_done = each['detail_value']
+            value_ly_done = value_last.detail_value
+            value_compare = each['detail_value'] - value_last.detail_value
+            value_ty_plan = value_plan.detail_value
+            value_rate = round(each['detail_value']/value_plan.detail_value*100,2)
 
-
+            rank_data.append({
+                'detail_date':detail_date,'value_tm_done':value_tm_done,'value_ly_done':value_ly_done,
+                'value_compare':value_compare,'value_ty_plan':value_ty_plan,'value_rate':value_rate
+            })
+            
+        re_msg = {'data':rank_data,'code':0}
+        
     return JsonResponse(re_msg,safe=False)
