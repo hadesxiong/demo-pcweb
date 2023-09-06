@@ -1,5 +1,6 @@
 # coding=utf8
 from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticated,AllowAny
 
 from django.http.response import JsonResponse
 from django.contrib.auth.hashers import make_password
@@ -8,6 +9,7 @@ from kpi_server.models import UserAuth
 from kpi_server.serializers import AuthSerializer
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def newUser(request):
     # permission_classes = (AllowAny,)
 
