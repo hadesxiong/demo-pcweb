@@ -17,3 +17,6 @@ from .other.generateDetail import *
 from .rank.getRank import *
 from .rank.getRankV2 import *
 from .rank.getSingleRank import *
+
+# table接口
+from .table.getTableData import *

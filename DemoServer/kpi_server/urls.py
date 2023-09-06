@@ -19,6 +19,9 @@ urlpatterns = [
 
     # rank
     path('api/rank/getRank',views.getRankV2),
-    path('api/rank/getSingleRank',views.getSingleRank)
+    path('api/rank/getSingleRank',views.getSingleRank),
+
+    # table
+    path('api/table/getTableData',views.getTableData)
 
 ]
