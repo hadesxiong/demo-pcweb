@@ -1,6 +1,60 @@
+from typing import Optional
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.hashers import make_password,check_password
 
 # Create your models here.
+
+# 用户管理
+
+class CustomUserManager(BaseUserManager):
+
+    # 创建普通用户
+    def createUser(self,username,password=None):
+
+        if not password:
+            raise ValueError('password is required.')
+        
+        user = self.model(username=username)
+        user.set_password(password)
+        user.save()
+        return user
+    
+    # 创建超级用户
+    def createSuperUser(self,username,password):
+
+        user=self.createUser(username,password)
+        user.is_superuser= True
+        user.save()
+        return user
+
+# 验证表
+class UserAuth(AbstractBaseUser):
+
+    user_name = models.CharField('用户姓名',max_length=64,blank=False)
+    notes_id = models.CharField('用户notesid',max_length=8,unique=True)
+    password = models.CharField('用户密码',max_length=128)
+    is_superuser = models.BooleanField('是否超级用户',default=False)
+
+    # 其他字段
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'notes_id'
+    REQUIRED_FIELDS = ['user_name','password']
+
+    def set_password(self,password):
+        self.password = make_password(password)
+
+    def check_password(self,password):
+        return check_password(password,self.password)
+    
+    class Meta:
+
+        app_label = 'kpi_server'
+        db_table = 'user_auth'
+    
+
 
 # 用户表
 

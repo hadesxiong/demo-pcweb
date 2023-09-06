@@ -20,3 +20,6 @@ from .rank.getSingleRank import *
 
 # table接口
 from .table.getTableData import *
+
+# auth接口
+from .auth.login import *

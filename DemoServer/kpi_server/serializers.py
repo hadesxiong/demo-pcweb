@@ -3,7 +3,7 @@
 from rest_framework import serializers
 
 # 引入model
-from kpi_server.models import Users,Org,Reference,Index,IndexDetail,Reference
+from kpi_server.models import Users,Org,Reference,Index,IndexDetail,Reference,UserAuth
 
 # 引入基本方法
 import math
@@ -186,3 +186,11 @@ class RankSingleSerializer(serializers.Serializer):
         model= IndexDetail
         # fields = '__all__'
         fields = ('detail_belong','org_name','value_tm_done','value_ly_done','value_compare','value_ty_plan','value_rate')
+
+class AuthSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        
+        model = UserAuth
+        fields = '__all__'
+        extra_kwargs = {'password': {'write_only': True}}

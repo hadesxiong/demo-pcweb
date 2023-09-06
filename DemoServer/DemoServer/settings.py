@@ -160,3 +160,6 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  #设定刷新令牌有效期
     'ROTATE_REFRESH_TOKENS': True,
 }
+
+AUTH_USER_MODEL = 'kpi_server.UserAuth'
+AUTHENTICATION_BACKENDS = ['kpi_server.backends.CustomAuthBackend']
