@@ -129,7 +129,12 @@ def getRankV2(request):
             del item['belong_line']
             rankData_group[new_key] = [item]
 
-    # re_msg = {'data':rankData_merged,'code':0}
-    re_msg = {'data':rankData_group,'code':0}
+    table_columns = [
+        {'title':'排名','dataIndex':'rank_sort','key':'rank_sort'},
+        {'title':'机构名称','dataIndex':'org_name','key':'org_name'},
+        {'title':'完成情况','dataIndex':'value_done','key':'value_done'},
+        {'title':'完成率','dataIndex':'value_rate','key':'value_rate'}
+    ]
+    re_msg = {'data':rankData_group,'code':0, 'column':table_columns}
 
     return JsonResponse(re_msg,safe=False)
