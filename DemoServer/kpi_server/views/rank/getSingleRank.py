@@ -1,5 +1,6 @@
-# codingt=utf8
-from rest_framework.decorators import api_view
+# conding=utf8
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 from django.db.models import Subquery
 from django.http.response import JsonResponse
@@ -11,6 +12,7 @@ import datetime
 
 '''获取单项排行'''
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getSingleRank(request):
 
     # params解析

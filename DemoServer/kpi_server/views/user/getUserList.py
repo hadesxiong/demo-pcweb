@@ -1,5 +1,6 @@
 # conding=utf8
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 from django.core.paginator import Paginator
 from django.db.models import Subquery,Q
@@ -11,8 +12,8 @@ from kpi_server.serializers import UsersSerializer
 import math
 
 '''查询用户列表'''
-
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getUserList(request):
 
     # params解析

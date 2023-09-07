@@ -1,5 +1,6 @@
-# codingt=utf8
-from rest_framework.decorators import api_view
+# conding=utf8
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 from django.http.response import JsonResponse
 
@@ -9,6 +10,7 @@ import datetime
 
 '''新增/更新/删除机构'''
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def updateOrg(request):
 
     body_data = {

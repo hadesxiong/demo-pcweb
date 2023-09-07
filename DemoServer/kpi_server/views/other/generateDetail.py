@@ -1,5 +1,6 @@
-# codingt=utf8
-from rest_framework.decorators import api_view
+# conding=utf8
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 from django.db.models import Q
 from django.http.response import JsonResponse
@@ -11,6 +12,7 @@ import itertools
 
 '''测试生成假数据'''
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def generateDetail(request):
 
     # 解析body

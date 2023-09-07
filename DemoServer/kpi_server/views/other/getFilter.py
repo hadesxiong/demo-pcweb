@@ -1,5 +1,6 @@
-# coding=utf8
-from rest_framework.decorators import api_view
+# conding=utf8
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 from django.http.response import JsonResponse
 
@@ -8,6 +9,7 @@ from kpi_server.serializers import RefSerializer
 
 '''筛选项处理-处筛选'''
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getFilter(request):
 
     # params解析

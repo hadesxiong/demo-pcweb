@@ -90,9 +90,9 @@ DATABASES = {
         'HOST':'10.162.165.155',
         'PORT':11001
     },
-    'kpi_dashboard_db':{
+    'kpi_db':{
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'kpi_dashboard',
+        'NAME':'kpi_db',
         'USER':'root',
         'PASSWORD':'Faurecia614',
         # Z-INTRA
@@ -101,7 +101,7 @@ DATABASES = {
     }
 }
 DATABASES_APPS_MAPPING = {
-    'kpi_server':'kpi_dashboard_db'
+    'kpi_server':'kpi_db'
 }
 
 # 插入数据路由
@@ -132,11 +132,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

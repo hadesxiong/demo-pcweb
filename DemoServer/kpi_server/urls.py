@@ -1,9 +1,6 @@
 from django.urls import path
 from kpi_server import views
 
-from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView)
-
-
 urlpatterns = [
 
     # user
@@ -26,10 +23,9 @@ urlpatterns = [
     # table
     path('api/table/getTableData',views.getTableData),
 
-    # jwt token
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
     # auth
-    path('api/auth/newUser',views.newUser)
+    path('api/auth/userLogin',views.userLogin),
+    path('api/auth/refreshToken',views.refreshToken),
+    path('api/auth/testToken',views.protected_view)
+
 ]

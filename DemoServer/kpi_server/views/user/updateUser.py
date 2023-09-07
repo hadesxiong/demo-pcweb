@@ -1,13 +1,14 @@
-# coding=utf8
-from rest_framework.decorators import api_view
+# conding=utf8
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 from django.http.response import JsonResponse
 
 from kpi_server.models import Users
 
 '''删除/更新用户信息'''
-
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def updateUser(request):
 
     # body解析

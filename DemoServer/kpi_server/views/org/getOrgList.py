@@ -1,5 +1,6 @@
-# coding=utf8
-from rest_framework.decorators import api_view
+# conding=utf8
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 from django.db.models import Subquery,Q
 from django.core.paginator import Paginator
@@ -12,6 +13,7 @@ import math
 
 '''查询机构列表'''
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getOrgList(request):
 
     # params解析

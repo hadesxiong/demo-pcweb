@@ -1,5 +1,6 @@
-# coding=utf8
-from rest_framework.decorators import api_view
+# conding=utf8
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 from django.db.models import Q,Subquery
 from django.http.response import JsonResponse
@@ -9,6 +10,7 @@ from kpi_server.models import IndexDetail,Users,Org
 import pandas as pd
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def getTableData(request):
 
     # body解析

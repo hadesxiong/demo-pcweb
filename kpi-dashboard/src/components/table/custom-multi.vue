@@ -3,10 +3,10 @@
         <div class="custom-checkbox d_flex fai_c br_100 pil_15 cursor_p" v-for="option in custom_options"
             :key="option.value" :class="{ 'selected': isSelected(option.value) }" @click="toggleOption(option.value)">
             <span class="checkbox-label">{{ option.label }}</span>
-            <span class="close-icon" v-if="isSelected(option.value) && option.value != 'all'"
+            <!-- <span class="close-icon" v-if="isSelected(option.value) && option.value != 'all'"
                 @click="deselectOption(option.value)">
                 <icon-park type="Close" size="12" class="d_flex"></icon-park>
-            </span>
+            </span> -->
         </div>
     </div>
 </template>
@@ -34,7 +34,7 @@
   
 <script>
 import { defineComponent } from "vue";
-import { IconPark } from "@icon-park/vue-next/es/all";
+// import { IconPark } from "@icon-park/vue-next/es/all";
 
 // 方法
 
@@ -42,7 +42,7 @@ export default defineComponent({
 
     name: 'CustomMulti',
     components: {
-        'icon-park': IconPark,
+        // 'icon-park': IconPark,
     },
     props: {
         custom_options: {type: Array},

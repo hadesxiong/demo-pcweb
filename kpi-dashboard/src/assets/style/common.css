@@ -1,6 +1,12 @@
 /* 该样式表作为基本样式供其他组件进行引用 */
 
 /* 宽高 */
+.w_100vw {
+  width: 100vw;
+}
+.h_100vh {
+  height: 100vh;
+}
 .w_p100 {
   width: 100%;
 }
@@ -39,6 +45,12 @@
 }
 .h_32 {
   height: 32px;
+}
+.h_38 {
+  height: 38px;
+}
+.lh_38 {
+  line-height:38px
 }
 .minh_120 {
   min-height: 120px;
@@ -279,6 +291,9 @@
 .font_20 {
   font-size: 20px;
 }
+.font_24 {
+  font-size: 24px;
+}
 .font_14 {
   font-size: 14px;
 }
@@ -430,6 +445,7 @@
 .bg_black {
   background-color: var(--color-text-1);
 }
+
 .bg_l1 {
   background-color: var(--color-fill-1);
 }

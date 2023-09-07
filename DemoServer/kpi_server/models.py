@@ -1,7 +1,10 @@
-from typing import Optional
+# codingt=utf8
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password,check_password
+from django.utils import timezone
+
+import uuid
 
 # Create your models here.
 
@@ -10,65 +13,98 @@ from django.contrib.auth.hashers import make_password,check_password
 class CustomUserManager(BaseUserManager):
 
     # 创建普通用户
-    def createUser(self,username,password=None):
+    def createUser(self,notes_id,password=None):
 
         if not password:
             raise ValueError('password is required.')
         
-        user = self.model(username=username)
+        user = self.model(
+            notes_id=notes_id,
+            user_uuid=uuid.uuid4(),
+            user_create=timezone.now(),
+            user_update=timezone.now()
+        )
         user.set_password(password)
         user.save()
         return user
     
-    # 创建超级用户
-    def createSuperUser(self,username,password):
+    def createAU(self,notes_id,password=None):
 
-        user=self.createUser(username,password)
-        user.is_superuser= True
+        user = self.createUser(notes_id,password)
+        user.is_admin = True
         user.save()
         return user
+
+    # 创建超级用户
+    def createSU(self,notes_id,password):
+
+        user=self.createUser(notes_id,password)
+        user.is_admin = True
+        user.is_su= True
+        user.save()
+        return user
+    
 
 # 验证表
 class UserAuth(AbstractBaseUser):
 
-    user_name = models.CharField('用户姓名',max_length=64,blank=False)
-    notes_id = models.CharField('用户notesid',max_length=8,unique=True)
-    password = models.CharField('用户密码',max_length=128)
-    is_superuser = models.BooleanField('是否超级用户',default=False)
+    notes_id = models.CharField(max_length=8,unique=True,help_text='用户notesid')
+    user_uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    user_phone = models.CharField(max_length=16,default=0,help_text='手机号码')
+    user_email = models.EmailField(help_text='用户邮箱')
+    user_password = models.CharField(max_length=128,help_text='加密用户密码')
+    user_state = models.IntegerField(default=0,help_text='用户状态')
+    is_su = models.BooleanField(default=False, help_text='是否超级管理员')
+    is_admin = models.BooleanField(default=False,help_text='是否普通管理员')
+    user_create = models.DateTimeField(auto_now_add=False,auto_now=False,help_text='创建时间')
+    user_update = models.DateTimeField(auto_now_add=False,auto_now=False,help_text='修改时间')
+
+    password = None
+    last_login = None
 
     # 其他字段
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'notes_id'
-    REQUIRED_FIELDS = ['user_name','password']
+    REQUIRED_FIELDS = ['user_uuid','password']
 
     def set_password(self,password):
-        self.password = make_password(password)
+        self.user_password = make_password(password)
 
     def check_password(self,password):
-        return check_password(password,self.password)
+        return check_password(password,self.user_password)
     
     class Meta:
 
         app_label = 'kpi_server'
         db_table = 'user_auth'
+
+# Token管理
+class UserToken(models.Model):
+
+    notes_id = models.CharField(max_length=8,unique=True,blank=False,help_text='用户notesid')
+    rf_token_dt = models.DateTimeField(help_text='上次refresh_token刷新时间')
+    ac_token_dt = models.DateTimeField(help_text='上次access_token刷新时间')
+    rf_avalale = models.BooleanField(default=True,help_text='能否获取refresh_token')
+    ac_avalale = models.BooleanField(default=True,help_text='能否获取refresh_token')
+    login_err = models.IntegerField(default=0,help_text='登陆错误次数')
+
+    class Meta:
+
+        app_label = 'kpi_server'
+        db_table = 'user_token'
     
-
-
 # 用户表
 
 class Users(models.Model):
 
-    notes_id = models.CharField('用户notesid',max_length=8,blank=False,unique=True)
-    user_name = models.CharField('用户姓名',max_length=64,blank=False)
-    user_belong_org = models.CharField('用户归属机构',max_length=10)
-    user_belong_group = models.IntegerField('用户所属分组/条线')
-    user_character = models.IntegerField('用户角色')
-    user_create = models.DateField('创建时间',auto_now_add=True,auto_now=False)
-    user_update = models.DateField('修改时间',auto_now_add=False,auto_now=False)
-    user_state = models.IntegerField('用户状态')
-    user_ext_info = models.CharField('用户信息补充字段',max_length=64)
+    notes_id = models.CharField(max_length=8,blank=False,unique=True,help_text='用户notesid')
+    user_name = models.CharField(max_length=64,blank=False,help_text='用户姓名')
+    user_belong_org = models.CharField(max_length=10,help_text='用户归属机构')
+    user_belong_group = models.IntegerField(help_text='用户所属分组/条线')
+    user_character = models.IntegerField(help_text='用户角色')
+    user_ext_info = models.CharField(max_length=64,help_text='用户信息补充字段')
 
     class Meta:
 
@@ -79,16 +115,16 @@ class Users(models.Model):
 
 class Org(models.Model):
 
-    org_num = models.CharField('机构编号',max_length=10,blank=False,unique=True)
-    org_name = models.CharField('机构名称',max_length=64,blank=False)
-    parent_org_id = models.CharField('上级机构编号',max_length=8)
-    org_level = models.IntegerField('机构层级')
-    org_group = models.IntegerField('机构分组')
-    org_manager = models.CharField('机构负责人id',max_length=8)
-    org_create = models.DateField('创建时间',auto_now_add=True,auto_now=False)
-    org_update = models.DateField('修改时间',auto_now_add=False,auto_now=True)
-    org_state = models.IntegerField('机构状态')
-    org_ext_info =  models.CharField('机构扩展字段',max_length=64)
+    org_num = models.CharField(max_length=10,blank=False,unique=True,help_text='机构编号')
+    org_name = models.CharField(max_length=64,blank=False,help_text='机构名称')
+    parent_org_id = models.CharField(max_length=8,help_text='上级机构编号')
+    org_level = models.IntegerField(help_text='机构层级')
+    org_group = models.IntegerField(help_text='机构分组')
+    org_manager = models.CharField(help_text='机构负责人id',max_length=8)
+    org_create = models.DateTimeField(help_text='创建时间',auto_now_add=True,auto_now=False)
+    org_update = models.DateTimeField(help_text='修改时间',auto_now_add=False,auto_now=True)
+    org_state = models.IntegerField(help_text='机构状态')
+    org_ext_info =  models.CharField(help_text='机构扩展字段',max_length=64)
 
     class Meta:
 
@@ -99,20 +135,20 @@ class Org(models.Model):
 
 class Index(models.Model):
 
-    index_num = models.CharField('指标编号',max_length=10,blank=False,unique=True)
-    index_class = models.IntegerField('指标分类-财务效益等')
-    belong_line = models.IntegerField('归属条线-企金、零售、同业其他等')
-    index_unit = models.CharField('指标单位',max_length=10)
-    index_fre = models.IntegerField('指标频率')
-    index_name = models.CharField('指标名称',max_length=64)
-    index_type = models.IntegerField('指标类型-个人、机构')
-    need_focus = models.IntegerField('是否重点指标')
-    need_show = models.IntegerField('是否需要展示')
-    is_db = models.IntegerField('是否首页数据看板')
-    index_create = models.DateField('创建时间',auto_now_add=True,auto_now=False)
-    index_update = models.DateField('修改时间',auto_now_add=False,auto_now=True)
-    index_state = models.IntegerField('指标状态')
-    index_ext_info = models.CharField('扩展字段',max_length=64)
+    index_num = models.CharField(help_text='指标编号',max_length=10,blank=False,unique=True)
+    index_class = models.IntegerField(help_text='指标分类-财务效益等')
+    belong_line = models.IntegerField(help_text='归属条线-企金、零售、同业其他等')
+    index_unit = models.CharField(help_text='指标单位',max_length=10)
+    index_fre = models.IntegerField(help_text='指标频率')
+    index_name = models.CharField(help_text='指标名称',max_length=64)
+    index_type = models.IntegerField(help_text='指标类型-个人、机构')
+    need_focus = models.IntegerField(help_text='是否重点指标')
+    need_show = models.IntegerField(help_text='是否需要展示')
+    is_db = models.IntegerField(help_text='是否首页数据看板')
+    index_create = models.DateTimeField(help_text='创建时间',auto_now_add=False,auto_now=False)
+    index_update = models.DateTimeField(help_text='修改时间',auto_now_add=False,auto_now=True)
+    index_state = models.IntegerField(help_text='指标状态')
+    index_ext_info = models.CharField(help_text='扩展字段',max_length=64)
 
     class Meta:
 
@@ -122,18 +158,17 @@ class Index(models.Model):
 # 指标详情表 - 用于记录机构/个人的单时间颗粒度指标记录
 class IndexDetail(models.Model):
 
-    record_id = models.CharField('上传记录编号',max_length=10,blank=True)
-    index_num = models.CharField('指标编号',max_length=10)
-    # detail_value = models.IntegerField('指标具体值',blank=True)
-    detail_value = models.DecimalField('指标具体值',max_digits=18,decimal_places=2)
-    detail_date = models.DateField('详情归属月份')
-    detail_type = models.IntegerField('详情种类,是实际值还是计划值等')
-    detail_class = models.IntegerField('详情归属，是个人还是机构')
-    detail_belong = models.CharField('详情归属对象, 机构编号或者notesid',max_length=10)
-    detail_create = models.DateField('创建时间',auto_now_add=True,auto_now=False)
-    detail_update = models.DateField('修改时间',auto_now_add=False,auto_now=True)
-    detail_state = models.IntegerField('详情状态')
-    detail_ext_info = models.CharField('扩展字段',max_length=64)
+    record_id = models.CharField(help_text='上传记录编号',max_length=10,blank=True)
+    index_num = models.CharField(help_text='指标编号',max_length=10)
+    detail_value = models.DecimalField(help_text='指标具体值',max_digits=18,decimal_places=2)
+    detail_date = models.DateField(help_text='详情归属月份')
+    detail_type = models.IntegerField(help_text='详情种类,是实际值还是计划值等')
+    detail_class = models.IntegerField(help_text='详情归属，是个人还是机构')
+    detail_belong = models.CharField(help_text='详情归属对象, 机构编号或者notesid',max_length=10)
+    detail_create = models.DateTimeField(help_text='创建时间',auto_now_add=False,auto_now=False)
+    detail_update = models.DateTimeField(help_text='修改时间',auto_now_add=False,auto_now=True)
+    detail_state = models.IntegerField(help_text='详情状态')
+    detail_ext_info = models.CharField(help_text='扩展字段',max_length=64)
 
     class Meta:
 
@@ -142,16 +177,16 @@ class IndexDetail(models.Model):
 
 class UploadRecord(models.Model):
 
-    record_id = models.CharField('上传记录编号',max_length=10,unique=True)
-    record_class = models.IntegerField('上传记录分类')
-    record_name = models.CharField('上传记录名称',max_length=64)
-    record_update_user = models.CharField('上传用户notesid',max_length=10)
-    record_update_time = models.DateTimeField('上传时间',blank=False,auto_now=True)
-    record_update_active = models.IntegerField('该条记录是否对外生效')
-    record_update_state= models.IntegerField('该条记录状态')
-    record_create = models.DateField('创建时间',auto_now_add=True,auto_now=False)
-    record_update = models.DateField('修改时间',auto_now_add=False,auto_now=True)
-    record_update_ext_info = models.CharField('扩展字段',max_length=64)
+    record_id = models.CharField(help_text='上传记录编号',max_length=10,unique=True)
+    record_class = models.IntegerField(help_text='上传记录分类')
+    record_name = models.CharField(help_text='上传记录名称',max_length=64)
+    record_update_user = models.CharField(help_text='上传用户notesid',max_length=10)
+    record_update_time = models.DateTimeField(help_text='上传时间',blank=False,auto_now=True)
+    record_update_active = models.IntegerField(help_text='该条记录是否对外生效')
+    record_update_state= models.IntegerField(help_text='该条记录状态')
+    record_create = models.DateTimeField(help_text='创建时间',auto_now_add=False,auto_now=False)
+    record_update = models.DateTimeField(help_text='修改时间',auto_now_add=False,auto_now=True)
+    record_update_ext_info = models.CharField(help_text='扩展字段',max_length=64)
 
     class Meta:
 
@@ -160,15 +195,15 @@ class UploadRecord(models.Model):
 
 class UploadHistory(models.Model):
 
-    history_id= models.CharField('历史记录编号',max_length=10,unique=True)
-    record_name = models.CharField('上传记录名称',max_length=64)
-    histroy_active = models.IntegerField('该版本是否对外生效')
-    histroy_update_user = models.CharField('历史上传人员notesid',max_length=10)
-    histroy_update_fileName = models.CharField('历史记录上传文件名称',max_length=128)
-    histroy_state = models.IntegerField('历史记录状态')
-    histroy_create = models.DateField('创建时间',auto_now_add=True,auto_now=False)
-    histroy_update = models.DateField('修改时间',auto_now_add=False,auto_now=True)
-    histroy_ext_info = models.CharField('历史记录扩展字段',max_length=64)
+    history_id= models.CharField(help_text='历史记录编号',max_length=10,unique=True)
+    record_name = models.CharField(help_text='上传记录名称',max_length=64)
+    histroy_active = models.IntegerField(help_text='该版本是否对外生效')
+    histroy_update_user = models.CharField(help_text='历史上传人员notesid',max_length=10)
+    histroy_update_fileName = models.CharField(help_text='历史记录上传文件名称',max_length=128)
+    histroy_state = models.IntegerField(help_text='历史记录状态')
+    histroy_create = models.DateField(help_text='创建时间',auto_now_add=True,auto_now=False)
+    histroy_update = models.DateField(help_text='修改时间',auto_now_add=False,auto_now=True)
+    histroy_ext_info = models.CharField(help_text='历史记录扩展字段',max_length=64)
 
     class Meta:
         
@@ -177,11 +212,11 @@ class UploadHistory(models.Model):
 
 class Reference(models.Model):
 
-    ref_name = models.CharField('码值含义',max_length=64)
-    ref_code = models.IntegerField('码值')
-    ref_type = models.CharField('码值用途',max_length=64)
-    ref_state = models.IntegerField('是否有效')
-    ref_ext = models.CharField('码值额外描述',max_length=128)
+    ref_name = models.CharField(help_text='码值含义',max_length=64)
+    ref_code = models.IntegerField(help_text='码值')
+    ref_type = models.CharField(help_text='码值用途',max_length=64)
+    ref_state = models.IntegerField(help_text='是否有效')
+    ref_ext = models.CharField(help_text='码值额外描述',max_length=128)
 
     class Meta:
 

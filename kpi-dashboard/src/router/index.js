@@ -7,13 +7,22 @@ const routes = [
     redirect: "/dashboard-main",
   },
   {
+    name:"login",
+    path:"/login",
+    component:() => import("@/views/login/login-main.vue"),
+    meta:{
+      requireAuth:false
+    }
+  },
+  {
     name: "dashboard-main",
     path: "/dashboard-main",
     component: () => import("@/views/dashboard/dashboard-main.vue"),
     meta: {
       breadcrumb: ["数据看板", "重要指标分析"],
       sub:"dashboard",
-      menu:"dashboard-main"
+      menu:"dashboard-main",
+      requireAuth:true
     },
   },
   // {
@@ -33,7 +42,8 @@ const routes = [
     meta: {
       breadcrumb: ["业绩排行", "重要指标排行"],
       sub:"rank",
-      menu:"rank-important"
+      menu:"rank-important",
+      requireAuth:true
     },
   },
   {
@@ -43,7 +53,8 @@ const routes = [
     meta: {
       breadcrumb: ["业绩排行", "重要指标排行", "业绩详情"],
       sub:"rank",
-      menu:"rank-important"
+      menu:"rank-important",
+      requireAuth:true
     },
   },
   {
@@ -53,6 +64,7 @@ const routes = [
     meta:{
       breadcrumb:['数据报表'],
       sub:"table",
+      requireAuth:true
     }
   },
   {
@@ -62,7 +74,8 @@ const routes = [
     meta: {
       breadcrumb: ["数据管理", "数据导入"],
       sub:"settings",
-      menu:"data-manage"
+      menu:"data-manage",
+      requireAuth:true
     },
   },
   {
@@ -72,7 +85,8 @@ const routes = [
     meta: {
       breadcrumb: ["数据管理", "数据导入", "导入数据详情"],
       sub:"settings",
-      menu:"data-manage"
+      menu:"data-manage",
+      requireAuth:true
     },
   },
   {
@@ -82,7 +96,8 @@ const routes = [
     meta: {
       breadcrumb: ["数据管理", "机构管理"],
       sub:"settings",
-      menu:"org-manage"
+      menu:"org-manage",
+      requireAuth:true
     },
   },
   {
@@ -92,7 +107,8 @@ const routes = [
     meta: {
       breadcrumb: ["数据管理", "用户管理"],
       sub:"settings",
-      menu:"user-manage"
+      menu:"user-manage",
+      requireAuth:true
     },
   },
 ];
@@ -106,15 +122,20 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   // 在路由导航之前执行的逻辑
+  if(to.meta.requireAuth) {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (!isLoggedIn) {
+      next('/login')
+    } else {
+      next()
+    }
+  }
   // table动态赋值
   if (to.name == 'table-detail') {
     to.meta.menu = to.path.substring(1)
   }
-
-
   // 跳转
   next()
 });
-
 
 export default router;
