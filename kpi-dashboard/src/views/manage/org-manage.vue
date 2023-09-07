@@ -247,6 +247,7 @@
 <script>
 import { defineComponent, reactive, ref } from 'vue';
 import { IconPark } from '@icon-park/vue-next/es/all';
+// import LayoutMainVue from '@/components/layout/layout-main.vue'
 import axios from 'axios';
 import { cloneDeep } from 'lodash-es'
 
@@ -311,7 +312,7 @@ export default defineComponent({
             this.modal_visible = true;
         },
         cancelUpload() {
-            this.modal_visible= false;
+            this.modal_visible = false;
         },
         confirmUpload() {
             this.modal_visible = false;

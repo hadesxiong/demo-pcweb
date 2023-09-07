@@ -1,7 +1,6 @@
 <template>
   <div class="h_p100">
-      <layout-main v-if="isLoggedIn"></layout-main>
-      <login-main v-else></login-main>
+      <router-view></router-view>
   </div>
 </template>
 
@@ -11,19 +10,18 @@
 </style>
 
 <script>
-import LayoutMain from './components/layout/layout-main.vue';
-import LoginMain from './views/login/login-main.vue'
+// import LayoutMain from './components/layout/layout-main.vue';
+// import LoginMain from './views/login/login-main.vue'
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    'layout-main':LayoutMain,
-    'login-main':LoginMain
+    // 'layout-main':LayoutMain,
+    // 'login-main':LoginMain
   },
   data() {
     return {
-      isLoggedIn: false, // 初始状态为未登录
     };
   },
   setup() {

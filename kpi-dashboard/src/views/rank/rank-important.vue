@@ -1,41 +1,48 @@
 <template>
-    <div class="w_p100 h_p100 bg_white d_flex fd_c">
-        <div class="d_flex jc_sb pt_20 pl_20 pr_20 fs_0">
-            <div class="d_flex">
-                <a-radio-group v-model:value="choose_line" button-style="solid" class="d_flex gap_12 h_30 lh_30" @change="changeLine">
-                    <a-radio-button v-for="item in line_data" :key="item.key" :value="item.key" class="br_100 h_30 lh_30 of_h tover_ell">{{ item.value }}</a-radio-button>
-                </a-radio-group>
-            </div>
-            <div class="d_flex gap_20">
-                <a-dropdown class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                    <a>{{ choose_class.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
-                    <template #overlay>
-                        <a-menu v-model:value="choose_class">
-                            <a-menu-item v-for="item in class_data" :key="item.key" @click="chooseIndex(item,'class')">{{ item.value }}</a-menu-item>
-                        </a-menu>
-                    </template>
-                </a-dropdown>
-                <a-dropdown class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                    <a>{{ choose_group.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
-                    <template #overlay>
-                        <a-menu v-model:value="choose_group">
-                            <a-menu-item v-for="item in group_data" :key="item.key" @click="chooseIndex(item,'group')">{{ item.value }}</a-menu-item>
-                        </a-menu>
-                    </template>
-                </a-dropdown>
-                <a-dropdown class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                    <a-date-picker picker="month" :placeholder="'数据日期'" :allowClear="false" v-model:value="date_value">
-                        <template #suffixIcon>
-                            <icon-park type="CalendarThirty" fill="#86909C" size="14"></icon-park>
+        <div class="w_p100 h_p100 bg_white d_flex fd_c">
+            <div class="d_flex jc_sb pt_20 pl_20 pr_20 fs_0">
+                <div class="d_flex">
+                    <a-radio-group v-model:value="choose_line" button-style="solid" class="d_flex gap_12 h_30 lh_30"
+                        @change="changeLine">
+                        <a-radio-button v-for="item in line_data" :key="item.key" :value="item.key"
+                            class="br_100 h_30 lh_30 of_h tover_ell">{{ item.value }}</a-radio-button>
+                    </a-radio-group>
+                </div>
+                <div class="d_flex gap_20">
+                    <a-dropdown
+                        class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
+                        <a>{{ choose_class.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                        <template #overlay>
+                            <a-menu v-model:value="choose_class">
+                                <a-menu-item v-for="item in class_data" :key="item.key"
+                                    @click="chooseIndex(item, 'class')">{{ item.value }}</a-menu-item>
+                            </a-menu>
                         </template>
-                    </a-date-picker>
-                </a-dropdown>
+                    </a-dropdown>
+                    <a-dropdown
+                        class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
+                        <a>{{ choose_group.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                        <template #overlay>
+                            <a-menu v-model:value="choose_group">
+                                <a-menu-item v-for="item in group_data" :key="item.key"
+                                    @click="chooseIndex(item, 'group')">{{ item.value }}</a-menu-item>
+                            </a-menu>
+                        </template>
+                    </a-dropdown>
+                    <a-dropdown
+                        class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
+                        <a-date-picker picker="month" :placeholder="'数据日期'" :allowClear="false" v-model:value="date_value">
+                            <template #suffixIcon>
+                                <icon-park type="CalendarThirty" fill="#86909C" size="14"></icon-park>
+                            </template>
+                        </a-date-picker>
+                    </a-dropdown>
+                </div>
+            </div>
+            <div class="mt_20 ml_20 mr_20 fg_1 ofy_a ofx_h">
+                <rank-main v-if="rank_list" :rank_list="rank_list"></rank-main>
             </div>
         </div>
-        <div class="mt_20 ml_20 mr_20 fg_1 ofy_a ofx_h">
-            <rank-main v-if="rank_list" :rank_list="rank_list"></rank-main>
-        </div>
-    </div>
 </template>
 
 <style scoped>
@@ -86,6 +93,7 @@
     border-color: transparent;
     font-weight: 500;
 }
+
 .ant-picker-input input {
     text-align: left;
 }
@@ -98,10 +106,11 @@
 
 /* 下拉按钮部分 */
 .ant-picker {
-  background-color: var(--color-fill-2);
-  border: none;
-  border-radius: 2px;
+    background-color: var(--color-fill-2);
+    border: none;
+    border-radius: 2px;
 }
+
 .ant-picker-focused {
     box-shadow: none;
 }
@@ -110,22 +119,24 @@
     padding-left: 0;
     padding-right: 0;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-collapse-borderless >.ant-collapse-item>.ant-collapse-content>.ant-collapse-content-box {
+
+:where(.css-dev-only-do-not-override-eq3tly).ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content>.ant-collapse-content-box {
     padding-top: 20px;
 }
+
 :where(.css-dev-only-do-not-override-eq3tly).ant-collapse-borderless {
     background-color: transparent;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-collapse-borderless >.ant-collapse-item .ant-collapse-header {
+
+:where(.css-dev-only-do-not-override-eq3tly).ant-collapse-borderless>.ant-collapse-item .ant-collapse-header {
     background-color: #f2f3f5;
 }
-
 </style>
 
 <script>
 import { defineComponent, ref } from 'vue';
 import { IconPark } from "@icon-park/vue-next/es/all";
-import RankMain from '../../components/rank/rank-main';
+import RankMain from '@/components/rank/rank-main';
 import axios from 'axios';
 
 import dayjs from 'dayjs';
@@ -138,31 +149,31 @@ export default defineComponent({
     name: 'rank-important',
     components: {
         'rank-main': RankMain,
-        'icon-park': IconPark
+        'icon-park': IconPark,
     },
     data() {
         return {
             rank_list: [],
-            line_data:[
-                {key:"all",value:"全部指标"},
-                {key:"enterprise",value:"企金指标"},
-                {key:"retail",value:"零售指标"},
-                {key:"bank",value:"同业指标"},
-                {key:"other",value:"其他指标"},
+            line_data: [
+                { key: "all", value: "全部指标" },
+                { key: "enterprise", value: "企金指标" },
+                { key: "retail", value: "零售指标" },
+                { key: "bank", value: "同业指标" },
+                { key: "other", value: "其他指标" },
             ],
             class_data: [
-                {key:"all",value:"全部分类"},
-                {key:"cwxy",value:"财务效益"},
-                {key:"khjs",value:"客户建设"},
-                {key:"zxfz",value:"转型与发展质量"},
-                {key:"fxhg",value:"风险合规"},
-                {key:"shzr",value:"社会责任"}
+                { key: "all", value: "全部分类" },
+                { key: "cwxy", value: "财务效益" },
+                { key: "khjs", value: "客户建设" },
+                { key: "zxfz", value: "转型与发展质量" },
+                { key: "fxhg", value: "风险合规" },
+                { key: "shzr", value: "社会责任" }
             ],
             group_data: [
-                {key:"qyzxzh",value:"按区域中心支行查看"},
-                {key:"ddzh",value:"按单点支行查看"},
-                {key:"zlkhb",value:"按战略客户部查看"},
-                {key:"fzjg",value:"按4级分支机构查看"}
+                { key: "qyzxzh", value: "按区域中心支行查看" },
+                { key: "ddzh", value: "按单点支行查看" },
+                { key: "zlkhb", value: "按战略客户部查看" },
+                { key: "fzjg", value: "按4级分支机构查看" }
             ]
         }
     },
@@ -170,8 +181,8 @@ export default defineComponent({
         return {
             locale,
             choose_line: ref('all'),
-            choose_class: ref({key:"all",value:"全部分类"}),
-            choose_group: ref({key:"qyzxzh",value:"按区域中心支行查看"}),
+            choose_class: ref({ key: "all", value: "全部分类" }),
+            choose_group: ref({ key: "qyzxzh", value: "按区域中心支行查看" }),
             date_value: ref(dayjs())
         }
     },
@@ -185,11 +196,11 @@ export default defineComponent({
             this.rank_list = rank_res.data;
             // console.log(this.rank_list)
         },
-        chooseIndex(item,section) {
-            console.log(item,section);
-            if (section=='class') {
+        chooseIndex(item, section) {
+            console.log(item, section);
+            if (section == 'class') {
                 this.choose_class = item;
-            } else if (section=='group') {
+            } else if (section == 'group') {
                 this.choose_group = item;
             }
         },

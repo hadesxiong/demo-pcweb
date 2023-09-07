@@ -2,25 +2,32 @@
     <div class="of_h">
         <a-row :gutter="[20, 20]" style="display: flex; align-items: stretch;">
             <a-col :span="24">
-                <db-card1 v-if="dbCard1_data.db_id" :card_data="dbCard1_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-card1>
+                <db-card1 v-if="dbCard1_data.db_id" :card_data="dbCard1_data" :org_filter="orgFilter_data"
+                    :cur_org="current_org" :cur_date="current_date"></db-card1>
             </a-col>
             <a-col :span="12">
-                <db-bar2 v-if="dbBar2_data.db_id" :bar_data="dbBar2_data" :db_id="dbBar2_data.db_id" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-bar2>
+                <db-bar2 v-if="dbBar2_data.db_id" :bar_data="dbBar2_data" :db_id="dbBar2_data.db_id"
+                    :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-bar2>
             </a-col>
             <a-col :span="12">
-                <db-card1 v-if="dbCard2_data.db_id" :card_data="dbCard2_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-card1>
+                <db-card1 v-if="dbCard2_data.db_id" :card_data="dbCard2_data" :org_filter="orgFilter_data"
+                    :cur_org="current_org" :cur_date="current_date"></db-card1>
             </a-col>
             <a-col :span="12">
-                <db-line v-if="dbLine_data.db_id" :db_data="dbLine_data" :db_id="dbLine_data.db_id" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-line>
+                <db-line v-if="dbLine_data.db_id" :db_data="dbLine_data" :db_id="dbLine_data.db_id"
+                    :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-line>
             </a-col>
             <a-col :span="12">
-                <db-bar1 v-if="dbBar1_data.db_id" :bar_data="dbBar1_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-bar1>
+                <db-bar1 v-if="dbBar1_data.db_id" :bar_data="dbBar1_data" :org_filter="orgFilter_data"
+                    :cur_org="current_org" :cur_date="current_date"></db-bar1>
             </a-col>
             <a-col :span="12">
-                <db-bar1 v-if="dbBar1_2_data.db_id" :bar_data="dbBar1_2_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-bar1>
+                <db-bar1 v-if="dbBar1_2_data.db_id" :bar_data="dbBar1_2_data" :org_filter="orgFilter_data"
+                    :cur_org="current_org" :cur_date="current_date"></db-bar1>
             </a-col>
             <a-col :span="12">
-                <db-card1 v-if="dbCard3_data.db_id" :card_data="dbCard3_data" :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-card1>
+                <db-card1 v-if="dbCard3_data.db_id" :card_data="dbCard3_data" :org_filter="orgFilter_data"
+                    :cur_org="current_org" :cur_date="current_date"></db-card1>
             </a-col>
         </a-row>
     </div>
@@ -31,12 +38,14 @@
 @import url('../../assets/style/common.css');
 
 ::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
+    display: none;
+    /* Chrome Safari */
 }
 </style>
 
 <script>
 import { defineComponent, ref } from 'vue';
+
 import DBNCard1 from '../../components/dashboard-new/dbn-card1';
 import DBNBar2 from '../../components/dashboard-new/dbn-bar2';
 import DBNBar1 from '../../components/dashboard-new/dbn-bar1';
@@ -68,7 +77,7 @@ export default defineComponent({
             dbCard3_data: ref({}),
             orgFilter_data: ref({}),
             current_org: ref('徐汇区域中心支行'),
-            current_date: ref([dayjs().add(-5,'month'),dayjs()]),
+            current_date: ref([dayjs().add(-5, 'month'), dayjs()]),
             locale
         }
     },
@@ -114,12 +123,12 @@ export default defineComponent({
             const lc_res = await axios.get('/demo/dashboard/dashboardn-card3.json');
             this.dbCard3_data = lc_res.data;
         },
-        
+
         // 获取机构筛选,传入org_id用作匹配
         async getOrgFilter(org_id) {
             const orgFilter_res = await axios.get('/demo/filter/org_filter.json');
             this.orgFilter_data = orgFilter_res.data;
-            return {org_id}
+            return { org_id }
         }
     }
 });

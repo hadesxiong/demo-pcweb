@@ -294,7 +294,7 @@ export default defineComponent({
     name: "OrgManage",
     components: {
         'icon-park': IconPark,
-        'file-input': FileInput
+        'file-input': FileInput,
     },
     setup() {
         const table_data = ref({});
@@ -375,7 +375,7 @@ export default defineComponent({
             this.search_line = { key: 'all', value: '全部序列' };
         },
         confirmSearch() {
-            console.log(this.search_orgGroup, this.search_charater,this.search_line)
+            console.log(this.search_orgGroup, this.search_charater, this.search_line)
         }
     }
 });

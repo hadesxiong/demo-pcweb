@@ -31,13 +31,14 @@
         </div>
         <div class="m_20 of_a h_p100">
             <a-table :columns="detail_data.table_column" :data-source="detail_data.table_data" :pagination="false"
-                :scroll="{ y: true }" :expandIconColumnIndex="1" :expandIconAsCell="false" :indentSize="0" class="b_w1c2_so br_2">
+                :scroll="{ y: true }" :expandIconColumnIndex="1" :expandIconAsCell="false" :indentSize="0"
+                class="b_w1c2_so br_2">
                 <template #innerExpand="{ record }">
                     <span v-if="record.children">
                         <!-- <a @click="toggleExpand(record)">展开</a> -->
                     </span>
                 </template>
-                <template #bodyCell="{ column,record }">
+                <template #bodyCell="{ column, record }">
                     <template v-if="column.dataIndex === 'data_operation'">
                         <div class="fc_brand6 d_iflex gap_8">
                             <a id="history_btn" @click="showHistoryData(record)">查看历史</a>
@@ -48,7 +49,8 @@
             </a-table>
         </div>
         <div class="d_flex fai_c jc_fe p_20">
-            <a-pagination :current="page_obj.current" :total="page_obj.total" :pageSize="page_obj.pageSize" @change="handlePageChange"></a-pagination>
+            <a-pagination :current="page_obj.current" :total="page_obj.total" :pageSize="page_obj.pageSize"
+                @change="handlePageChange"></a-pagination>
         </div>
         <a-drawer :width="850" :visible="draw_visible" @close="onClose" :closable="false">
             <template #title>
@@ -152,7 +154,7 @@ require('echarts/lib/chart/line');
 export default defineComponent({
     name: 'RankDetail',
     components: {
-        'icon-park': IconPark
+        'icon-park': IconPark,
     },
     data() {
         return {
@@ -169,9 +171,9 @@ export default defineComponent({
         return {
             index_id: ref(route.params.rank_id),
             page_obj: ref({
-                current:1,
-                pageSize:10,
-                total:100
+                current: 1,
+                pageSize: 10,
+                total: 100
             })
         }
     },
@@ -233,7 +235,7 @@ export default defineComponent({
         },
         handlePageChange(page) {
             console.log(page)
-            this.page_obj.current= page
+            this.page_obj.current = page
         }
     }
 
