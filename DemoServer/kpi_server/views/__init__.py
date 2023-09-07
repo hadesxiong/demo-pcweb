@@ -24,3 +24,6 @@ from .table.getTableData import *
 # auth接口
 from .auth.userLogin import *
 from .auth.refreshToken import *
+
+# dashboard接口
+from .dashboard.getDashboard import *

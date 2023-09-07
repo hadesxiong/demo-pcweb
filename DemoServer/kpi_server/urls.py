@@ -26,6 +26,9 @@ urlpatterns = [
     # auth
     path('api/auth/userLogin',views.userLogin),
     path('api/auth/refreshToken',views.refreshToken),
-    path('api/auth/testToken',views.protected_view)
+    path('api/auth/testToken',views.protected_view),
+
+    # dashboard
+    path('api/dashboard/getDashboard',views.getDashboard)
 
 ]
