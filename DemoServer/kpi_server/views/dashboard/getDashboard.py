@@ -120,20 +120,52 @@ def getDashboard(request):
     elif query_params['db_mark'] == 'all':
         db_queryset = DashboardMap.objects.filter(db_state=1).values('db_mark','db_name','db_class','index_num','db_func')
         db_serializer = DashboardSerializer(db_queryset,many=True).data
-        result_full = []
         
-        for each_db in db_serializer:
-            # 遍历
-            each_index = each_db['index_num'].split(',')
-            func_type = each_db['db_func']
+        # 拉平所有index_num
+        index_df = pd.DataFrame(db_serializer)
+        index_list = index_df['index_num'].str.cat(sep=',').split(',')
 
-            each_result = function_map[func_type](
-                org_num=query_params['org_num'], start_date=query_params['start_date'],
-                end_date=query_params['end_date'], index_list=each_index
-            )
-            result_full.append(each_result)
+        # 查询全量数据
+        full_result = IndexDetail.objects.filter(
+            index_num__in=index_list,detail_date__range=[query_params['start_date'],query_params['end_date']],
+            detail_type=2,detail_belong=query_params['org_num']    
+        ).values('index_num','detail_belong','detail_date','detail_value')
+        full_df = pd.DataFrame(full_result)
+        
+        # 拉平df中的index_num
+        db_df = pd.DataFrame(db_queryset)
+        db_df['index_num'] = db_df['index_num'].str.split(',')
+        db_df = db_df.explode('index_num')
 
-        re_msg = {'code':0, 'data':result_full}
+        # 尝试合并
+        merge_df = pd.merge(db_df,full_df,on=['index_num'],how='left')
+        # 判断merge_df中的db_func，如果为card_1则取日期最大的一行值，如果不是则取全部
+        filtered_df = merge_df[merge_df['db_func'] == 'card_1']
+
+        filtered_df = filtered_df.groupby('index_num').apply(lambda x: x.loc[x['detail_date'].idxmax()])
+        filtered_df = pd.concat([filtered_df, merge_df[merge_df['db_func'] != 'card_1']])
+
+        filtered_df = filtered_df.reset_index(drop=True).groupby('db_mark')
+
+        # 对过滤后的df按照目标格式进行处理
+        # card_1: 按行取数形成对象，拼接数组即可
+        # bar_1/line_1:  按index_num二次分组, 抽离出detail_date以及index_num，形成date/name两个公共部分
+
+        result_data = {}
+        for group_name,group_df in filtered_df:
+            if group_df['db_func'] == 'card_1':
+                each_result = {
+                    ''
+                }
+
+
+        # grouped_df = filtered_df.groupby('db_mark')
+        
+        # for group_name,group_df in grouped_df:
+        #     print(group_name)
+        #     print(group_df)
+
+        re_msg = {'code':0, 'data':{}}
 
     else:
         db_queryset = DashboardMap.objects.get(db_mark=query_params['db_mark'],db_state=1)
