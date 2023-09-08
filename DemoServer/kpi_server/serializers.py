@@ -3,7 +3,7 @@
 from rest_framework import serializers
 
 # 引入model
-from kpi_server.models import Users,Org,Reference,Index,IndexDetail,Reference,UserAuth
+from kpi_server.models import Users,Org,Reference,Index,IndexDetail,Reference,UserAuth,DashboardMap
 
 # 引入基本方法
 import math
@@ -194,3 +194,11 @@ class AuthSerializer(serializers.ModelSerializer):
         model = UserAuth
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
+
+class DashboardSerializer(serializers.ModelSerializer):
+
+    class Meta:
+
+        model = DashboardMap
+        # fields = '__all__'
+        fields = 'db_mark','db_name','db_class','index_num','db_func'
