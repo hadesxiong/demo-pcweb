@@ -73,7 +73,7 @@ def getBarLineData(org_num,start_date,end_date,index_list):
 
     # 拼接df,处理title
     result_df = pd.merge(detail_df_pivot,title_df,on=['index_num'],how='left')    
-    title_df = result_df[['index_num','index_name']]
+    title_df = result_df[['index_num','index_name','index_unit']]
 
     # 处理result_df成为result_dict
     result_df.drop(['index_unit','index_name'],axis=1,inplace=True)
@@ -194,20 +194,15 @@ def getDashboard(request):
                 each_result = {
                     'class': group_df['db_class'].iloc[0],
                     'data':{},
-                    'date': group_df['detail_date'].tolist()
+                    'date': set(group_df['detail_date'].tolist())
                 }
 
-
                 index_data = group_df.groupby('index_num')['detail_value'].apply(list).to_dict()
-                for index_num, values in index_data.items():
-                    each_result['data'][index_num] = values
+                title_df = pd.merge(group_df,ib_df,on=['index_num'],how='left')[['index_num', 'index_name', 'index_unit']].drop_duplicates()
 
-                result_data[group_df['db_mark'].iloc[0]] = {'title':group_df['db_name'].iloc[0],'data':each_result}
+                result_data[group_df['db_mark'].iloc[0]] = {'title':group_df['db_name'].iloc[0],'data':index_data,'name':title_df.to_dict(orient='records')}        
 
-        print(result_data)
-        
-
-        re_msg = {'code':0, 'data':result_data }
+        re_msg = {'code':0,'data':result_data }
 
     else:
         db_queryset = DashboardMap.objects.get(db_mark=query_params['db_mark'],db_state=1)
