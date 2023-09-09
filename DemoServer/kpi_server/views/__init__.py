@@ -30,3 +30,4 @@ from .dashboard.getDashboard import *
 
 # upload接口
 from .upload.getUploadList import *
+from .upload.getUploadDetail import *

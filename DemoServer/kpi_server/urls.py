@@ -32,6 +32,7 @@ urlpatterns = [
     path('api/dashboard/getDashboard',views.getDashboard),
 
     # upload
-    path('api/upload/getUploadList',views.getUploadList)
+    path('api/upload/getUploadList',views.getUploadList),
+    path('api/upload/getUploadDetail',views.getUploadDetail)
 
 ]

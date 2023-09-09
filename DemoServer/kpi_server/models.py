@@ -158,7 +158,7 @@ class Index(models.Model):
 # 指标详情表 - 用于记录机构/个人的单时间颗粒度指标记录
 class IndexDetail(models.Model):
 
-    record_id = models.CharField(help_text='上传记录编号',max_length=10,blank=True)
+    detail_id = models.CharField(help_text='上传记录编号',max_length=48,blank=True)
     index_num = models.CharField(help_text='指标编号',max_length=10)
     detail_value = models.DecimalField(help_text='指标具体值',max_digits=18,decimal_places=2)
     detail_date = models.DateField(help_text='详情归属月份')
@@ -194,11 +194,12 @@ class UploadRecord(models.Model):
 
 class UploadDetail(models.Model):
 
-    detail_id= models.CharField(help_text='历史记录编号',max_length=10,unique=True)
+    detail_id= models.CharField(help_text='历史记录编号',max_length=48,unique=True)
     record_id = models.CharField(help_text='上传记录编号',max_length=24)
     detail_active = models.IntegerField(help_text='该版本是否对外生效')
     detail_update_user = models.CharField(help_text='历史上传人员notesid',max_length=10)
     detail_update_fileName = models.CharField(help_text='历史记录上传文件名称',max_length=128)
+    detail_update_fileMD5 = models.CharField(help_text='文件MD5值',max_length=128,default='')
     detail_state = models.IntegerField(help_text='历史记录状态')
     detail_create = models.DateField(help_text='创建时间',auto_now_add=True,auto_now=False)
     detail_update = models.DateField(help_text='修改时间',auto_now_add=False,auto_now=True)

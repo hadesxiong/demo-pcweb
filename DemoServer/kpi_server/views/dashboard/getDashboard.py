@@ -170,7 +170,7 @@ def getDashboard(request):
                 # 2 value_current为detail_date较大的一行值
                 # 3 value_compare为detail_date大减去detail_date小
                 # 4 如果value_compare为正，则value_state为1，反之则为0
-
+                print(group_df)
                 each_df = group_df.groupby('index_num').apply(lambda x:pd.Series({
                     'value_current': x['detail_value'].iloc[0].astype(int),
                     'value_compare': x['detail_value'].iloc[0].astype(int) - x['detail_value'].iloc[1].astype(int),
