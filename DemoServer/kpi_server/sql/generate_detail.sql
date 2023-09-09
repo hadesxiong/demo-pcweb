@@ -35,5 +35,4 @@ SET
             ELSE ROUND(RAND() * 180 + 20, 2)
         END
         WHEN index_info.index_unit = '%' THEN ROUND(RAND() * 100, 2)
-        END
-    END;
+        END;

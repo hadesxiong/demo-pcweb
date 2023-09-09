@@ -27,3 +27,6 @@ from .auth.refreshToken import *
 
 # dashboard接口
 from .dashboard.getDashboard import *
+
+# upload接口
+from .upload.getUploadList import *

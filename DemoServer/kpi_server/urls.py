@@ -29,6 +29,9 @@ urlpatterns = [
     path('api/auth/testToken',views.protected_view),
 
     # dashboard
-    path('api/dashboard/getDashboard',views.getDashboard)
+    path('api/dashboard/getDashboard',views.getDashboard),
+
+    # upload
+    path('api/upload/getUploadList',views.getUploadList)
 
 ]

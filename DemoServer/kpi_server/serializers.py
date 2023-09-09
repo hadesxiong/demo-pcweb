@@ -3,7 +3,7 @@
 from rest_framework import serializers
 
 # 引入model
-from kpi_server.models import Users,Org,Reference,Index,IndexDetail,Reference,UserAuth,DashboardMap
+from kpi_server.models import Users,Org,Reference,Index,IndexDetail,Reference,UserAuth,DashboardMap,UploadRecord
 
 # 引入基本方法
 import math
@@ -202,3 +202,23 @@ class DashboardSerializer(serializers.ModelSerializer):
         model = DashboardMap
         # fields = '__all__'
         fields = 'db_mark','db_name','db_class','index_num','db_func'
+
+class UploadRecordSerializer(serializers.ModelSerializer):
+
+    user_name = serializers.SerializerMethodField()
+    record_dt = serializers.SerializerMethodField()
+
+    # 查询Users,获取user_name
+    user_queryset = Users.objects.all().values('notes_id','user_name')
+    user_dict = {item['notes_id']:item['user_name'] for item in user_queryset}
+
+    def get_user_name(self,obj):
+        return f'{obj.record_update_user} - {self.user_dict[obj.record_update_user]}'
+
+    def get_record_dt(self,obj):
+        return f'{obj.record_date.year}.{obj.record_date.month} - 通报数据'
+    class Meta:
+
+        model = UploadRecord
+        # fields = '__all__'
+        fields = ('record_id','record_class','record_dt','record_update_time','user_name')
