@@ -87,7 +87,10 @@ DATABASES = {
         'USER':'root',
         'PASSWORD':'Faurecia614',
         # Z-INTRA
-        'HOST':'10.162.165.155',
+        # 'HOST':'10.162.165.155',
+        # 'PORT':11001
+        # INTRA
+        'HOST':'192.168.31.156',
         'PORT':11001
     },
     'kpi_db':{
@@ -96,7 +99,10 @@ DATABASES = {
         'USER':'root',
         'PASSWORD':'Faurecia614',
         # Z-INTRA
-        'HOST':'10.162.165.155',
+        # 'HOST':'10.162.165.155',
+        # 'PORT':11001
+        # INTRA
+        'HOST':'192.168.31.156',
         'PORT':11001
     }
 }
@@ -156,7 +162,7 @@ REST_FRAMEWORK = {
 
 # 配置simple JWT
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=3600), #设定访问令牌有效时间
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=24), #设定访问令牌有效时间
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  #设定刷新令牌有效期
     'ROTATE_REFRESH_TOKENS': True,
 }

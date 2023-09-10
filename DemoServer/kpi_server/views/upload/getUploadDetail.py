@@ -51,8 +51,24 @@ def getUploadDetail(request):
         merge_df = pd.merge(merge_df,pd.DataFrame(org_queryset),on=['org_num'],how='left')
         merge_df = pd.merge(merge_df,pd.DataFrame(ib_queryset),on=['index_num'],how='left')
 
-        print(merge_df)
+        # 通过df转置
+        pivot_df = pd.pivot(merge_df,values='detail_value',index=['detail_date','org_name'],columns=['index_num']).reset_index()
+
+        index_data = pivot_df.to_dict(orient='records')
+        print(index_data)
         
-        re_msg = {'code':0,'data':{'detail':detail_data,'info':record_data}}
+        # 拼接表头
+        filter_df = merge_df[['detail_date','org_name','index_num']].drop_duplicates()
+        
+        header_list = [{'dataIndex':'detail_date','key':'detail_date','title':'数据日期'},{'dataIndex':'org_name','key':'org_name','title':'机构名称'}]
+        for _, row in filter_df.iterrows():
+            header_dict = {
+                'dataIndex': row['index_num'],
+                'key': row['index_num'],
+                'title': merge_df.loc[(merge_df['index_num'] == row['index_num']) & (merge_df['org_name'] == row['org_name']), 'index_name'].values[0] + f"({merge_df.loc[(merge_df['index_num'] == row['index_num']) & (merge_df['org_name'] == row['org_name']), 'index_unit'].values[0]})"
+            }
+            header_list.append(header_dict)
+
+        re_msg = {'code':0,'data':{'detail':detail_data,'info':record_data,'title':header_list,'index':index_data}}
 
     return JsonResponse(re_msg,safe=False)

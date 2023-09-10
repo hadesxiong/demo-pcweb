@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q,Subquery
 from django.http.response import JsonResponse
 
-from kpi_server.models import IndexDetail,Users,Org
+from kpi_server.models import IndexDetail,Users,Org,Index
 
 import pandas as pd
 
@@ -114,6 +114,12 @@ def getTableData(request):
         # 合并
         merge_df = pd.merge(merge_df,org_df,on=['detail_belong'],how='left')
 
+        # 处理表头
+        ib_query = Index.objects.filter(index_num__in=body_data['index_num']).values('index_num','index_name','index_unit')
+        ib_df = pd.DataFrame(ib_query)
+        print(ib_df)
+
+ 
         # 处理顺序
         new_order = merge_df.columns.sort_values().tolist()
         new_order.remove('detail_belong')
@@ -123,12 +129,41 @@ def getTableData(request):
         
         merge_df = merge_df.reindex(columns=new_order).fillna('--')
 
-        # 处理成字典,逐行
-        # df_list = [row.to_dict() for _,row in merge_df.iterrows()]
+        print(merge_df)
+
+        # 处理表头
+        title_list = []
+        ct_map = {'cp':'期末比上年','tm':'期末','ly':'上年','pl':'计划','rt':'计划完成率'}
+
+        for _,row in ib_df.iterrows():
+            index_num = row['index_num']
+            title = f"{row['index_name']}({row['index_unit']})"
+
+            children_list = []
+            # 遍历merge_df
+            for column in merge_df.columns[3:]:
+                if column.startswith(index_num):
+                    dataIndex=column
+                    key=column
+                    column_title=''
+
+                    # 查找对应的标题
+                    column_title = ct_map[column[-2:]]
+                    
+                    # 创建子项的字典
+                    child_dict = {
+                        'dataIndex': dataIndex,
+                        'key': key,
+                        'title': column_title
+                    }
+                    children_list.append(child_dict)
+            
+            title_dict = {'title':title,'chidlren':children_list}
+            title_list.append(title_dict)
 
         # 处理成字典,orient=records
         df_list = merge_df.to_dict(orient='records')
 
-    re_msg = {'data':df_list,'code':0}
+    re_msg = {'data':df_list,'code':0,'title':title_list}
     
     return JsonResponse(re_msg,safe=False)
