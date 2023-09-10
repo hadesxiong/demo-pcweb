@@ -33,6 +33,8 @@ urlpatterns = [
 
     # upload
     path('api/upload/getUploadList',views.getUploadList),
-    path('api/upload/getUploadDetail',views.getUploadDetail)
+    path('api/upload/getUploadDetail',views.getUploadDetail),
+    path('api/upload/createUpload',views.createUpload),
+    path('api/upload/publishUpload',views.publishUpload)
 
 ]

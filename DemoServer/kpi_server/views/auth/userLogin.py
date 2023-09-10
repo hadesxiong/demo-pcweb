@@ -76,22 +76,30 @@ def userLogin(request):
                     notes_id=body_data['notes_id'],
                     password=body_data['password']
                 )
-                re_msg = {'code':0,'msg':'create success','type':'user'}
+                # 发放token
+                token = RefreshToken.for_user(normal_user)
+                re_msg = {'code':0,'msg':'create success','type':'user','refresh':str(token),'access':str(token.access_token)}
     
             elif body_data['user_type'] == 2:
                 admin_user = UserAuth.objects.createAU(
                     notes_id=body_data['notes_id'],
                     password=body_data['password']
                 )
-                re_msg = {'code':0,'msg':'create success','type':'admin user'}
+                # 发放token
+                token = RefreshToken.for_user(admin_user)
+                re_msg = {'code':0,'msg':'create success','type':'admin user','refresh':str(token),'access':str(token.access_token)}
 
             elif body_data['user_type'] == 3:
                 super_user = UserAuth.objects.createSU(
                     notes_id=body_data['notes_id'],
                     password=body_data['password']
                 )
-                re_msg = {'code':0,'msg':'create success','type':'super user'}
+                # 发放token
+                token = RefreshToken.for_user(super_user)
+                re_msg = {'code':0,'msg':'create success','type':'super user','refresh':str(token),'access':str(token.access_token)}
             else:
                 re_msg = {'code':1,'msg':'err type'}
+
+            
 
     return JsonResponse(re_msg,safe=False)
