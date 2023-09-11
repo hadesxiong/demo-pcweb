@@ -51,7 +51,11 @@ def userLogin(request):
                     )
 
                 user_token.save()
-                re_msg = {'code':0,'msg':'success','refresh':str(token),'access':str(token.access_token)}
+                re_msg = {'code':0,'msg':'success'}
+                response_obj = JsonResponse(re_msg,safe=False)
+                response_obj['Access-Control-Expose-Headers'] = "*"
+                response_obj['Authorization'] = f'Bearer {str(token.access_token)}'
+                response_obj['X-Refresh-Token'] = token
 
             else:
                 try:
@@ -66,11 +70,13 @@ def userLogin(request):
                 
                 user_token.save()
                 re_msg = {'code':1,'err':f'{user_token.login_err}次'}
+                response_obj = JsonResponse(re_msg,safe=False)
 
         except UserAuth.DoesNotExist:
             re_msg = {'code':1,'msg':'no user found.'}
+            response_obj = JsonResponse(re_msg,safe=False)
 
-    return JsonResponse(re_msg,safe=False)
+    return response_obj
 
 # 用户注册逻辑
 @api_view(['POST'])

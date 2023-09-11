@@ -13,13 +13,13 @@
                         <div class="font_24 fw_500 mb_16 lh_32 w_p100 ta_l fc_l1"><span class="fc_l2 mr_8">欢迎登陆</span>业绩展示系统
                         </div>
                         <div class="d_flex fd_c gap_20 w_p100">
-                            <a-input placeholder="请输入用户名" size="large" :bordered="false" class="bg_l3 br_2">
+                            <a-input v-model:value="user_name" placeholder="请输入用户名" size="large" :bordered="false" class="bg_l3 br_2">
                                 <template #prefix>
                                     <icon-park type="UserPositioning" fill="#4E5969" size="16"
                                         class="c-func_icon"></icon-park>
                                 </template>
                             </a-input>
-                            <a-input-password placeholder="请输入密码" size="large" :bordered="false" class="bg_l3 br_2">
+                            <a-input-password v-model:value="password" placeholder="请输入密码" size="large" :bordered="false" class="bg_l3 br_2">
                                 <template #prefix>
                                     <icon-park type="Lock" fill="#4E5969" size="16" class="c-func_icon"></icon-park>
                                 </template>
@@ -30,7 +30,7 @@
                             <a class="fc_brand6">忘记密码</a>
                         </div>
                         <div class="w_p100 h_32 lh_32">
-                            <a-button type="primary" class="bg_brand6 w_p100 h_38 font_16 fw_500">登陆</a-button>
+                            <a-button type="primary" class="bg_brand6 w_p100 h_38 font_16 fw_500" @click="userLogin(user_name,password)">登陆</a-button>
                         </div>
                     </div>
                 </div>
@@ -102,13 +102,33 @@
 </style>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent,ref } from 'vue';
 import { IconPark } from "@icon-park/vue-next/es/all";
+import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
     name: 'LoginMain',
     components: {
         'icon-park': IconPark
+    },
+    setup() {
+        return {
+            user_name:ref(''),
+            password: ref(''),
+            router:useRouter()
+        }
+    },
+    methods: {
+        async userLogin(user,pw) {
+            const user_data = {notes:user,pw:pw}
+            const login_res = await axios.post('http://localhost:3000/api/auth/userLogin',user_data,{ withCredentials: true })
+            localStorage.setItem('refresh',login_res['headers'].get('authorization'))
+            localStorage.setItem('access',login_res['headers'].get('x-refresh-token'))
+            if (login_res.data.code == 0) {
+                this.router.push('/dashboard-main')
+            }
+        }
     }
 })
 

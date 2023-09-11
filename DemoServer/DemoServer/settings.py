@@ -43,10 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework_swagger',
     'rest_framework',
-    'kpi_server'
+    'kpi_server',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -75,6 +77,23 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'DemoServer.wsgi.application'
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8080',
+    'http://localhost:3000',
+]
+CORS_ALLOW_HEADERS = [
+    'Authorization',
+    'X-Refresh-Token',
+    'your-custom-header'
+]
+CORS_EXPOSE_HEADERS = [
+    'Authorization',
+    'X-Refresh-Token',
+]
+CORS_ALLOW_METHODS = ("POST","GET")
 
 
 # Database
