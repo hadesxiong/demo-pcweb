@@ -27,3 +27,6 @@ pnpm-debug.log*
 
 # nohup
 *.out
+
+# sock
+*.sock
