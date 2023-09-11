@@ -78,7 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'DemoServer.wsgi.application'
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:8080',
@@ -87,7 +87,7 @@ CORS_ORIGIN_WHITELIST = [
 CORS_ALLOW_HEADERS = [
     'Authorization',
     'X-Refresh-Token',
-    'your-custom-header'
+    'Content-Type'
 ]
 CORS_EXPOSE_HEADERS = [
     'Authorization',
