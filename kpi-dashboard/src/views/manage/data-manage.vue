@@ -153,7 +153,7 @@
 @import url('../../assets/style/overwrite.css');
 </style>
 
-<style scoped>
+<style>
 .ant-btn-default:not(:disabled):hover {
     border-color: #165dff;
     color: #165dff;

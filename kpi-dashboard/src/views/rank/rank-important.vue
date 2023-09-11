@@ -45,7 +45,7 @@
         </div>
 </template>
 
-<style scoped>
+<style>
 @import url('../../assets/style/common.css');
 @import url('../../assets/style/colorset.css');
 @import url('../../assets/style/overwrite.css');

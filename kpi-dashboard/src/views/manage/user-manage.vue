@@ -267,7 +267,7 @@
 }
 </style>
 
-<style scoped>
+<style>
 :where(.css-dev-only-do-not-override-eq3tly).ant-input {
     padding: 0px !important;
     height: 100% !important;
