@@ -231,8 +231,7 @@
 }
 
 /* 输入框 */
-:where(.css-dev-only-do-not-override-eq3tly).ant-input-affix-wrapper
-  > input.ant-input {
+:where(.css-dev-only-do-not-override-eq3tly).ant-input-affix-wrapper > input.ant-input {
   background-color: transparent !important;
 }
 :where(.css-dev-only-do-not-override-eq3tly).ant-input-affix-wrapper:not(
@@ -275,8 +274,7 @@
 }
 
 /* upload部分 */
-:where(.css-dev-only-do-not-override-eq3tly).ant-upload-wrapper
-  .ant-upload-select {
+:where(.css-dev-only-do-not-override-eq3tly).ant-upload-wrapper .ant-upload-select {
   width: 100% !important;
   display: block !important;
 }
