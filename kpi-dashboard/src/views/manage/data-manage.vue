@@ -162,6 +162,10 @@
 .ant-btn .ant-btn-default {
     border-radius: 2px !important;
 }
+.ant-input-affix-wrapper > input {
+    background-color: transparent !important;
+}
+
 </style>
 
 <script>
