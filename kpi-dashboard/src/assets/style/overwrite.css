@@ -127,10 +127,10 @@
   border-start-end-radius: 0px;
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:first-child {
+.ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:first-child {
   border-start-start-radius: 2px;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:last-child {
+.ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:last-child {
   border-start-end-radius:2px;
 }
 
@@ -161,10 +161,9 @@
   border-radius: 2px;
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-picker:hover,
-:where(.css-dev-only-do-not-override-eq3tly).ant-picker-focused {
+.ant-picker:hover,.ant-picker-focused {
   border-color: none;
-  background-color: #fff;
+  background-color: var(--color-fill-2) !important;
   box-shadow: none;
 }
 
@@ -213,42 +212,42 @@
   background-color: #e8f3ff;
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-picker-dropdown
+.ant-picker-dropdown
   .ant-picker-cell-in-view.ant-picker-cell-range-start:not(
     .ant-picker-cell-range-start-single
   )::before,
-:where(.css-dev-only-do-not-override-eq3tly).ant-picker-dropdown
+.ant-picker-dropdown
   .ant-picker-cell-in-view.ant-picker-cell-range-end:not(
     .ant-picker-cell-range-end-single
   )::before {
   background-color: #e8f3ff;
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-picker-dropdown
+.ant-picker-dropdown
   .ant-picker-cell-in-view.ant-picker-cell-range-end
   .ant-picker-cell-inner {
   background-color: #165dff;
 }
 
 /* 输入框 */
-:where(.css-dev-only-do-not-override-eq3tly).ant-input-affix-wrapper > input.ant-input {
+.ant-input-affix-wrapper > input.ant-input {
   background-color: transparent !important;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-input-affix-wrapper:not(
+.ant-input-affix-wrapper:not(
     .ant-input-affix-wrapper-disabled
   ):hover {
   border: 0px !important;
   border-inline-end-width: 0px !important;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-input-affix-wrapper:focus,
-:where(.css-dev-only-do-not-override-eq3tly).ant-input-affix-wrapper-focused {
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
   box-shadow: none;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-input:focus,
-:where(.css-dev-only-do-not-override-eq3tly).ant-input-focused {
+.ant-input:focus,
+.ant-input-focused {
   box-shadow: none;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-input-affix-wrapper {
+.ant-input-affix-wrapper {
   border: none;
 }
 
@@ -266,48 +265,48 @@
   border-radius: 2px;
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-btn-default {
+.ant-btn-default {
   border: none;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-btn-primary {
+.ant-btn-primary {
   border: none;
 }
 
 /* upload部分 */
-:where(.css-dev-only-do-not-override-eq3tly).ant-upload-wrapper .ant-upload-select {
+.ant-upload-wrapper .ant-upload-select {
   width: 100% !important;
   display: block !important;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-upload-wrapper .ant-upload {
+.ant-upload-wrapper .ant-upload {
   width: 100% !important;
   display: block !important;
 }
 
 /* tab部分 */
-:where(.css-dev-only-do-not-override-eq3tly).ant-tabs-top
+.ant-tabs-top
   > .ant-tabs-nav::before,
-:where(.css-dev-only-do-not-override-eq3tly).ant-tabs-bottom
+.ant-tabs-bottom
   > .ant-tabs-nav::before,
-:where(.css-dev-only-do-not-override-eq3tly).ant-tabs-top
+.ant-tabs-top
   > div
   > .ant-tabs-nav::before,
-:where(.css-dev-only-do-not-override-eq3tly).ant-tabs-bottom
+.ant-tabs-bottom
   > div
   > .ant-tabs-nav::before {
   border-bottom: 0px !important;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-tabs-top
+.ant-tabs-top
   > .ant-tabs-nav
   .ant-tabs-ink-bar {
   display: none;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-tabs .ant-tabs-tab {
+.ant-tabs .ant-tabs-tab {
   padding: 5px 16px;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-tabs >.ant-tabs-nav .ant-tabs-nav-list, :where(.css-dev-only-do-not-override-eq3tly).ant-tabs >div>.ant-tabs-nav .ant-tabs-nav-list {
+.ant-tabs >.ant-tabs-nav .ant-tabs-nav-list, .ant-tabs >div>.ant-tabs-nav .ant-tabs-nav-list {
   gap: 20px;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-tabs .ant-tabs-tab+.ant-tabs-tab {
+.ant-tabs .ant-tabs-tab+.ant-tabs-tab {
   margin: 0px;
 }
 .ant-tabs-tab-active {
@@ -316,31 +315,31 @@
   font-weight: 500;
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: #165dff;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-tabs .ant-tabs-content {
+.ant-tabs .ant-tabs-content {
   height: 100%;
 }
 
 /* 分页器部分 */
-:where(.css-dev-only-do-not-override-eq3tly).ant-pagination .ant-pagination-item a{
+.ant-pagination .ant-pagination-item a{
   color: #4E5969;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-pagination .ant-pagination-item-active {
+.ant-pagination .ant-pagination-item-active {
   background-color: #E8F3FF;
   border: none;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-pagination .ant-pagination-item-active a {
+.ant-pagination .ant-pagination-item-active a {
   color: #165dff;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-pagination .ant-pagination-prev button span  {
+.ant-pagination .ant-pagination-prev button span  {
   color: #4E5969;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-pagination .ant-pagination-next button span  {
+.ant-pagination .ant-pagination-next button span  {
   color: #4E5969;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
   border: none ;
   background-color: #F2F3F5 ;
   color: #4E5969 ;
@@ -348,3 +347,12 @@
 }
 
 /* 按钮部分 */
+.ant-btn-default {
+  border: none;
+}
+
+/* 下拉选项部分 */
+
+.ant-input-affix-wrapper {
+  border: none;
+}

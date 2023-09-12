@@ -229,8 +229,8 @@
 }
 </style>
 
-<style  >
-:where(.css-dev-only-do-not-override-eq3tly).ant-input {
+<style scoped>
+.ant-table-cell .input-container input {
     padding: 0px !important;
     height: 100% !important;
     background-color: transparent;
@@ -239,7 +239,7 @@
     border-radius: 0px;
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-input:focus {
+.ant-table-cell .input-container input:focus {
     color: #165dff;
 }
 </style>

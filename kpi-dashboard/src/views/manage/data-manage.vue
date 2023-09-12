@@ -154,18 +154,25 @@
 </style>
 
 <style>
-.ant-btn-default:not(:disabled):hover {
-    border-color: #165dff;
-    color: #165dff;
-}
-
 .ant-btn .ant-btn-default {
     border-radius: 2px !important;
 }
 .ant-input-affix-wrapper > input {
     background-color: transparent !important;
 }
-
+.ant-input-affix-wrapper:focus,.ant-input-affix-wrapper-focuse {
+    box-shadow: none;
+}
+.ant-upload-wrapper .ant-upload {
+    width: 100% !important;
+    display: block !important;
+}
+.ant-upload-wrapper .ant-upload {
+    border: none;
+}
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-diabled):hover {
+    border: none !important;
+}
 </style>
 
 <script>

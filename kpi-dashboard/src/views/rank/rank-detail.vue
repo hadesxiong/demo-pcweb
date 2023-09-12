@@ -115,6 +115,7 @@
 
 .bak_btn {
     width: 16px !important;
+    border: none;
 }
 
 .bak_icon {

@@ -87,15 +87,15 @@
     margin-right: 8px;
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
     background-color: #f2f3f5;
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-btn-primary:not(:disabled):hover {
+.ant-btn-primary:not(:disabled):hover {
     background-color: rgba(22, 93, 255, 0.8);
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-checkbox-checked .ant-checkbox-inner {
+.ant-checkbox-checked .ant-checkbox-inner {
     background-color: #165dff !important;
     border-color: #165dff !important;
 }
