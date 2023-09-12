@@ -106,11 +106,20 @@ import { defineComponent,ref } from 'vue';
 import { IconPark } from "@icon-park/vue-next/es/all";
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import CryptoJS from 'crypto-js';
+
+import {refreshToken} from '@/utils/refreshToken.js'
 
 export default defineComponent({
     name: 'LoginMain',
     components: {
         'icon-park': IconPark
+    },
+    data() {
+        return {
+            key:'$aR9#p3K@L2qJ7!W',
+            iv:'X5yD!w*Q8Fv@2S7M'
+        }
     },
     setup() {
         return {
@@ -121,12 +130,23 @@ export default defineComponent({
     },
     methods: {
         async userLogin(user,pw) {
-            const user_data = {notes:user,pw:pw}
+            // 密码加密
+            const encrypted_pw = CryptoJS.enc.Utf8.parse(pw)
+            const encrypted_key = CryptoJS.enc.Utf8.parse(this.key)
+            const encrypted_iv = CryptoJS.enc.Utf8.parse(this.iv)
+            const encrypted_data = CryptoJS.AES.encrypt(encrypted_pw,encrypted_key,{iv:encrypted_iv }).toString();
+            const user_data = {notes:user,pw:encrypted_data}
+
             const login_res = await axios.post('http://localhost:3000/api/auth/userLogin',user_data,{ withCredentials: true })
-            localStorage.setItem('refresh',login_res['headers'].get('authorization'))
-            localStorage.setItem('access',login_res['headers'].get('x-refresh-token'))
+            // 处理结果
             if (login_res.data.code == 0) {
-                this.router.push('/dashboard-main')
+                console.log(login_res)
+                localStorage.setItem('refresh',login_res['headers'].get('x-refresh-token'))
+                localStorage.setItem('access',login_res['headers'].get('authorization'))
+                // this.router.push('/dashboard-main')
+                refreshToken()
+            } else {
+                console.log(login_res.data)
             }
         }
     }

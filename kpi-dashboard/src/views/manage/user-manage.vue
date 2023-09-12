@@ -4,31 +4,31 @@
             <div class="d_flex gap_20">
                 <a-dropdown
                     class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                    <a>{{ search_orgGroup.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                    <a>{{ search_orgGroup.ref_name }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
                     <template #overlay>
                         <a-menu>
-                            <a-menu-item v-for="item in org_group" :key="item.key"
-                                @click="chooseMenuItem(item, 'search_orgGroup')">{{ item.value }}</a-menu-item>
+                            <a-menu-item v-for="item in org_group" :key="item.ref_code"
+                                @click="chooseMenuItem(item, 'search_orgGroup')">{{ item.ref_name }}</a-menu-item>
                         </a-menu>
                     </template>
                 </a-dropdown>
                 <a-dropdown
                     class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                    <a>{{ search_charater.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                    <a>{{ search_charater.ref_name }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
                     <template #overlay>
                         <a-menu>
-                            <a-menu-item v-for="item in charater_group" :key="item.key"
-                                @click="chooseMenuItem(item, 'search_charater')">{{ item.value }}</a-menu-item>
+                            <a-menu-item v-for="item in charater_group" :key="item.ref_code"
+                                @click="chooseMenuItem(item, 'search_charater')">{{ item.ref_name }}</a-menu-item>
                         </a-menu>
                     </template>
                 </a-dropdown>
                 <a-dropdown
                     class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                    <a>{{ search_line.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                    <a>{{ search_line.ref_name }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
                     <template #overlay>
                         <a-menu>
-                            <a-menu-item v-for="item in line_more" :key="item.key"
-                                @click="chooseMenuItem(item, 'search_line')">{{ item.value }}</a-menu-item>
+                            <a-menu-item v-for="item in line_more" :key="item.ref_code"
+                                @click="chooseMenuItem(item, 'search_line')">{{ item.ref_name }}</a-menu-item>
                         </a-menu>
                     </template>
                 </a-dropdown>
@@ -285,16 +285,23 @@
 <script>
 import { defineComponent, reactive, ref } from 'vue';
 import { IconPark } from '@icon-park/vue-next/es/all';
-import axios from 'axios';
 import { cloneDeep } from 'lodash-es'
 
+import axios from 'axios';
 import FileInput from '../../components/other/file-input.vue';
+
+const api = axios.create({
+    baseURL: process.env.VUE_APP_BASE_URL
+})
 
 export default defineComponent({
     name: "OrgManage",
     components: {
         'icon-park': IconPark,
         'file-input': FileInput,
+    },
+    data() {
+        return {filter_list:'ubg.uc.og'}
     },
     setup() {
         const table_data = ref({});
@@ -316,9 +323,9 @@ export default defineComponent({
             org_group: ref([]),
             charater_group: ref([]),
             line_more: ref([]),
-            search_orgGroup: ref({ key: 'all', value: '全部分组' }),
-            search_charater: ref({ key: 'all', value: '全部角色' }),
-            search_line: ref({ key: 'all', value: '全部序列' }),
+            search_orgGroup: ref({ ref_code: 0, ref_name: '全部' }),
+            search_charater: ref({ ref_code: 0, ref_name: '全部' }),
+            search_line: ref({ ref_code:0, ref_name: '全部' }),
             add_charater: ref({ key: '00', value: '超级管理员' }),
             add_line: ref({ key: 'enterprise', value: '企金序列' }),
             belong_org: ref({ key: '3100001', value: '上海分行' }),
@@ -329,19 +336,20 @@ export default defineComponent({
     },
     mounted() {
         this.getOrgData();
-        this.getFilterData();
+        this.getUserList();
+        this.getFilterData(this.filter_list)
     },
     methods: {
         async getOrgData() {
             const user_res = await axios.get('/demo/manage/user-manage.json');
             this.table_data = user_res.data
         },
-        async getFilterData() {
-            const filter_res = await axios.get('/demo/filter/normal_filter.json');
-            this.org_group = filter_res.data.org_group;
-            this.charater_group = filter_res.data.charater_gourp;
-            this.line_more = filter_res.data.line_more;
-        },
+        // async getFilterData() {
+        //     const filter_res = await axios.get('/demo/filter/normal_filter.json');
+        //     this.org_group = filter_res.data.org_group;
+        //     this.charater_group = filter_res.data.charater_gourp;
+        //     this.line_more = filter_res.data.line_more;
+        // },
         edit(key) {
             // console.log(this.dataSource.table_data,key)
             this.editableData[key] = cloneDeep(this.dataSource.table_data.filter(item => key === item.key)[0]);
@@ -370,13 +378,47 @@ export default defineComponent({
             this[target] = item
         },
         resetSearch() {
-            this.search_orgGroup = { key: 'all', value: '全部分组' };
-            this.search_charater = { key: 'all', value: '全部角色' };
-            this.search_line = { key: 'all', value: '全部序列' };
+            this.search_orgGroup = { ref_code: 0, ref_name: '全部' };
+            this.search_charater = { ref_code: 0, ref_name: '全部' };
+            this.search_line = { ref_code: 0, ref_name: '全部' };
         },
         confirmSearch() {
-            console.log(this.search_orgGroup, this.search_charater, this.search_line)
+            console.log(this.search_orgGroup, this.search_charater, this.search_line);
+            this.getUserList();
+        },
+        // 获取用户列表
+        async getUserList() {
+            const get_params = {
+                group: this.line_more.ref_code,
+                character: this.search_charater.ref_code,
+                org: this.search_orgGroup.ref_code,
+                client:0,
+                page:1,
+                size:25,
+                ext:''
+            }
+            const get_headers = {
+                'Authorization': localStorage.getItem('access')
+            }
+            const user_list = await api('/api/user/getUserList',{params:get_params,headers:get_headers})
+            console.log(user_list);
+        },
+        // 获取筛选项
+        async getFilterData(ref_type) {
+            const get_params = {type:ref_type}
+            const get_headers = {
+                'Authorization': localStorage.getItem('access')
+            }
+            const filter_data = await api('/api/other/getFilter',{params:get_params,headers:get_headers})
+            console.log(filter_data.data)
+            if (filter_data.data.code == 0 ) {
+                this.org_group = filter_data.data.data.org_group
+                this.charater_group = filter_data.data.data.user_character
+                this.line_more = filter_data.data.data.user_belong_group
+            }
+
         }
+
     }
 });
 
