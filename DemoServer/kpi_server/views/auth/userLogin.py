@@ -1,6 +1,7 @@
 # coding=utf8
 from django.http.response import JsonResponse
 from django.utils import timezone
+from django.conf import settings
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated,AllowAny
@@ -8,6 +9,30 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from kpi_server.models import UserAuth,UserToken
+
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.backends import default_backend
+import base64
+
+
+# 通用方法 - 密码解密验证
+def decrypt_aes(encrypted_data, key, iv):
+    # 将 Base64 编码的加密数据解码为字节串
+    encrypted_bytes = base64.b64decode(encrypted_data)
+    # 初始化 AES 解密器
+    backend = default_backend()
+    cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=backend)
+    decryptor = cipher.decryptor()
+    # 解密数据
+    decrypted_data = decryptor.update(encrypted_bytes) + decryptor.finalize()
+    # 去除填充
+    unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
+    unpadded_data = unpadder.update(decrypted_data) + unpadder.finalize()
+    # 将解密后的字节串转换为字符串
+    decrypted_text = unpadded_data.decode('utf-8')
+
+    return decrypted_text
 
 # token验证
 @api_view(['GET'])
@@ -26,6 +51,10 @@ def userLogin(request):
         'password': request.data.get('pw',None),
     }
 
+    # 配置key,iv
+    decrypt_key = bytes(settings.CRYPTO_KEY,'utf-8')
+    decrypt_iv = bytes(settings.CRYPTO_IV,'utf-8')
+
     # 参数检查
     if None in body_data.values():
         re_msg = {'code':0,'err_msg':'err params'}
@@ -34,6 +63,8 @@ def userLogin(request):
     else:
         try:
             user = UserAuth.objects.get(notes_id=body_data['notes_id'])
+            body_data['password'] = decrypt_aes(body_data['password'],decrypt_key,decrypt_iv)
+
             if user.check_password(body_data['password']):
                 # 验证通过，发放token
                 token = RefreshToken.for_user(user)
@@ -90,6 +121,10 @@ def userRegister(request):
         'user_type': int(request.data.get('type',1))
     }
 
+    # 配置key,iv
+    decrypt_key = bytes(settings.CRYPTO_KEY,'utf-8')
+    decrypt_iv = bytes(settings.CRYPTO_IV,'utf-8')
+
     # 参数检查
     if None in body_data.values():
         re_msg = {'code':0,'err_msg':'err params'}
@@ -100,6 +135,10 @@ def userRegister(request):
             re_msg = {'code':1,'msg':'already exists'}
 
         except UserAuth.DoesNotExist:
+
+            # 解密密码    
+            body_data['password'] = decrypt_aes(body_data['password'],decrypt_key,decrypt_iv)
+
             # 普通用户
             if body_data['user_type'] == 1:
                 normal_user = UserAuth.objects.createUser(

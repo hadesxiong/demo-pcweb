@@ -26,6 +26,10 @@ pymysql.install_as_MySQLdb()
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-7mxm2bo&v+_7z*9=23*0six)-ck3m(8#xs@mxn(#dz4+yymb0s'
 
+# CRYPTO SETTINGS
+CRYPTO_KEY = '$aR9#p3K@L2qJ7!W'
+CRYPTO_IV = 'X5yD!w*Q8Fv@2S7M'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -181,6 +185,7 @@ REST_FRAMEWORK = {
 
 # 配置simple JWT
 SIMPLE_JWT = {
+    'ALGORITHM': 'HS256',
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=24), #设定访问令牌有效时间
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  #设定刷新令牌有效期
     'ROTATE_REFRESH_TOKENS': True,
