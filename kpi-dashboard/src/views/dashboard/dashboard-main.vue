@@ -34,8 +34,8 @@
 </template>
 
 <style>
-@import url('../../assets/style/colorset.css');
-@import url('../../assets/style/common.css');
+@import url('@/assets/style/colorset.css');
+@import url('@/assets/style/common.css');
 
 ::-webkit-scrollbar {
     display: none;
@@ -46,10 +46,13 @@
 <script>
 import { defineComponent, ref } from 'vue';
 
-import DBNCard1 from '../../components/dashboard-new/dbn-card1';
-import DBNBar2 from '../../components/dashboard-new/dbn-bar2';
-import DBNBar1 from '../../components/dashboard-new/dbn-bar1';
-import DBLine from '../../components/dashboard/db-line.vue';
+import CardOne from '@/components/dashboard/card-one.vue';
+import BarOne from '@/components/dashboard/bar-one.vue';
+import BarTwo from '@/components/dashboard/bar-two.vue';
+import LineOne from '@/components/dashboard/line-one.vue';
+
+import { Col, Row } from 'ant-design-vue';
+
 import axios from 'axios';
 
 import dayjs from 'dayjs';
@@ -59,12 +62,14 @@ import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 dayjs.locale('zh-cn');
 
 export default defineComponent({
-    name: 'DashboardOther',
+    name: 'DashboardMain',
     components: {
-        'db-card1': DBNCard1,
-        'db-bar2': DBNBar2,
-        'db-bar1': DBNBar1,
-        'db-line': DBLine
+        'db-card1': CardOne,
+        'db-bar1': BarOne,
+        'db-bar2': BarTwo,
+        'db-line': LineOne,
+        'a-col': Col,
+        'a-row': Row
     },
     setup() {
         return {

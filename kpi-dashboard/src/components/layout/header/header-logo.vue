@@ -6,7 +6,7 @@
 </template>
 
 <style>
-@import url('../../../assets/style/common.css');
+@import url('@/assets/style/common.css');
 
 .c-logo_con {
     display:flex;
@@ -21,6 +21,7 @@
     color: #1D2129;
 }
 </style>
+
 <script>
 import { defineComponent } from 'vue';
 

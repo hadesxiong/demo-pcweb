@@ -9,14 +9,15 @@
                 <a-dropdown>
                     <a class="d_flex fai_c gap_8 fc_brand6">
                         {{ choose_org }}
-                        <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                        <icon-down size="14" class="d_flex fai_c" fill="#165fdd"></icon-down>
                     </a>
                     <template #overlay>
                         <a-menu>
                             <div v-for="(item, index) in org_filter" :key="index">
                                 <a-sub-menu v-if="item.children" :key="item.org_key" :title="item.org_name">
-                                    <a-menu-item v-for="sub_item in item.children" :key="sub_item.org_key" @click="chooseOrg(sub_item)">{{
-                                        sub_item.org_name }}</a-menu-item>
+                                    <a-menu-item v-for="sub_item in item.children" :key="sub_item.org_key" @click="chooseOrg(sub_item)">
+                                        {{ sub_item.org_name }}
+                                    </a-menu-item>
                                 </a-sub-menu>
                                 <a-menu-item v-else @click="chooseOrg(item)">{{ item.org_name }}</a-menu-item>
                             </div>
@@ -26,10 +27,10 @@
                 <a-range-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false"
                     v-model:value="date_value" @openChange="handlePickerClose">
                     <template #suffixIcon>
-                        <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                        <icon-down size="14" class="d_flex fai_c" fill="#165fdd"></icon-down>
                     </template>
                     <template #separator>
-                        <icon-park type="Minus" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                        <icon-minus size="14" class="d_flex fai_c" fill="#165fdd"></icon-minus>
                     </template>
                 </a-range-picker>
             </div>
@@ -85,24 +86,27 @@
 </style>
 
 <script>
-let echarts = require("echarts/lib/echarts");
-require("echarts/lib/chart/bar");
-require("echarts/lib/component/tooltip");
-require("echarts/lib/component/grid");
-
 import { defineComponent, ref } from "vue";
-import { IconPark } from '@icon-park/vue-next/es/all';
-
+import { Down, Minus } from '@icon-park/vue-next';
+import { Dropdown, Menu, SubMenu, MenuItem, RangePicker } from 'ant-design-vue';
 import { echartsResize } from '@/utils/echartsResize.js';
 
-
-
+import * as echarts from 'echarts/lib/echarts.js';
+import 'echarts/lib/chart/bar';
+import 'echarts/lib/component/tooltip';
+import 'echarts/lib/component/grid';
 
 export default defineComponent(
     {
-        name: "DashboardBar",
+        name: "BarOne",
         components: {
-            'icon-park': IconPark
+            'icon-down': Down,
+            'icon-minus': Minus,
+            'a-dropdown': Dropdown,
+            'a-menu': Menu,
+            'a-sub-menu': SubMenu,
+            'a-menu-item': MenuItem,
+            'a-range-picker': RangePicker
         },
         props: {
             bar_data: { type: Object },

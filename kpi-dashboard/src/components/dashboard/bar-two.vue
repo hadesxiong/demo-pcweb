@@ -9,7 +9,7 @@
                 <a-dropdown>
                     <a class="d_flex fai_c gap_8 fc_brand6">
                         {{ choose_org }}
-                        <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                        <icon-down size="14" class="d_flex fai_c" fill="#165fdd"></icon-down>
                     </a>
                     <template #overlay>
                         <a-menu>
@@ -27,7 +27,7 @@
                 <a-date-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false"
                     v-model:value="date_value[1]" @openChange="handlePickerClose">
                     <template #suffixIcon>
-                        <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                        <icon-down size="14" class="d_flex fai_c" fill="#165fdd"></icon-down>
                     </template>
                 </a-date-picker>
             </div>
@@ -59,18 +59,23 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { IconPark } from '@icon-park/vue-next/es/all';
-
+import { Down } from '@icon-park/vue-next';
+import { Dropdown, Menu, SubMenu, MenuItem } from 'ant-design-vue';
 import { echartsResize } from '@/utils/echartsResize.js';
 
-let echarts = require("echarts/lib/echarts")
-require("echarts/lib/chart/bar")
-require("echarts/lib/component/tooltip")
-require("echarts/lib/component/grid")
+import * as echarts from 'echarts/lib/echarts.js';
+import 'echarts/lib/chart/bar';
+import 'echarts/lib/component/tooltip';
+import 'echarts/lib/component/grid';
+
 export default defineComponent({
-    name: "DBNBar2",
+    name: "BarTwo",
     components: {
-        'icon-park': IconPark,
+        'icon-down': Down,
+        'a-dropdown': Dropdown,
+        'a-menu': Menu,
+        'a-sub-menu': SubMenu,
+        'a-menu-item': MenuItem
     },
     props: {
         db_id: { type: String },

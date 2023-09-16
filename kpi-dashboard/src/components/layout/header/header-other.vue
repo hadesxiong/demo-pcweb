@@ -1,7 +1,9 @@
 <template>
     <div class="c-func_con mr_16">
         <a-button shape="circle" class="c-func_btn">
-            <template #icon><icon-park type="Remind" class="c-func_icon" size="12"></icon-park></template>
+            <template #icon>
+                <icon-park type="Remind" class="c-func_icon" size="12"></icon-park>
+            </template>
         </a-button>
     </div>
     <div class="c-avatar_con">
@@ -10,7 +12,7 @@
 </template>
 
 <style>
-@import url('../../../assets/style/common.css');
+@import url('@/assets/style/common.css');
 
 .c-avatar_con,.c-func_con {
     display: flex;

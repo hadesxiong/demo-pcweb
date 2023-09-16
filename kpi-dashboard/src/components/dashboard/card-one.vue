@@ -9,7 +9,7 @@
                 <a-dropdown>
                     <a class="d_flex fai_c gap_8 fc_brand6">
                         {{ choose_org }}
-                        <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                        <icon-down size="14" class="d_flex fai_c" fill="#165fdd"></icon-down>
                     </a>
                     <template #overlay>
                         <a-menu v-model:selectedKeys="selectedKeys">
@@ -26,7 +26,7 @@
                 <a-date-picker picker="month" :bordered="false" class="custom_dp" :allowClear="false"
                     v-model:value="date_value[1]" @openChange="handlePickerClose">
                     <template #suffixIcon>
-                        <icon-park type="Down" size="14" class="d_flex fai_c" fill="#165fdd"></icon-park>
+                        <icon-down size="14" class="d_flex fai_c" fill="#165fdd"></icon-down>
                     </template>
                 </a-date-picker>
             </div>
@@ -54,17 +54,15 @@
     </div>
 </template>
 
-<style>
+<style scoped>
 .custom_dp {
     padding-left: 0px;
     padding-right: 0px;
 }
-
 .custom_dp input {
     color: #165fdd !important;
     width: 55px !important;
 }
-
 .custom_dp span {
     padding-left: 0px !important;
     padding-right: 0px !important;
@@ -73,13 +71,20 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { IconPark } from '@icon-park/vue-next/es/all';
-
+import { Down } from '@icon-park/vue-next';
+import { Dropdown, Menu, SubMenu, MenuItem, DatePicker, Row, Col } from 'ant-design-vue';
 
 export default defineComponent({
-    name: 'DBNCard1',
+    name: 'CardOne',
     components: {
-        'icon-park': IconPark
+        'icon-down': Down,
+        'a-dropdown': Dropdown,
+        'a-menu': Menu,
+        'a-sub-menu': SubMenu,
+        'a-menu-item': MenuItem,
+        'a-date-picker': DatePicker,
+        'a-row': Row,
+        'a-col': Col,
     },
     props: {
         card_data: { type: Object },
