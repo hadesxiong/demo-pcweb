@@ -60,7 +60,7 @@
 <script>
 import { defineComponent, ref } from 'vue';
 import { Down } from '@icon-park/vue-next';
-import { Dropdown, Menu, SubMenu, MenuItem } from 'ant-design-vue';
+import { Dropdown, Menu, SubMenu, MenuItem, DatePicker } from 'ant-design-vue';
 import { echartsResize } from '@/utils/echartsResize.js';
 
 import * as echarts from 'echarts/lib/echarts.js';
@@ -75,7 +75,8 @@ export default defineComponent({
         'a-dropdown': Dropdown,
         'a-menu': Menu,
         'a-sub-menu': SubMenu,
-        'a-menu-item': MenuItem
+        'a-menu-item': MenuItem,
+        'a-date-picker': DatePicker,
     },
     props: {
         db_id: { type: String },
