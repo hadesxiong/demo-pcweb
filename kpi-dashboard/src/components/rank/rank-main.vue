@@ -26,7 +26,6 @@
                                 </div>
                                 <div>
                                     <div class="fc_brand6">
-                                        <!-- <router-link to="/rank-important/rank-detail" class="more_btn">查看全部</router-link> -->
                                         <router-link :to="{name:'rank-detail',params:{rank_id:item.rank_id}}" class="more_btn">查看全部</router-link>
                                     </div>
                                 </div>
@@ -44,38 +43,43 @@
 </template>
 
 <style>
-:where(.css-dev-only-do-not-override-eq3tly).ant-collapse .ant-collapse-content>.ant-collapse-content-box {
+.ant-collapse .ant-collapse-content>.ant-collapse-content-box {
     padding-left: 0;
     padding-right: 0;
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content>.ant-collapse-content-box {
+.ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content>.ant-collapse-content-box {
     padding-top: 20px;
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-collapse-borderless {
+.ant-collapse-borderless {
     background-color: transparent;
 }
 
-:where(.css-dev-only-do-not-override-eq3tly).ant-collapse-borderless>.ant-collapse-item .ant-collapse-header {
+.ant-collapse-borderless>.ant-collapse-item .ant-collapse-header {
     background-color: #f2f3f5;
     border-radius: 2px;
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-collapse>.ant-collapse-item >.ant-collapse-header {
+.ant-collapse>.ant-collapse-item >.ant-collapse-header {
     align-items: center;
 }
 </style>
 
 <script>
 import { defineComponent, ref } from 'vue';
-// import { IconPark } from '@icon-park/vue-next/es/all';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
+import { Collapse, CollapsePanel, Row, Col, Tag, Table } from 'ant-design-vue';
 
 export default defineComponent({
     name: "RankMain",
     components: {
-        // 'icon-park': IconPark
-        "caret-right-outlined": CaretRightOutlined
+        "caret-right-outlined": CaretRightOutlined,
+        'a-collapse': Collapse,
+        'a-collapse-panel': CollapsePanel,
+        'a-row': Row,
+        'a-col': Col,
+        'a-tag': Tag,
+        'a-table': Table
     },
     props: {
         rank_list: {

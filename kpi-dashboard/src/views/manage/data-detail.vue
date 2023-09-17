@@ -5,7 +5,7 @@
                 <div>
                     <a-button class="bak_btn" @click="goBack">
                         <template #icon>
-                            <icon-park type="Left" size="16" class="btn_icon bak_icon" theme="outline"></icon-park>
+                            <icon-left size="16" class="btn_icon bak_icon" theme="outline"></icon-left>
                         </template>
                     </a-button>
                 </div>
@@ -36,14 +36,14 @@
                 <a-upload :show-upload-list="false" :before-upload="beforeUpload" :on-success="onSuccess">
                     <a-button class="br_2 fai_c d_flex fc_l5 bg_warn6">
                         <template #icon>
-                            <icon-park type="Upload" size="14" class="btn_icon"></icon-park>
+                            <icon-upload size="14" class="btn_icon"></icon-upload>
                         </template>
                         上传</a-button>
                 </a-upload>
 
                 <a-button class="br_2 fai_c d_flex fc_l5 bg_brand6">
                     <template #icon>
-                        <icon-park type="Send" size="14" class="btn_icon"></icon-park>
+                        <icon-send size="14" class="btn_icon"></icon-send>
                     </template>
                     发布</a-button>
             </div>
@@ -97,9 +97,9 @@
 </template>
 
 <style>
-@import url('../../assets/style/common.css');
-@import url('../../assets/style/colorset.css');
-@import url('../../assets/style/overwrite.css');
+@import url('@/assets/style/common.css');
+@import url('@/assets/style/colorset.css');
+@import url('@/assets/style/overwrite.css');
 </style>
 
 <style scoped>
@@ -141,7 +141,8 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { IconPark } from '@icon-park/vue-next/es/all';
+import { Left, Upload as IconUpload, Send } from '@icon-park/vue-next';
+import { Button, Tag, Upload, Tabs, TabPane, Table, Pagination } from 'ant-design-vue';
 import axios from 'axios';
 
 import { useRoute } from 'vue-router';
@@ -149,7 +150,16 @@ import { useRoute } from 'vue-router';
 export default defineComponent({
     name: "DataDetail",
     components: {
-        'icon-park': IconPark,
+        'icon-left': Left,
+        'icon-upload': IconUpload,
+        'icon-send': Send,
+        'a-button': Button,
+        'a-tag': Tag,
+        'a-upload': Upload,
+        'a-tabs': Tabs,
+        'a-tab-pane': TabPane,
+        'a-table': Table,
+        'a-pagination': Pagination
     },
     setup() {
         const route = useRoute();

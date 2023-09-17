@@ -22,10 +22,6 @@
     font-weight: 500;
 }
 
-/* .custom-checkbox .checkbox-label { */
-    /* margin-right: 8px; */
-/* } */
-
 .custom-checkbox .close-icon {
     margin-left: 8px;
     cursor: pointer;
@@ -34,16 +30,13 @@
   
 <script>
 import { defineComponent } from "vue";
-// import { IconPark } from "@icon-park/vue-next/es/all";
 
 // 方法
 
 export default defineComponent({
 
     name: 'CustomMulti',
-    components: {
-        // 'icon-park': IconPark,
-    },
+    components: {},
     props: {
         custom_options: {type: Array},
         option_type:{type:String}
@@ -55,12 +48,8 @@ export default defineComponent({
     },
     watch: {
         custom_options(newOptions) {
-            // console.log(newOptions)
-            // console.log(this.selectedOptions);
-            // console.log(newOptions)
             // 传入的newOptions要做map
             const newOptionsValue = newOptions.map((x)=>(x.value));
-            // console.log(newOptionsValue);
             this.selectedOptions = this.selectedOptions.filter(option => newOptionsValue.includes(option));
             // 补偿机制,如果长度为0，添加all
             if(this.selectedOptions.length == 0) {

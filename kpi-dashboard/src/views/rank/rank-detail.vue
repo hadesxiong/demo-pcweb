@@ -5,7 +5,7 @@
                 <div>
                     <a-button class="bak_btn" @click="goBack">
                         <template #icon>
-                            <icon-park type="Left" size="16" class="btn_icon bak_icon" theme="outline"></icon-park>
+                            <icon-left size="16" class="btn_icon bak_icon" theme="outline"></icon-left>
                         </template>
                     </a-button>
                 </div>
@@ -14,9 +14,6 @@
                     <a-tag :class="detail_data.tag_class">{{ detail_data.tag_title }}</a-tag>
                 </div>
                 <a-divider type="vertical" style="height: 18px; border-color: #E5E6EB; top: 0;"></a-divider>
-                <!-- <div class="fc_l3">
-                    数据更新于:{{ detail_data.table_update }}
-                </div> -->
                 <div class="fc_l3">
                     查看方式:{{ detail_data.table_view }}
                 </div>
@@ -24,7 +21,7 @@
             <div>
                 <a-button class="br_2 fai_c d_flex fc_l5 bg_brand6">
                     <template #icon>
-                        <icon-park type="Download" size="14" class="btn_icon"></icon-park>
+                        <icon-download size="14" class="btn_icon"></icon-download>
                     </template>
                     导出</a-button>
             </div>
@@ -64,7 +61,7 @@
             <template #extra>
                 <a-button class="bak_btn" @click="onClose">
                     <template #icon>
-                        <icon-park type="Close" size="14" class="btn_icon bak_icon" theme="outline"></icon-park>
+                        <icon-close size="14" class="btn_icon bak_icon" theme="outline"></icon-close>
                     </template>
                 </a-button>
             </template>
@@ -92,7 +89,7 @@
                 <div class="d_flex jc_fe pt_10 pb_10">
                     <a-button type="primary" @click="onClose" class="br_2 fai_c d_flex fc_l5 bg_brand6 mr_8">
                         <template #icon>
-                            <icon-park type="Download" size="14" class="btn_icon"></icon-park>
+                            <icon-download size="14" class="btn_icon"></icon-download>
                         </template>
                         导出
                     </a-button>
@@ -103,9 +100,9 @@
 </template>
 
 <style>
-@import url('../../assets/style/overwrite.css');
-@import url('../../assets/style/colorset.css');
-@import url('../../assets/style/common.css');
+@import url('@/assets/style/common.css');
+@import url('@/assets/style/colorset.css');
+@import url('@/assets/style/overwrite.css');
 
 .btn_icon {
     margin-right: 8px;
@@ -142,20 +139,28 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { IconPark } from "@icon-park/vue-next/es/all";
+import { Left, Download, Close } from '@icon-park/vue-next';
+import { Button, Divider, Tag, Table, Pagination, Drawer } from 'ant-design-vue';
 import axios from 'axios';
-
 import { useRoute } from 'vue-router';
 
-let echarts = require("echarts/lib/echarts");
-require("echarts/lib/component/tooltip");
-require("echarts/lib/component/grid");
-require('echarts/lib/chart/line');
+import * as echarts from 'echarts/lib/echarts.js';
+import 'echarts/lib/component/tooltip';
+import 'echarts/lib/component/grid';
+import 'echarts/lib/chart/line';
 
 export default defineComponent({
     name: 'RankDetail',
     components: {
-        'icon-park': IconPark,
+        'icon-left': Left,
+        'icon-download': Download,
+        'icon-close': Close,
+        'a-button': Button,
+        'a-divider': Divider,
+        'a-tag': Tag,
+        'a-table': Table,
+        'a-pagination': Pagination,
+        'a-drawer': Drawer,
     },
     data() {
         return {

@@ -13,8 +13,8 @@
                 v-model:collapsed="menu_collapsed" class="c-layout_sider mt_60">
                 <sider-menu v-if="this.$route.name" :menu_data="menu_data" :menu_keys="menuKeys"></sider-menu>
                 <template #trigger>
-                    <icon-park v-if="menu_collapsed" type="MenuFoldOne" theme="filled" size="16" fill="#4E5969"></icon-park>
-                    <icon-park v-else type="MenuUnfoldOne" theme="filled" size="16" fill="#4E5969"></icon-park>
+                    <icon-fold v-if="menu_collapsed" theme="filled" size="16" fill="#4E5969"></icon-fold>
+                    <icon-unfold v-else theme="filled" size="16" fill="#4E5969"></icon-unfold>
                 </template>
             </a-layout-sider>
             <a-layout-content class="mt_60" id="content_con">
@@ -34,8 +34,8 @@
 </template>
   
 <style>
-@import url('../../assets/style/common.css');
-@import url('../../assets/style/overwrite.css');
+@import url('@/assets/style/common.css');
+@import url('@/assets/style/overwrite.css');
 
 .c-layout_header {
     display: flex;
@@ -74,21 +74,30 @@
 </style>
   
 <script>
+import { defineComponent, ref } from 'vue';
+import { MenuFoldOne, MenuUnfoldOne } from '@icon-park/vue-next';
+import { Layout, LayoutHeader, LayoutSider, LayoutContent, Breadcrumb, BreadcrumbItem } from 'ant-design-vue';
+
 import HeaderLogo from './header/header-logo.vue';
 import HeaderOther from './header/header-other.vue';
 import SiderMenu from './sider/sider-menu.vue';
-import { IconPark } from "@icon-park/vue-next/es/all";
-import { defineComponent, ref } from 'vue';
 
 import axios from 'axios';
 
 export default defineComponent({
     name: 'LayoutMain',
     components: {
+        'icon-fold': MenuFoldOne,
+        'icon-unfold': MenuUnfoldOne,
+        'a-layout': Layout,
+        'a-layout-header': LayoutHeader,
+        'a-layout-sider': LayoutSider,
+        'a-layout-content': LayoutContent,
+        'a-breadcrumb': Breadcrumb,
+        'a-breadcrumb-item': BreadcrumbItem,
         'header-logo': HeaderLogo,
         'header-other': HeaderOther,
         'sider-menu': SiderMenu,
-        'icon-park': IconPark
     },
     data() {
         return {}

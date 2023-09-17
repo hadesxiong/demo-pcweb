@@ -13,7 +13,7 @@
             <div>
                 <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="handleSearch(default_org,filterIndexList)">
                     <template #icon>
-                        <icon-park type="Find" size="14" class="mr_8 lh_1"></icon-park>
+                        <icon-find size="14" class="mr_8 lh_1"></icon-find>
                     </template>
                     查询
                 </a-button>
@@ -31,14 +31,14 @@
                 <a-button v-if="label_collaspe" type="text" class="br_2 fai_c d_flex fc_brand6"
                     style="width:auto;padding: 4px 15px;" @click="toggleIndex">
                     <template #icon>
-                        <icon-park type="DoubleUp" size="14" class="mr_8 lh_1"></icon-park>
+                        <icon-doubleUp size="14" class="mr_8 lh_1"></icon-doubleUp>
                         收起
                     </template>
                 </a-button>
                 <a-button v-else type="text" class="br_2 fai_c d_flex fc_brand6" style="width:auto;padding: 4px 15px;"
                     @click="toggleIndex">
                     <template #icon>
-                        <icon-park type="DoubleDown" size="14" class="mr_8 lh_1"></icon-park>
+                        <icon-doubleDown size="14" class="mr_8 lh_1"></icon-doubleDown>
                         展开
                     </template>
                 </a-button>
@@ -117,14 +117,21 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
+import { Find, DoubleUp, DoubleDown } from '@icon-park/vue-next';
+import { RadioGroup, RadioButton, Button } from 'ant-design-vue';
+
 import CustomMulti from './custom-multi.vue';
-import { IconPark } from "@icon-park/vue-next/es/all";
 
 export default defineComponent({
     name: "TableFilter",
     components: {
+        'icon-find': Find,
+        'icon-doubleUp': DoubleUp,
+        'icon-doubleDown': DoubleDown,
+        'a-radio-group': RadioGroup,
+        'a-radio-button': RadioButton,
+        'a-button': Button,
         'custom-multi': CustomMulti,
-        'icon-park': IconPark
     },
     props: {
         filter_data: {

@@ -5,15 +5,15 @@
                 <a-range-picker :placeholder="['起始月份', '截止月份']" format="YYYY-MM" :value="date_value" :mode='["month", "month"]'
                     @panelChange="handlePannelChange" @openChange="handleChange" :allowClear="false">
                     <template #separator>
-                        <icon-park type="RightSmall" fill="#86909C"></icon-park>
+                        <icon-right fill="#86909C"></icon-right>
                     </template>
                     <template #suffixIcon>
-                        <icon-park type="CalendarThirty" fill="#86909C" size="14"></icon-park>
+                        <icon-calendar fill="#86909C" size="14"></icon-calendar>
                     </template>
                 </a-range-picker>
                 <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6">
                     <template #icon>
-                        <icon-park type="Download" size="14" class="mr_8 lh_1"></icon-park>
+                        <icon-download size="14" class="mr_8 lh_1"></icon-download>
                     </template>
                     下载
                 </a-button>
@@ -23,7 +23,7 @@
             <a-table :columns="table_data.table_columns" :data-source="table_data.table_data" :expandIconColumnIndex="1" :pagination="false"
                 :expandIconAsCell="false" :indentSize="0" expand="expandRows" class="b_w1c2_so br_2">
                 <template #customFilterIcon>
-                    <icon-park type="Filter" size='14' fill="#C9CDD4" theme="filled" class="d_flex"></icon-park>
+                    <icon-filter size='14' fill="#C9CDD4" theme="filled" class="d_flex"></icon-filter>
                 </template>
             </a-table>
         </div>
@@ -50,7 +50,8 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { IconPark } from "@icon-park/vue-next/es/all";
+import { RightSmall, CalendarThirty, Download, Filter } from '@icon-park/vue-next';
+import { RangePicker, Button, Table, Pagination } from 'ant-design-vue';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
@@ -66,7 +67,14 @@ export default defineComponent({
         }
     },
     components: {
-        'icon-park': IconPark
+        'icon-right': RightSmall,
+        'icon-calendar': CalendarThirty,
+        'icon-download': Download,
+        'icon-filter': Filter,
+        'a-range-picker': RangePicker,
+        'a-button': Button,
+        'a-table': Table,
+        'a-pagination': Pagination
     },
     setup() {
         return {
@@ -83,21 +91,13 @@ export default defineComponent({
     },
     mounted() {
         this.w_table_data = this.$props.table_data;
-        // console.log(this.$props.table_data);
-        // console.log(this.w_table_data);
-        // this.w_table_data.table_columns[0].customCell = function(record, index,column) {
-        //     console.log(record,index,column);
-        // }
     },
     methods: {
         handlePannelChange(value, mode) {
-            // console.log(value, mode);
             this.date_value = value;
             this.pannel_mode = [mode[0] === 'date' ? 'month' : mode[0], mode[1] === 'date' ? 'month' : mode[1]];
-            // console.log('handlePannel',value)
         },
         handleChange(status) {
-            // console.log('handle',status,this.date_value);
             if(!status) {
                 // console.log(this.date_value)
                 this.$emit('getFilterOptions',{date_range:this.date_value})

@@ -4,7 +4,10 @@
                 <div class="d_flex gap_20">
                     <a-dropdown
                         class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                        <a>{{ selected_class.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                        <a>
+                            {{ selected_class.value }}
+                            <icon-down class="lh_1" fill="#86909C"></icon-down>
+                        </a>
                         <template #overlay>
                             <a-menu>
                                 <a-menu-item v-for="item in class_data" :key="item.key"
@@ -14,7 +17,10 @@
                     </a-dropdown>
                     <a-dropdown
                         class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                        <a>{{ selected_line.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                        <a>
+                            {{ selected_line.value }}
+                            <icon-down class="lh_1" fill="#86909C"></icon-down>
+                        </a>
                         <template #overlay>
                             <a-menu>
                                 <a-menu-item v-for="item in line_data" :key="item.key"
@@ -28,17 +34,17 @@
                             :value="date_value" :mode="['date', 'date']" @panelChange="handlePannelChange"
                             @openChange="handleChange" @change="datesChange" :allowClear="false">
                             <template #separator>
-                                <icon-park type="RightSmall" fill="#86909C" size="14"></icon-park>
+                                <icon-right fill="#86909C" size="14"></icon-right>
                             </template>
                             <template #suffixIcon>
-                                <icon-park type="CalendarThirty" fill="#86909C" size="14"></icon-park>
+                                <icon-calender fill="#86909C" size="14"></icon-calender>
                             </template>
                         </a-range-picker>
                     </a-dropdown>
                     <a-input placeholder="输入导入人信息或者导入编号进行搜索"
                         class="w_360 fai_c bg_l2 br_2  ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 b_n">
                         <template #suffix>
-                            <icon-park type="Search" size="14" class="mr_8 lh_1"></icon-park>
+                            <icon-search size="14" class="mr_8 lh_1"></icon-search>
                         </template>
                     </a-input>
                 </div>
@@ -47,19 +53,19 @@
                     <div class="d_flex gap_20">
                         <a-button type="default" class="br_2 fai_c d_flex fc_l2 bg_l2 b_n" @click="resetSearch">
                             <template #icon>
-                                <icon-park type="Redo" size="14" class="mr_8 lh_1"></icon-park>
+                                <icon-redo size="14" class="mr_8 lh_1"></icon-redo>
                             </template>
                             重置
                         </a-button>
                         <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="confirmSearch">
                             <template #icon>
-                                <icon-park type="Search" size="14" class="mr_8 lh_1"></icon-park>
+                                <icon-search size="14" class="mr_8 lh_1"></icon-search>
                             </template>
                             查询
                         </a-button>
                         <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="showModal">
                             <template #icon>
-                                <icon-park type="Upload" size="14" class="mr_8 lh_1"></icon-park>
+                                <icon-upload size="14" class="mr_8 lh_1"></icon-upload>
                             </template>
                             导入
                         </a-button>
@@ -74,9 +80,7 @@
                         <template #bodyCell="{ column, record }">
                             <template v-if="column.dataIndex === 'operation'">
                                 <div class="fc_brand6 d_iflex gap_8">
-                                    <!-- <router-link to="/data-manage/data-detail" class="fc_brand6 font_14">查看详情</router-link> -->
-                                    <router-link :to="{ name: 'data-detail', params: { data_id: record.upload_num } }"
-                                        class="fc_brand6 font_14">查看详情</router-link>
+                                    <router-link :to="{ name: 'data-detail', params: { data_id: record.upload_num } }" class="fc_brand6 font_14">查看详情</router-link>
                                 </div>
                             </template>
                         </template>
@@ -98,7 +102,7 @@
                                 class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
                                 <a-input :value="update_line.value" class="w_240">
                                     <template #suffix>
-                                        <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park>
+                                        <icon-down class="lh_1" fill="#86909C"></icon-down>
                                     </template>
                                 </a-input>
                                 <template #overlay>
@@ -131,13 +135,13 @@
                     <div class="d_flex jc_fe gap_8">
                         <a-button type="default" class="br_2 fai_c d_flex fc_l2 bg_l2 b_n" @click="cancelUpload">
                             <template #icon>
-                                <icon-park type="Close" size="14" class="mr_8 lh_1"></icon-park>
+                                <icon-close size="14" class="mr_8 lh_1"></icon-close>
                             </template>
                             取消
                         </a-button>
                         <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="confirmUpload">
                             <template #icon>
-                                <icon-park type="Check" size="14" class="mr_8 lh_1"></icon-park>
+                                <icon-check size="14" class="mr_8 lh_1"></icon-check>
                             </template>
                             提交
                         </a-button>
@@ -148,9 +152,9 @@
 </template>
 
 <style>
-@import url('../../assets/style/common.css');
-@import url('../../assets/style/colorset.css');
-@import url('../../assets/style/overwrite.css');
+@import url('@/assets/style/common.css');
+@import url('@/assets/style/colorset.css');
+@import url('@/assets/style/overwrite.css');
 </style>
 
 <style>
@@ -177,7 +181,8 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { IconPark } from '@icon-park/vue-next/es/all';
+import { Down, RightSmall, CalendarThirty, Redo, Search, Upload as IconUpload, Close, Check } from '@icon-park/vue-next';
+import { Dropdown, Menu, MenuItem, RangePicker, Input, Button, Divider, Table, Pagination, Modal, DatePicker } from 'ant-design-vue';
 import axios from 'axios';
 import { RouterLink } from 'vue-router';
 import FileInput from '@/components/other/file-input.vue';
@@ -192,7 +197,25 @@ dayjs.locale('zh-cn');
 export default defineComponent({
     name: "DataManage",
     components: {
-        'icon-park': IconPark,
+        'icon-down': Down,
+        'icon-right': RightSmall,
+        'icon-calender': CalendarThirty,
+        'icon-redo': Redo,
+        'icon-search': Search,
+        'icon-upload': IconUpload,
+        'icon-close': Close,
+        'icon-check': Check,
+        'a-dropdown': Dropdown,
+        'a-menu': Menu,
+        'a-menu-item': MenuItem,
+        'a-range-picker': RangePicker,
+        'a-input': Input,
+        'a-button': Button,
+        'a-divider': Divider,
+        'a-table': Table,
+        'a-pagination': Pagination,
+        'a-modal': Modal,
+        'a-date-picker': DatePicker,
         'router-link': RouterLink,
         'file-input': FileInput,
     },

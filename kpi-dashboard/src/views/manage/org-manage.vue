@@ -4,7 +4,10 @@
             <div class="d_flex gap_20">
                 <a-dropdown
                     class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                    <a>{{ search_orgGroup.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                    <a>
+                        {{ search_orgGroup.value }}
+                        <icon-down class="lh_1" fill="#86909C"></icon-down>
+                    </a>
                     <template #overlay>
                         <a-menu>
                             <a-menu-item v-for="item in org_group" :key="item.key"
@@ -14,7 +17,10 @@
                 </a-dropdown>
                 <a-dropdown
                     class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                    <a>{{ search_orgLevel.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                    <a>
+                        {{ search_orgLevel.value }}
+                        <icon-down class="lh_1" fill="#86909C"></icon-down>
+                    </a>
                     <template #overlay>
                         <a-menu>
                             <a-menu-item v-for="item in org_level" :key="item.key"
@@ -25,7 +31,7 @@
                 <a-input placeholder="输入导入人信息或者导入编号进行搜索"
                     class="w_360 fai_c bg_l2 br_2  ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 b_n">
                     <template #suffix>
-                        <icon-park type="Search" size="14" class="mr_8 lh_1"></icon-park>
+                        <icon-search size="14" class="mr_8 lh_1"></icon-search>
                     </template>
                 </a-input>
             </div>
@@ -34,19 +40,19 @@
                 <div class="d_flex gap_20">
                     <a-button type="default" class="br_2 fai_c d_flex fc_l2 bg_l2 b_n" @click="resetSearch">
                         <template #icon>
-                            <icon-park type="Redo" size="14" class="mr_8 lh_1"></icon-park>
+                            <icon-redo size="14" class="mr_8 lh_1"></icon-redo>
                         </template>
                         重置
                     </a-button>
                     <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="confirmSearch">
                         <template #icon>
-                            <icon-park type="Search" size="14" class="mr_8 lh_1"></icon-park>
+                            <icon-search size="14" class="mr_8 lh_1"></icon-search>
                         </template>
                         查询
                     </a-button>
                     <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="showModal">
                         <template #icon>
-                            <icon-park type="AddFour" size="14" class="mr_8 lh_1"></icon-park>
+                            <icon-add size="14" class="mr_8 lh_1"></icon-add>
                         </template>
                         新增
                     </a-button>
@@ -121,7 +127,7 @@
                             class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
                             <a-input :value="add_orgGroup.value" class="w_240">
                                 <template #suffix>
-                                    <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park>
+                                    <icon-down class="lh_1" fill="#86909C"></icon-down>
                                 </template>
                             </a-input>
                             <template #overlay>
@@ -139,7 +145,7 @@
                             class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
                             <a-input :value="add_orgLevel.value" class="w_240">
                                 <template #suffix>
-                                    <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park>
+                                    <icon-down class="lh_1" fill="#86909C"></icon-down>
                                 </template>
                             </a-input>
                             <template #overlay>
@@ -161,7 +167,7 @@
                             class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
                             <a-input :value="lead_org.value" class="w_240">
                                 <template #suffix>
-                                    <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park>
+                                    <icon-down class="lh_1" fill="#86909C"></icon-down>
                                 </template>
                             </a-input>
 
@@ -188,13 +194,13 @@
                 <div class="d_flex jc_fe gap_8">
                     <a-button type="default" class="br_2 fai_c d_flex fc_l2 bg_l2 b_n" @click="cancelUpload">
                         <template #icon>
-                            <icon-park type="Close" size="14" class="mr_8 lh_1"></icon-park>
+                            <icon-close size="14" class="mr_8 lh_1"></icon-close>
                         </template>
                         取消
                     </a-button>
                     <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="confirmUpload">
                         <template #icon>
-                            <icon-park type="Check" size="14" class="mr_8 lh_1"></icon-park>
+                            <icon-check size="14" class="mr_8 lh_1"></icon-check>
                         </template>
                         提交
                     </a-button>
@@ -205,9 +211,9 @@
 </template>
 
 <style>
-@import url('../../assets/style/common.css');
-@import url('../../assets/style/colorset.css');
-@import url('../../assets/style/overwrite.css');
+@import url('@/assets/style/common.css');
+@import url('@/assets/style/colorset.css');
+@import url('@/assets/style/overwrite.css');
 
 .input-container {
     max-width: 100%;
@@ -246,15 +252,30 @@
 
 <script>
 import { defineComponent, reactive, ref } from 'vue';
-import { IconPark } from '@icon-park/vue-next/es/all';
-// import LayoutMainVue from '@/components/layout/layout-main.vue'
+import { Down, Search, Redo, AddFour, Close, Check } from '@icon-park/vue-next';
+import { Dropdown, Menu, MenuItem, Input, Divider, Button, Table, Popconfirm, Pagination, Modal } from 'ant-design-vue';
 import axios from 'axios';
 import { cloneDeep } from 'lodash-es'
 
 export default defineComponent({
     name: "OrgManage",
     components: {
-        'icon-park': IconPark,
+        'icon-down': Down,
+        'icon-search': Search,
+        'icon-redo': Redo,
+        'icon-add': AddFour,
+        'icon-close': Close,
+        'icon-check': Check,
+        'a-dropdown': Dropdown,
+        'a-menu': Menu,
+        'a-menu-item': MenuItem,
+        'a-input': Input,
+        'a-divider': Divider,
+        'a-button': Button,
+        'a-table': Table,
+        'a-pagination': Pagination,
+        'a-modal': Modal,
+        'a-popconfirm': Popconfirm,
     },
     setup() {
         const table_data = ref({});

@@ -15,13 +15,14 @@
                         <div class="d_flex fd_c gap_20 w_p100">
                             <a-input v-model:value="user_name" placeholder="请输入用户名" size="large" :bordered="false" class="bg_l3 br_2">
                                 <template #prefix>
-                                    <icon-park type="UserPositioning" fill="#4E5969" size="16"
-                                        class="c-func_icon"></icon-park>
+                                    <!-- <icon-park type="UserPositioning" fill="#4E5969" size="16" class="c-func_icon"></icon-park> -->
+                                    <icon-user fill="#4E5969" size="16" class="c-func_icon"></icon-user>
                                 </template>
                             </a-input>
                             <a-input-password v-model:value="password" placeholder="请输入密码" size="large" :bordered="false" class="bg_l3 br_2">
                                 <template #prefix>
-                                    <icon-park type="Lock" fill="#4E5969" size="16" class="c-func_icon"></icon-park>
+                                    <!-- <icon-park type="Lock" fill="#4E5969" size="16" class="c-func_icon"></icon-park> -->
+                                    <icon-lock fill="#4E5969" size="16" class="c-func_icon"></icon-lock>
                                 </template>
                             </a-input-password>
                         </div>
@@ -40,9 +41,9 @@
 </template>
 
 <style>
-@import url('../../assets/style/common.css');
-@import url('../../assets/style/colorset.css');
-@import url('../../assets/style/overwrite.css');
+@import url('@/assets/style/common.css');
+@import url('@/assets/style/colorset.css');
+@import url('@/assets/style/overwrite.css');
 </style>
 
 <style scoped>
@@ -103,7 +104,9 @@
 
 <script>
 import { defineComponent,ref } from 'vue';
-import { IconPark } from "@icon-park/vue-next/es/all";
+import { UserPositioning, Lock } from '@icon-park/vue-next';
+import { Layout, LayoutContent, Input, InputPassword, Checkbox, Button } from 'ant-design-vue';
+
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import CryptoJS from 'crypto-js';
@@ -113,7 +116,14 @@ import {refreshToken} from '@/utils/refreshToken.js'
 export default defineComponent({
     name: 'LoginMain',
     components: {
-        'icon-park': IconPark
+        'icon-user': UserPositioning,
+        'icon-lock': Lock,
+        'a-layout': Layout,
+        'a-layout-content': LayoutContent,
+        'a-input': Input,
+        'a-input-password': InputPassword,
+        'a-checkbox': Checkbox,
+        'a-button': Button
     },
     data() {
         return {

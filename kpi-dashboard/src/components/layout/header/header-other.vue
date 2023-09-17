@@ -2,7 +2,7 @@
     <div class="c-func_con mr_16">
         <a-button shape="circle" class="c-func_btn">
             <template #icon>
-                <icon-park type="Remind" class="c-func_icon" size="12"></icon-park>
+                <icon-remind class="c-func_icon" size="12"></icon-remind>
             </template>
         </a-button>
     </div>
@@ -33,12 +33,15 @@
 
 <script>
 import { defineComponent } from 'vue';
-import { IconPark } from "@icon-park/vue-next/es/all";
+import { Remind } from '@icon-park/vue-next';
+import { Button, Avatar } from 'ant-design-vue';
 
 export default defineComponent({
     name:'HeaderOther',
     components: {
-        'icon-park':IconPark
+        'icon-remind': Remind,
+        'a-button': Button,
+        'a-avatar': Avatar,
     },
     data(){
         // 测试数据

@@ -2,11 +2,12 @@
   <div class="side_con">
     <a-menu mode="inline" class="menu_con" v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys">
       <a-sub-menu v-for="item in menu_data" :key="item.menu_key" @click="handleMenuClick">
-        <template #icon><icon-park :type="item.menu_icon" theme="outline" size="16"></icon-park></template>
+        <template #icon>
+          <component :is="item.menu_icon" theme="outline" size="16"></component>
+        </template>
         <template #title>{{ item.menu_title }}</template>
         <a-menu-item v-for="sub_item in item.sub_menu" :key="sub_item.menu_key">
           {{ sub_item.menu_title }}
-          <!-- <router-link :to="{path: sub_item.menu_path}"></router-link> -->
           <router-link :to="{name:sub_item.menu_name,params:sub_item.menu_params}"></router-link>
         </a-menu-item>
       </a-sub-menu>
@@ -15,7 +16,7 @@
 </template>
 
 <style>
-@import url('../../../assets/style/common.css');
+@import url('@/assets/style/common.css');
 
 .side_con {
   width: 100%;
@@ -30,12 +31,19 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import { IconPark } from "@icon-park/vue-next/es/all";
+import { DashboardOne, NewComputer, Notes, Data } from '@icon-park/vue-next';
+import { Menu, SubMenu, MenuItem} from 'ant-design-vue';
 
 export default defineComponent({
   name: "SiderMenu",
   components: {
-    'icon-park': IconPark,
+    'icon-dashboard': DashboardOne,
+    'icon-computer': NewComputer,
+    'icon-notes': Notes,
+    'icon-data': Data,
+    'a-menu': Menu,
+    'a-sub-menu': SubMenu,
+    'a-menu-item': MenuItem,
   },
   props:{
     menu_data: {type:Array},

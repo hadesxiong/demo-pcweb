@@ -2,7 +2,7 @@
     {
         "menu_key": "dashboard",
         "menu_title": "数据看板",
-        "menu_icon": "DashboardOne",
+        "menu_icon": "icon-dashboard",
         "sub_menu": [
             {
                 "menu_key": "dashboard-main",
@@ -16,7 +16,7 @@
     {
         "menu_key": "rank",
         "menu_title": "业绩排行",
-        "menu_icon": "NewComputer",
+        "menu_icon": "icon-computer",
         "sub_menu": [
             {
                 "menu_key": "rank-important",
@@ -30,7 +30,7 @@
     {
         "menu_key": "table",
         "menu_title": "数据报表",
-        "menu_icon": "Notes",
+        "menu_icon": "icon-notes",
         "sub_menu": [
             {
                 "menu_key": "enterprise-table",
@@ -65,7 +65,7 @@
     {
         "menu_key": "settings",
         "menu_title": "数据管理",
-        "menu_icon": "Data",
+        "menu_icon": "icon-data",
         "sub_menu": [
             {
                 "menu_key": "data-manage",

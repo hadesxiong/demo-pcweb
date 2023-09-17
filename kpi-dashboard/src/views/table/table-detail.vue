@@ -7,9 +7,9 @@
 </template>
 
 <style>
-@import url('../../assets/style/overwrite.css');
-@import url('../../assets/style/colorset.css');
-@import url('../../assets/style/common.css');
+@import url('@/assets/style/overwrite.css');
+@import url('@/assets/style/colorset.css');
+@import url('@/assets/style/common.css');
 </style>
 
 <script>
@@ -19,7 +19,6 @@ import TableMain from '@/components/table/table-main.vue';
 
 import axios from 'axios';
 import { useRoute } from 'vue-router';
-
 
 export default defineComponent({
     name: "EnterpriseTable",

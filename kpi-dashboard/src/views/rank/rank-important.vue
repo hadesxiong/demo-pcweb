@@ -11,7 +11,10 @@
                 <div class="d_flex gap_20">
                     <a-dropdown
                         class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                        <a>{{ choose_class.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                        <a>
+                            {{ choose_class.value }}
+                            <icon-down class="lh_1" fill="#86909C"></icon-down>
+                        </a>
                         <template #overlay>
                             <a-menu v-model:value="choose_class">
                                 <a-menu-item v-for="item in class_data" :key="item.key"
@@ -21,7 +24,10 @@
                     </a-dropdown>
                     <a-dropdown
                         class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                        <a>{{ choose_group.value }}<icon-park type="Down" class="lh_1" fill="#86909C"></icon-park></a>
+                        <a>
+                            {{ choose_group.value }}
+                            <icon-down class="lh_1" fill="#86909C"></icon-down>
+                        </a>
                         <template #overlay>
                             <a-menu v-model:value="choose_group">
                                 <a-menu-item v-for="item in group_data" :key="item.key"
@@ -33,7 +39,7 @@
                         class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
                         <a-date-picker picker="month" :placeholder="'数据日期'" :allowClear="false" v-model:value="date_value">
                             <template #suffixIcon>
-                                <icon-park type="CalendarThirty" fill="#86909C" size="14"></icon-park>
+                                <icon-calendar fill="#86909C" size="14"></icon-calendar>
                             </template>
                         </a-date-picker>
                     </a-dropdown>
@@ -46,9 +52,9 @@
 </template>
 
 <style>
-@import url('../../assets/style/common.css');
-@import url('../../assets/style/colorset.css');
-@import url('../../assets/style/overwrite.css');
+@import url('@/assets/style/common.css');
+@import url('@/assets/style/colorset.css');
+@import url('@/assets/style/overwrite.css');
 
 /* 覆盖部分 */
 
@@ -135,7 +141,8 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { IconPark } from "@icon-park/vue-next/es/all";
+import { Down, CalendarThirty } from '@icon-park/vue-next';
+import { RadioGroup, RadioButton, Dropdown, Menu, MenuItem, DatePicker } from 'ant-design-vue';
 import RankMain from '@/components/rank/rank-main';
 import axios from 'axios';
 
@@ -148,8 +155,15 @@ dayjs.locale('zh-cn');
 export default defineComponent({
     name: 'rank-important',
     components: {
+        'icon-down': Down,
+        'icon-calendar': CalendarThirty,
+        'a-radio-group': RadioGroup,
+        'a-radio-button': RadioButton,
+        'a-dropdown': Dropdown,
+        'a-menu': Menu,
+        'a-menu-item': MenuItem,
+        'a-date-picker': DatePicker,
         'rank-main': RankMain,
-        'icon-park': IconPark,
     },
     data() {
         return {
