@@ -110,11 +110,11 @@ DATABASES = {
         'USER':'root',
         'PASSWORD':'Faurecia614',
         # Z-INTRA
-        # 'HOST':'10.162.165.155',
-        # 'PORT':11001
-        # INTRA
-        'HOST':'192.168.31.156',
+        'HOST':'10.162.165.155',
         'PORT':11001
+        # INTRA
+        # 'HOST':'192.168.31.156',
+        # 'PORT':11001
     },
     'kpi_db':{
         'ENGINE':'django.db.backends.mysql',
@@ -122,11 +122,11 @@ DATABASES = {
         'USER':'root',
         'PASSWORD':'Faurecia614',
         # Z-INTRA
-        # 'HOST':'10.162.165.155',
-        # 'PORT':11001
-        # INTRA
-        'HOST':'192.168.31.156',
+        'HOST':'10.162.165.155',
         'PORT':11001
+        # INTRA
+        # 'HOST':'192.168.31.156',
+        # 'PORT':11001
     }
 }
 DATABASES_APPS_MAPPING = {

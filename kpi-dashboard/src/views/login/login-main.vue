@@ -13,20 +13,24 @@
                         <div class="font_24 fw_500 mb_16 lh_32 w_p100 ta_l fc_l1"><span class="fc_l2 mr_8">欢迎登陆</span>业绩展示系统
                         </div>
                         <div class="d_flex fd_c gap_20 w_p100">
-                            <a-input v-model:value="user_name" placeholder="请输入用户名" size="large" :bordered="false" class="bg_l3 br_2">
-                                <template #prefix>
-                                    <!-- <icon-park type="UserPositioning" fill="#4E5969" size="16" class="c-func_icon"></icon-park> -->
-                                    <icon-user fill="#4E5969" size="16" class="c-func_icon"></icon-user>
-                                </template>
-                            </a-input>
-                            <a-input-password v-model:value="password" placeholder="请输入密码" size="large" :bordered="false" class="bg_l3 br_2">
-                                <template #prefix>
-                                    <!-- <icon-park type="Lock" fill="#4E5969" size="16" class="c-func_icon"></icon-park> -->
-                                    <icon-lock fill="#4E5969" size="16" class="c-func_icon"></icon-lock>
-                                </template>
-                            </a-input-password>
+                            <a-form>
+                                <a-form-item :validate-status="name_validate">
+                                    <a-input v-model:value="user_name" placeholder="请输入用户名" size="large" :bordered="false" class="bg_l3 br_2">
+                                        <template #prefix>
+                                            <icon-user fill="#4E5969" size="16" class="c-func_icon"></icon-user>
+                                        </template>
+                                    </a-input>
+                                </a-form-item>
+                                <a-form-item :validate-status="pw_validate">
+                                    <a-input-password v-model:value="password" placeholder="请输入密码" size="large" :bordered="false" class="bg_l3 br_2">
+                                        <template #prefix>
+                                            <icon-lock fill="#4E5969" size="16" class="c-func_icon"></icon-lock>
+                                        </template>
+                                    </a-input-password>
+                                </a-form-item>
+                            </a-form>
                         </div>
-                        <div class="d_flex fai_c jc_sb lh_32 w_p100">
+                        <div class="d_flex fai_c jc_sb lh_32 w_p100" style="margin-top: -20px;">
                             <a-checkbox>记住密码</a-checkbox>
                             <a class="fc_brand6">忘记密码</a>
                         </div>
@@ -55,7 +59,6 @@
 .left_con {
     width: 550px;
     padding: 40px;
-    /* background: linear-gradient(163.85deg, #1d2129 0%, #00308f 100%); */
     background: url('../../assets/index.webp');
     background-size: cover
 }
@@ -105,7 +108,7 @@
 <script>
 import { defineComponent,ref } from 'vue';
 import { UserPositioning, Lock } from '@icon-park/vue-next';
-import { Layout, LayoutContent, Input, InputPassword, Checkbox, Button } from 'ant-design-vue';
+import { Layout, LayoutContent, Input, InputPassword, Checkbox, Button, Form, FormItem } from 'ant-design-vue';
 
 import axios from 'axios';
 import { useRouter } from 'vue-router';
@@ -120,6 +123,8 @@ export default defineComponent({
         'icon-lock': Lock,
         'a-layout': Layout,
         'a-layout-content': LayoutContent,
+        'a-form': Form,
+        'a-form-item': FormItem,
         'a-input': Input,
         'a-input-password': InputPassword,
         'a-checkbox': Checkbox,
@@ -135,7 +140,9 @@ export default defineComponent({
         return {
             user_name:ref(''),
             password: ref(''),
-            router:useRouter()
+            router:useRouter(),
+            name_validate: ref(false),
+            pw_validate: ref(false)
         }
     },
     methods: {
