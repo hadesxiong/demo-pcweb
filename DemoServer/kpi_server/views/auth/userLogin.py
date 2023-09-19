@@ -100,11 +100,11 @@ def userLogin(request):
                     )
                 
                 user_token.save()
-                re_msg = {'code':1,'err':f'{user_token.login_err}次'}
+                re_msg = {'code':101,'msg':settings.KPI_ERROR_MESSAGES['userLogin'][101],'err':f'{user_token.login_err}次'}
                 response_obj = JsonResponse(re_msg,safe=False)
 
         except UserAuth.DoesNotExist:
-            re_msg = {'code':1,'msg':'no user found.'}
+            re_msg = {'code':102,'msg':settings.KPI_ERROR_MESSAGES['userLogin'][102]}
             response_obj = JsonResponse(re_msg,safe=False)
 
     return response_obj
@@ -127,12 +127,12 @@ def userRegister(request):
 
     # 参数检查
     if None in body_data.values():
-        re_msg = {'code':0,'err_msg':'err params'}
+        re_msg = {'code':202,'msg':settings.KPI_ERROR_MESSAGES['global'][202]}
 
     else:
         try:
             user = UserAuth.objects.get(notes_id=body_data['notes_id'])
-            re_msg = {'code':1,'msg':'already exists'}
+            re_msg = {'code':106,'msg':settings.KPI_ERROR_MESSAGES['userRegister'][106]}
 
         except UserAuth.DoesNotExist:
 
@@ -147,7 +147,13 @@ def userRegister(request):
                 )
                 # 发放token
                 token = RefreshToken.for_user(normal_user)
-                re_msg = {'code':0,'msg':'create success','type':'user','refresh':str(token),'access':str(token.access_token)}
+                re_msg = {
+                    'code':103,
+                    'msg':settings.KPI_ERROR_MESSAGES['userRegister'][103],
+                    'type':'user',
+                    'refresh':str(token),
+                    'access':str(token.access_token)
+                }
     
             elif body_data['user_type'] == 2:
                 admin_user = UserAuth.objects.createAU(
@@ -156,7 +162,13 @@ def userRegister(request):
                 )
                 # 发放token
                 token = RefreshToken.for_user(admin_user)
-                re_msg = {'code':0,'msg':'create success','type':'admin user','refresh':str(token),'access':str(token.access_token)}
+                re_msg = {
+                    'code':104,
+                    'msg':settings.KPI_ERROR_MESSAGES['userRegister'][104],
+                    'type':'admin user',
+                    'refresh':str(token),
+                    'access':str(token.access_token)
+                }
 
             elif body_data['user_type'] == 3:
                 super_user = UserAuth.objects.createSU(
@@ -165,9 +177,15 @@ def userRegister(request):
                 )
                 # 发放token
                 token = RefreshToken.for_user(super_user)
-                re_msg = {'code':0,'msg':'create success','type':'super user','refresh':str(token),'access':str(token.access_token)}
+                re_msg = {
+                        'code':105,
+                        'msg':settings.KPI_ERROR_MESSAGES['userRegister'][105],
+                        'type':'super user',
+                        'refresh':str(token),
+                        'access':str(token.access_token)
+                    }
 
             else:
-                re_msg = {'code':1,'msg':'err type'}
+                re_msg = {'code':106,'msg':settings.KPI_ERROR_MESSAGES['userRegister'][106]}
 
     return JsonResponse(re_msg,safe=False)

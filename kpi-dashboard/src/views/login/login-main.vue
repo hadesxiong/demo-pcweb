@@ -161,7 +161,7 @@ export default defineComponent({
             if (login_res.data.code == 0) {
                 console.log(login_res)
                 localStorage.setItem('refresh',login_res['headers'].get('x-refresh-token'))
-                localStorage.setItem('access',login_res['headers'].get('authorization'))
+                localStorage.setItem('c',login_res['headers'].get('authorization'))
                 // this.router.push('/dashboard-main')
                 refreshToken()
             } else {

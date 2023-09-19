@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 from django.http.response import JsonResponse
+from django.conf import settings
 
 from kpi_server.models import IndexDetail,Index,DashboardMap
 from kpi_server.serializers import DashboardSerializer
@@ -117,7 +118,7 @@ def getDashboard(request):
 
     # 判断参数
     if None in query_params.values():
-        re_msg = {'code':1,'msg':'err params.'}
+        re_msg = {'code':202,'msg':settings.KPI_ERROR_MESSAGES['global'][202]}
 
     elif query_params['db_mark'] == 'all':
         db_queryset = DashboardMap.objects.filter(db_state=1).values('db_mark','db_name','db_class','index_num','db_func')
@@ -202,7 +203,7 @@ def getDashboard(request):
 
                 result_data[group_df['db_mark'].iloc[0]] = {'title':group_df['db_name'].iloc[0],'data':index_data,'name':title_df.to_dict(orient='records')}        
 
-        re_msg = {'code':0,'data':result_data }
+        re_msg = {'code':200,'msg':settings.KPI_ERROR_MESSAGES['global'][200],'data':result_data }
 
     else:
         db_queryset = DashboardMap.objects.get(db_mark=query_params['db_mark'],db_state=1)
@@ -212,6 +213,14 @@ def getDashboard(request):
         result_data = function_map[func_type](org_num = query_params['org_num'], start_date = query_params['start_date'],
             end_date = query_params['end_date'], index_list = index_list
         )
-        re_msg = {'code':1,'msg':'done','title':db_queryset.db_name,'name':result_data['name'],'data':result_data['data'],'class':db_queryset.db_class,'date':result_data['date']}
+        re_msg = {
+            'code':200,
+            'msg':settings.KPI_ERROR_MESSAGES['global'][200],
+            'title':db_queryset.db_name,
+            'name':result_data['name'],
+            'data':result_data['data'],
+            'class':db_queryset.db_class,
+            'date':result_data['date']
+        }
 
     return JsonResponse(re_msg,safe=False)

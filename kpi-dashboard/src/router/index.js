@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import { checkAuth } from "@/utils/checkAuth";
+
 // 定义路由配置
 const routes = [
   {
@@ -124,6 +126,15 @@ router.beforeEach((to, from, next) => {
   //     next()
   //   }
   // }
+  if(to.meta.requireAuth) {
+    if(checkAuth()) {
+      next();
+    } else {
+      next('/login');
+    }
+  } else {
+    next();
+  }
   // table动态赋值
   if (to.name == 'table-detail') {
     to.meta.menu = to.path.substring(1)
