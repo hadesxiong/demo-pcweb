@@ -57,7 +57,7 @@ def userLogin(request):
 
     # 参数检查
     if None in body_data.values():
-        re_msg = {'code':0,'err_msg':'err params'}
+        re_msg = {'code':202,'msg':settings.KPI_ERROR_MESSAGES['global'][202]}
 
     # 登陆检查
     else:
@@ -82,7 +82,7 @@ def userLogin(request):
                     )
 
                 user_token.save()
-                re_msg = {'code':0,'msg':'success'}
+                re_msg = {'code':100,'msg':settings.KPI_ERROR_MESSAGES['userLogin'][100]}
                 response_obj = JsonResponse(re_msg,safe=False)
                 response_obj['Access-Control-Expose-Headers'] = "*"
                 response_obj['Authorization'] = f'Bearer {str(token.access_token)}'
