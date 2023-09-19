@@ -43,6 +43,9 @@
 .h_30 {
   height: 30px;
 }
+.h_24 {
+  height: 24px;
+}
 .h_32 {
   height: 32px;
 }
@@ -51,6 +54,9 @@
 }
 .lh_38 {
   line-height:38px
+}
+.lh_24 {
+  line-height: 24px;
 }
 .minh_120 {
   min-height: 120px;
@@ -461,6 +467,12 @@
 .bg_warn6 {
   background-color: var(--color-warning-6);
 }
+.bg_d1 {
+  background-color: var(--color-danger-1);
+}
+.bg_d2 {
+  background-color: var(--color-danger-2);
+}
 
 /* 常用字体色 */
 .fc_l2 {
@@ -540,4 +552,10 @@
 }
 .ws_no {
   white-space: nowrap;
+}
+
+/* 全局消息提示 */
+.msg_loading {
+  margin-top: 15vh;
+  font-size: 16px;
 }

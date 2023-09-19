@@ -12,17 +12,17 @@
                     <div class="right_main d_flex fd_c fai_fs gap_20">
                         <div class="font_24 fw_500 mb_16 lh_32 w_p100 ta_l fc_l1"><span class="fc_l2 mr_8">欢迎登陆</span>业绩展示系统
                         </div>
-                        <div class="d_flex fd_c gap_20 w_p100">
-                            <a-form>
-                                <a-form-item :validate-status="name_validate">
-                                    <a-input v-model:value="user_name" placeholder="请输入用户名" size="large" :bordered="false" class="bg_l3 br_2">
+                        <div class="d_flex fd_c w_p100">
+                            <a-form :model="formContent" ref="formObj">
+                                <a-form-item :rules="[{ required: true, trigger:'blur', message: '用户名不能为空' }]" name="username" class="ta_l">
+                                    <a-input v-model:value="formContent.username" placeholder="请输入用户名" size="large" :bordered="false" class="bg_l3 br_2" name="username" autocomplete="username">
                                         <template #prefix>
                                             <icon-user fill="#4E5969" size="16" class="c-func_icon"></icon-user>
                                         </template>
-                                    </a-input>
+                                    </a-input> 
                                 </a-form-item>
-                                <a-form-item :validate-status="pw_validate">
-                                    <a-input-password v-model:value="password" placeholder="请输入密码" size="large" :bordered="false" class="bg_l3 br_2">
+                                <a-form-item :rules="[{ required: true, trigger:'blur', message: '密码不能为空' }]" name="password" class="ta_l">
+                                    <a-input-password v-model:value="formContent.password" placeholder="请输入密码" size="large" :bordered="false" class="bg_l3 br_2" name="password" autocomplete="current-password">
                                         <template #prefix>
                                             <icon-lock fill="#4E5969" size="16" class="c-func_icon"></icon-lock>
                                         </template>
@@ -35,7 +35,7 @@
                             <a class="fc_brand6">忘记密码</a>
                         </div>
                         <div class="w_p100 h_32 lh_32">
-                            <a-button type="primary" class="bg_brand6 w_p100 h_38 font_16 fw_500" @click="userLogin(user_name,password)">登陆</a-button>
+                            <a-button type="primary" class="bg_brand6 w_p100 h_38 font_16 fw_500" @click="checkForm">登陆</a-button>
                         </div>
                     </div>
                 </div>
@@ -103,12 +103,13 @@
     background-color: #165dff !important;
     border-color: #165dff !important;
 }
+
 </style>
 
 <script>
-import { defineComponent,ref } from 'vue';
+import { defineComponent,reactive,ref } from 'vue';
 import { UserPositioning, Lock } from '@icon-park/vue-next';
-import { Layout, LayoutContent, Input, InputPassword, Checkbox, Button, Form, FormItem } from 'ant-design-vue';
+import { Layout, LayoutContent, Input, InputPassword, Checkbox, Button, Form, FormItem, message } from 'ant-design-vue';
 
 import axios from 'axios';
 import { useRouter } from 'vue-router';
@@ -138,11 +139,12 @@ export default defineComponent({
     },
     setup() {
         return {
-            user_name:ref(''),
-            password: ref(''),
+            formContent: reactive({
+                username: '',
+                password: '',
+            }),
+            btnLoading: ref(false),
             router:useRouter(),
-            name_validate: ref(false),
-            pw_validate: ref(false)
         }
     },
     methods: {
@@ -165,6 +167,44 @@ export default defineComponent({
             } else {
                 console.log(login_res.data)
             }
+            return login_res.data
+        },
+        checkForm() {
+            this.$refs.formObj.validate().then(
+                ()=>{
+                    // console.log('校验通过');
+                    message.loading({
+                        content:'正在登陆,请稍后...',
+                        duration: 0,
+                        class: 'msg_loading',
+                    })
+                    this.userLogin(this.formContent.username,this.formContent.password).then(
+                        (response) => {
+                            console.log(response);
+                            message.destroy();
+                            // 判断回复的code
+                            message.success({
+                                content:'验证成功,正在跳转...',
+                                duration: 1.5,
+                                class: 'msg_loading',
+                                // onClose: ()=>{
+                                //     this.$router.push('/dashboard-main')
+                                // }
+                            })
+                        }
+                    ).catch(
+                        ()=>{
+                            message.error({
+                                content:'验证失败,请检查您的用户名或者密码...',
+                                duration:3,
+                                class:'msg_loading'
+                            })
+                        }
+                    )
+                }
+            ).catch(
+                ()=>{console.log('校验失败')}
+            )
         }
     }
 })
