@@ -78,12 +78,31 @@
                     <a-table :columns="table_header" :data-source="user_list" class="b_w1c2_so br_4" :pagination="false"
                         :scroll="table_scroll">
                         <template #bodyCell="{ column, text, record }">
-                            <template
+                            <!-- <template
                                 v-if="['notes_Id', 'user_name', 'character_name', 'group_name', 'org_name'].includes(column.dataIndex)">
+                                <div class="input-container">
+                                    <a-input v-if="editableData[record.key] && (record.dataIndex == 'user_name')"
+                                        v-model:value="editableData[record.key][column.dataIndex]" class="input-wrapper">
+                                    </a-input>
+                                    <template v-else>{{ text }}</template>
+                                </div>
+                            </template> -->
+                            <template v-if="column.dataIndex === 'user_name'">
                                 <div class="input-container">
                                     <a-input v-if="editableData[record.key]"
                                         v-model:value="editableData[record.key][column.dataIndex]" class="input-wrapper">
                                     </a-input>
+                                    <template v-else>{{ text }}</template>
+                                </div>
+                            </template>
+                            <template v-else-if="column.dataIndex === 'character_name'">
+                                <div class="input-container">
+                                    <a-select v-if="editableData[record.key]"
+                                        v-model:value="editableData[record.key][column.dataIndex]" class="select-wrapper">
+                                        <template #suffixIcon>
+                                            <icon-down size="16" fill="#86909C"></icon-down>
+                                        </template>
+                                    </a-select>
                                     <template v-else>{{ text }}</template>
                                 </div>
                             </template>
@@ -175,7 +194,7 @@
                                 <a-input :value="add_line.value" class="w_240">
                                     <template #suffix>
                                         <!-- <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park> -->
-                                        <icon-down class="lh_1" fill="#86909C"></icon-down>
+                                        <icon-down size="16" class="lh_1" fill="#86909C"></icon-down>
                                     </template>
                                 </a-input>
                                 <template #overlay>
@@ -265,7 +284,9 @@
 
 .input-container {
     max-width: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
+    height: 20px;
+    line-height: 20px;
 }
 
 .input-container .ant-input {
@@ -277,9 +298,27 @@
     overflow: hidden;
     font-size: 13px;
 }
-
-.input-container .input-wrapper .input-component {
-    width: 100%;
+.input-container .select-wrapper {
+    height: 20px;
+    line-height: 20px;
+    align-items: center;
+    font-size: 13px;
+}
+.input-container .select-wrapper div.ant-select-selector {
+    height: 20px;
+    line-height: 20px;
+    background-color: transparent;
+    padding-left: 0px;
+    padding-right: 24px;
+}
+.input-container .select-wrapper div.ant-select-selector span {
+    font-size: 13px;
+    line-height: 20px;
+}
+.input-container .select-wrapper div.ant-select-selector span.ant-select-selection-search input {
+    font-size: 13px;
+    line-height: 20px;
+    height: 20px;
 }
 </style>
 
@@ -296,12 +335,16 @@
 .ant-table-cell .input-container input:focus {
     color: #165dff;
 }
+
+.ant-select-single .ant-select-selector {
+    font-size: 13px;
+}
 </style>
 
 <script>
 import { defineComponent, ref, reactive } from 'vue';
 import { Down, Search, Redo, AddFour, Close, Check } from '@icon-park/vue-next';
-import { Dropdown, Menu, MenuItem, Input, Divider, Button, Table, Popconfirm, Pagination, Modal, Radio, RadioGroup, Spin } from 'ant-design-vue';
+import { Dropdown, Menu, MenuItem, Input, Divider, Button, Table, Popconfirm, Pagination, Modal, Radio, RadioGroup, Spin, Select } from 'ant-design-vue';
 import { cloneDeep } from 'lodash-es'
 
 import axios from 'axios';
@@ -335,6 +378,7 @@ export default defineComponent({
         'a-radio': Radio,
         'a-radio-group': RadioGroup,
         'a-spin': Spin,
+        'a-select': Select,
         'file-input': FileInput,
     },
     data() {
@@ -351,7 +395,7 @@ export default defineComponent({
                 current: 1,
                 pageSize: 15,
                 total: 100,
-                sizeOptions: ['15','30','60']
+                sizeOptions: ['15', '30', '60']
             }),
             table_scroll: ref({ y: 0 }),
             search_orgGroup: ref({ ref_code: 0, ref_name: '全部' }),
@@ -424,7 +468,7 @@ export default defineComponent({
             const user_list = await api('/api/user/getUserList', { params: get_params, headers: get_headers })
             this.user_list = user_list.data.data;
             // 添加key
-            this.user_list = this.user_list.map((item,index)=>{return {...item,key:index.toString()}});
+            this.user_list = this.user_list.map((item, index) => { return { ...item, key: index.toString() } });
             this.page_obj.total = user_list.data.data_total
             this.spin_status = false
         },
@@ -459,6 +503,7 @@ export default defineComponent({
         // 编辑行数据
         editTable(key) {
             this.editableData[key] = cloneDeep(this.user_list.filter(item => key === item.key)[0]);
+            console.log(this.editableData[key])
         },
     }
 });
