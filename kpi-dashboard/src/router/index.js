@@ -118,14 +118,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   // 在路由导航之前执行的逻辑
-  // if(to.meta.requireAuth) {
-  //   const isLoggedIn = localStorage.getItem('isLoggedIn');
-  //   if (!isLoggedIn) {
-  //     next('/login')
-  //   } else {
-  //     next()
-  //   }
-  // }
   if(to.meta.requireAuth) {
     if(checkAuth()) {
       next();
@@ -140,7 +132,7 @@ router.beforeEach((to, from, next) => {
     to.meta.menu = to.path.substring(1)
   }
   // 跳转
-  next()
+  // next()
 });
 
 export default router;

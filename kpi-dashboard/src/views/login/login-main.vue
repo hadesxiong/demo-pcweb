@@ -115,8 +115,6 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import CryptoJS from 'crypto-js';
 
-import {refreshToken} from '@/utils/refreshToken.js'
-
 export default defineComponent({
     name: 'LoginMain',
     components: {
@@ -158,12 +156,10 @@ export default defineComponent({
 
             const login_res = await axios.post('http://localhost:3000/api/auth/userLogin',user_data,{ withCredentials: true })
             // 处理结果
-            if (login_res.data.code == 0) {
+            if (login_res.data.code == 100) {
                 console.log(login_res)
                 localStorage.setItem('refresh',login_res['headers'].get('x-refresh-token'))
-                localStorage.setItem('c',login_res['headers'].get('authorization'))
-                // this.router.push('/dashboard-main')
-                refreshToken()
+                localStorage.setItem('access',login_res['headers'].get('authorization'))
             } else {
                 console.log(login_res.data)
             }
@@ -187,9 +183,9 @@ export default defineComponent({
                                 content:'验证成功,正在跳转...',
                                 duration: 1.5,
                                 class: 'msg_loading',
-                                // onClose: ()=>{
-                                //     this.$router.push('/dashboard-main')
-                                // }
+                                onClose: ()=>{
+                                    this.$router.push('/dashboard-main')
+                                }
                             })
                         }
                     ).catch(

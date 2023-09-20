@@ -6,7 +6,6 @@
                     class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
                     <a>
                         {{ search_orgGroup.ref_name }}
-                        <!-- <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park> -->
                         <icon-down class="lh_1" fill="#86909C"></icon-down>
                     </a>
                     <template #overlay>
@@ -20,7 +19,6 @@
                     class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
                     <a>
                         {{ search_charater.ref_name }}
-                        <!-- <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park> -->
                         <icon-down class="lh_1" fill="#86909C"></icon-down>
                     </a>
                     <template #overlay>
@@ -34,7 +32,6 @@
                     class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
                     <a>
                         {{ search_line.ref_name }}
-                        <!-- <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park> -->
                         <icon-down class="lh_1" fill="#86909C"></icon-down>
                     </a>
                     <template #overlay>
@@ -44,10 +41,9 @@
                         </a-menu>
                     </template>
                 </a-dropdown>
-                <a-input placeholder="输入导入人信息或者导入编号进行搜索"
+                <a-input v-model:value='search_keyword' placeholder="输入导入人信息或者导入编号进行搜索"
                     class="w_360 fai_c bg_l2 br_2  ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 b_n">
                     <template #suffix>
-                        <!-- <icon-park type="Search" size="14" class="mr_8 lh_1"></icon-park> -->
                         <icon-search size="14" class="mr_8 lh_1"></icon-search>
                     </template>
                 </a-input>
@@ -57,21 +53,18 @@
                 <div class="d_flex gap_20">
                     <a-button type="default" class="br_2 fai_c d_flex fc_l2 bg_l2 b_n" @click="resetSearch">
                         <template #icon>
-                            <!-- <icon-park type="Redo" size="14" class="mr_8 lh_1"></icon-park> -->
                             <icon-redo size="14" class="mr_8 lh_1"></icon-redo>
                         </template>
                         重置
                     </a-button>
                     <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="confirmSearch">
                         <template #icon>
-                            <!-- <icon-park type="Search" size="14" class="mr_8 lh_1"></icon-park> -->
                             <icon-search size="14" class="mr_8 lh_1"></icon-search>
                         </template>
                         查询
                     </a-button>
                     <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="showModal">
                         <template #icon>
-                            <!-- <icon-park type="AddFour" size="14" class="mr_8 lh_1"></icon-park> -->
                             <icon-add size="14" class="mr_8 lh_1"></icon-add>
                         </template>
                         新增
@@ -79,39 +72,42 @@
                 </div>
             </div>
         </div>
-        <div class="p_20 bg_white h_p100 d_flex fd_c gap_20">
-            <div class="of_a fg_1">
-                <a-table :columns="table_data.table_columns" :data-source="table_data.table_data" class="b_w1c2_so br_4"
-                    :pagination="false">
-                    <template #bodyCell="{ column, text, record }">
-                        <template
-                            v-if="['user_notesid', 'user_name', 'user_character', 'user_class', 'user_org'].includes(column.dataIndex)">
-                            <div class="input-container">
-                                <a-input v-if="editableData[record.key]"
-                                    v-model:value="editableData[record.key][column.dataIndex]" class="input-wrapper">
-                                </a-input>
-                                <template v-else>{{ text }}</template>
-                            </div>
+        <div class="p_20 bg_white h_p100 d_flex fd_c gap_20 ofy_h">
+            <div class="ofy_h fg_1" id="user_table">
+                <a-spin :spinning="spin_status" size="large" :delay="100" tip="数据加载中...">
+                    <a-table :columns="table_header" :data-source="user_list" class="b_w1c2_so br_4" :pagination="false"
+                        :scroll="table_scroll">
+                        <template #bodyCell="{ column, text, record }">
+                            <template
+                                v-if="['notes_Id', 'user_name', 'character_name', 'group_name', 'org_name'].includes(column.dataIndex)">
+                                <div class="input-container">
+                                    <a-input v-if="editableData[record.key]"
+                                        v-model:value="editableData[record.key][column.dataIndex]" class="input-wrapper">
+                                    </a-input>
+                                    <template v-else>{{ text }}</template>
+                                </div>
+                            </template>
+                            <template v-else-if="column.dataIndex === 'org_operation'">
+                                <div>
+                                    <span v-if="editableData[record.key]" class="d_iflex gap_8 font_13">
+                                        <a @click="save(record.key)">保存</a>
+                                        <a-popconfirm title="Sure to cancel?" @confirm="cancel(record.key)">
+                                            <a>取消</a>
+                                        </a-popconfirm>
+                                    </span>
+                                    <span v-else>
+                                        <a @click="editTable(record.key)">编辑</a>
+                                    </span>
+                                </div>
+                            </template>
                         </template>
-                        <template v-else-if="column.dataIndex === 'org_operation'">
-                            <div>
-                                <span v-if="editableData[record.key]" class="d_iflex gap_8 font_13">
-                                    <a @click="save(record.key)">保存</a>
-                                    <a-popconfirm title="Sure to cancel?" @confirm="cancel(record.key)">
-                                        <a>取消</a>
-                                    </a-popconfirm>
-                                </span>
-                                <span v-else>
-                                    <a @click="edit(record.key)">编辑</a>
-                                </span>
-                            </div>
-                        </template>
-                    </template>
-                </a-table>
+                    </a-table>
+                </a-spin>
             </div>
             <div class="d_flex fai_c jc_fe">
                 <a-pagination :current="page_obj.current" :total="page_obj.total" :pageSize="page_obj.pageSize"
-                    @change="handlePageChange"></a-pagination>
+                    :pageSizeOptions="page_obj.sizeOptions" @change="changePage"
+                    @showSizeChange="changeSizeOptions"></a-pagination>
             </div>
         </div>
     </div>
@@ -303,13 +299,15 @@
 </style>
 
 <script>
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, ref, reactive } from 'vue';
 import { Down, Search, Redo, AddFour, Close, Check } from '@icon-park/vue-next';
-import { Dropdown, Menu, MenuItem, Input, Divider, Button, Table, Popconfirm, Pagination, Modal, Radio, RadioGroup } from 'ant-design-vue';
+import { Dropdown, Menu, MenuItem, Input, Divider, Button, Table, Popconfirm, Pagination, Modal, Radio, RadioGroup, Spin } from 'ant-design-vue';
 import { cloneDeep } from 'lodash-es'
 
 import axios from 'axios';
-import FileInput from '../../components/other/file-input.vue';
+import FileInput from '@/components/other/file-input.vue';
+import { tableScrollYResize } from '@/utils/tableScrollYResize';
+import { userTableHead } from '@/utils/commonTableHeader';
 
 const api = axios.create({
     baseURL: process.env.VUE_APP_BASE_URL
@@ -336,65 +334,51 @@ export default defineComponent({
         'a-popconfirm': Popconfirm,
         'a-radio': Radio,
         'a-radio-group': RadioGroup,
+        'a-spin': Spin,
         'file-input': FileInput,
     },
     data() {
-        return {filter_list:'ubg.uc.og'}
+        return { filter_list: 'ubg.uc.og' }
     },
     setup() {
-        const table_data = ref({});
-        const dataSource = ref(table_data);
-        const modal_visible = ref(false);
-        const create_type = ref(1)
-        const editableData = reactive({});
         return {
-            table_data,
-            editableData,
-            dataSource,
-            modal_visible,
-            create_type,
+            table_header: ref(userTableHead),
+            user_list: ref([]),
+            editableData: reactive({}),
+            modal_visible: ref(false),
+            create_type: ref(1),
             page_obj: ref({
                 current: 1,
                 pageSize: 10,
-                total: 100
+                total: 100,
+                sizeOptions: ['10', '20', '50']
             }),
-            org_group: ref([]),
-            charater_group: ref([]),
-            line_more: ref([]),
+            table_scroll: ref({ y: 0 }),
             search_orgGroup: ref({ ref_code: 0, ref_name: '全部' }),
             search_charater: ref({ ref_code: 0, ref_name: '全部' }),
-            search_line: ref({ ref_code:0, ref_name: '全部' }),
+            search_line: ref({ ref_code: 0, ref_name: '全部' }),
+            search_keyword: ref(''),
             add_charater: ref({ key: '00', value: '超级管理员' }),
             add_line: ref({ key: 'enterprise', value: '企金序列' }),
             belong_org: ref({ key: '3100001', value: '上海分行' }),
             lead_manager: ref({ key: '101203', value: '真汉子比尔曼' }),
             user_notesid: ref(),
-            user_name: ref()
+            user_name: ref(),
+            spin_status: ref(true)
         }
     },
     mounted() {
-        this.getOrgData();
-        this.getUserList();
-        this.getFilterData(this.filter_list)
+
+        this.getFilterData(this.filter_list);
+        this.getUserList()
+        window.addEventListener('resize', tableScrollYResize('user_table', this.table_scroll));
     },
     methods: {
-        async getOrgData() {
-            const user_res = await axios.get('/demo/manage/user-manage.json');
-            this.table_data = user_res.data
-        },
-        // async getFilterData() {
-        //     const filter_res = await axios.get('/demo/filter/normal_filter.json');
-        //     this.org_group = filter_res.data.org_group;
-        //     this.charater_group = filter_res.data.charater_gourp;
-        //     this.line_more = filter_res.data.line_more;
-        // },
-        edit(key) {
-            // console.log(this.dataSource.table_data,key)
-            this.editableData[key] = cloneDeep(this.dataSource.table_data.filter(item => key === item.key)[0]);
-        },
+
         save(key) {
-            Object.assign(this.dataSource.table_data.filter(item => key === item.key)[0], this.editableData[key]);
+            Object.assign(this.user_list.filter(item => key === item.key)[0], this.editableData[key]);
             delete this.editableData[key];
+            console.log(this.user_list.filter(item => key === item.key)[0], this.editableData[key])
         },
         cancel(key) {
             delete this.editableData[key];
@@ -408,10 +392,6 @@ export default defineComponent({
         confirmUpload() {
             this.modal_visible = false;
         },
-        handlePageChange(page) {
-            console.log(page)
-            this.page_obj.current = page
-        },
         chooseMenuItem(item, target) {
             this[target] = item
         },
@@ -419,6 +399,7 @@ export default defineComponent({
             this.search_orgGroup = { ref_code: 0, ref_name: '全部' };
             this.search_charater = { ref_code: 0, ref_name: '全部' };
             this.search_line = { ref_code: 0, ref_name: '全部' };
+            this.search_keyword = ''
         },
         confirmSearch() {
             console.log(this.search_orgGroup, this.search_charater, this.search_line);
@@ -426,37 +407,59 @@ export default defineComponent({
         },
         // 获取用户列表
         async getUserList() {
+            this.spin_status = true;
             const get_params = {
-                group: this.line_more.ref_code,
+                group: this.search_line.ref_code,
                 character: this.search_charater.ref_code,
                 org: this.search_orgGroup.ref_code,
-                client:0,
-                page:1,
-                size:25,
-                ext:''
+                client: 0,
+                page: this.page_obj.current,
+                size: this.page_obj.pageSize,
+                ext: this.search_keyword
             }
+            console.log(get_params);
             const get_headers = {
                 'Authorization': localStorage.getItem('access')
             }
-            const user_list = await api('/api/user/getUserList',{params:get_params,headers:get_headers})
-            console.log(user_list);
+            const user_list = await api('/api/user/getUserList', { params: get_params, headers: get_headers })
+            this.user_list = user_list.data.data;
+            // 添加key
+            this.user_list = this.user_list.map((item,index)=>{return {...item,key:index.toString()}});
+            this.page_obj.total = user_list.data.data_total
+            this.spin_status = false
         },
         // 获取筛选项
         async getFilterData(ref_type) {
-            const get_params = {type:ref_type}
+            const get_params = { type: ref_type }
             const get_headers = {
                 'Authorization': localStorage.getItem('access')
             }
-            const filter_data = await api('/api/other/getFilter',{params:get_params,headers:get_headers})
+            const filter_data = await api('/api/other/getFilter', { params: get_params, headers: get_headers })
             console.log(filter_data.data)
-            if (filter_data.data.code == 0 ) {
+            if (filter_data.data.code == 0) {
                 this.org_group = filter_data.data.data.org_group
                 this.charater_group = filter_data.data.data.user_character
                 this.line_more = filter_data.data.data.user_belong_group
             }
 
-        }
-
+        },
+        // 设定pageSize
+        changeSizeOptions(_, size) {
+            // 设定size，页数重置
+            this.page_obj.pageSize = size
+            this.page_obj.current = 1
+            // 更新数据
+            this.getUserList()
+        },
+        // 翻页
+        changePage(page) {
+            this.page_obj.current = page
+            this.getUserList()
+        },
+        // 编辑行数据
+        editTable(key) {
+            this.editableData[key] = cloneDeep(this.user_list.filter(item => key === item.key)[0]);
+        },
     }
 });
 
