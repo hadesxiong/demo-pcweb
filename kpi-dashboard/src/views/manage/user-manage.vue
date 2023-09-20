@@ -349,9 +349,9 @@ export default defineComponent({
             create_type: ref(1),
             page_obj: ref({
                 current: 1,
-                pageSize: 10,
+                pageSize: 15,
                 total: 100,
-                sizeOptions: ['10', '20', '50']
+                sizeOptions: ['15','30','60']
             }),
             table_scroll: ref({ y: 0 }),
             search_orgGroup: ref({ ref_code: 0, ref_name: '全部' }),

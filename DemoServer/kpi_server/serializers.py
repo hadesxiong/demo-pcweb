@@ -11,13 +11,16 @@ import math
 # 序列化
 class UsersSerializer(serializers.ModelSerializer):
 
-    # 一次性获取所需机构
-    org_queryset = Org.objects.all().values('org_num','org_name','org_manager')
-    org_dict = {item['org_num']:{'org_name':item['org_name'],'org_manager':item['org_manager']} for item in org_queryset}
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
 
-    # 补充逻辑
-    ref_queryset = Reference.objects.filter(ref_type__in=['user_belong_group','user_character']).values('ref_type','ref_code','ref_name')
-    ref_dict = {f'{item["ref_type"]}_{item["ref_code"]}':item['ref_name'] for item in ref_queryset}
+        # 一次性获取所需机构
+        org_queryset = Org.objects.all().values('org_num','org_name','org_manager')
+        self.org_dict = {item['org_num']:{'org_name':item['org_name'],'org_manager':item['org_manager']} for item in org_queryset}
+
+        # 获取相关码值
+        ref_queryset = Reference.objects.filter(ref_type__in=['user_belong_group','user_character']).values('ref_type','ref_code','ref_name')
+        self.ref_dict = {f'{item["ref_type"]}_{item["ref_code"]}':item['ref_name'] for item in ref_queryset}
     
     # 关联获取机构相关信息
     org_name = serializers.SerializerMethodField()
@@ -26,15 +29,6 @@ class UsersSerializer(serializers.ModelSerializer):
     # 补充角色信息及分组信息
     character_name = serializers.SerializerMethodField()
     group_name = serializers.SerializerMethodField()
-
-
-    # def get_org_name(self,obj):
-    #     org_obj = Org.objects.get(org_num=obj.user_belong_org)
-    #     return org_obj.org_name
-    
-    # def get_org_manager(self,obj):
-    #     org_obj = Org.objects.get(org_num=obj.user_belong_org)
-    #     return org_obj.org_manager
 
     def get_org_name(self,obj):
         return self.org_dict[obj.user_belong_org]['org_name']
