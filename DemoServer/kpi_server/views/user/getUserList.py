@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.core.paginator import Paginator
 from django.db.models import Subquery,Q
 from django.http.response import JsonResponse
+from django.conf import settings
 
 from kpi_server.models import Users,Org
 from kpi_server.serializers import UsersSerializer
@@ -60,8 +61,19 @@ def getUserList(request):
     if query_params['page'] <= page_max:
         each_users_list = page_inator.page(query_params['page'])
         users_serializer = UsersSerializer(each_users_list,many=True)
-        re_msg = {'data':users_serializer.data,'code':0,'msg':'success','has_next':(query_params['page']<page_max)}
+        re_msg = {
+            'code':200,
+            'msg': settings.KPI_ERROR_MESSAGES['global'][200],
+            'data':users_serializer.data,
+            'has_next':(query_params['page']<page_max),
+            'page_total': page_max,
+            'page_no': query_params['page'],
+            'data_total': len(users_querySet)
+        }
     else:
-        re_msg = {'code':1,'msg':'error_range'}
+        re_msg = {
+            'code':203,
+            'msg':settings.KPI_ERROR_MESSAGES['global'][203]
+        }
 
     return JsonResponse(re_msg,safe=False)
