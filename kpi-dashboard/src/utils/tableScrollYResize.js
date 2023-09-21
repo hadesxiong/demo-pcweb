@@ -5,6 +5,5 @@ export function tableScrollYResize(doc_id,obj) {
     const conHeight = document.getElementById(doc_id).clientHeight
     const headHeight = 46;
     const scrolly = conHeight - headHeight - 4;
-    console.log(conHeight,scrolly);
     obj['y'] = scrolly
 }

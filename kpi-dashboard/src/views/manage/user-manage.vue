@@ -23,7 +23,7 @@
                     </a>
                     <template #overlay>
                         <a-menu>
-                            <a-menu-item v-for="item in charater_group" :key="item.ref_code"
+                            <a-menu-item v-for="item in character_group" :key="item.ref_code"
                                 @click="chooseMenuItem(item, 'search_charater')">{{ item.ref_name }}</a-menu-item>
                         </a-menu>
                     </template>
@@ -31,13 +31,13 @@
                 <a-dropdown
                     class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
                     <a>
-                        {{ search_line.ref_name }}
+                        {{ search_line.ref_name }}条线
                         <icon-down class="lh_1" fill="#86909C"></icon-down>
                     </a>
                     <template #overlay>
                         <a-menu>
-                            <a-menu-item v-for="item in line_more" :key="item.ref_code"
-                                @click="chooseMenuItem(item, 'search_line')">{{ item.ref_name }}</a-menu-item>
+                            <a-menu-item v-for="item in group_group" :key="item.ref_code"
+                                @click="chooseMenuItem(item, 'search_line')">{{ item.ref_name }}条线</a-menu-item>
                         </a-menu>
                     </template>
                 </a-dropdown>
@@ -78,15 +78,6 @@
                     <a-table :columns="table_header" :data-source="user_list" class="b_w1c2_so br_4" :pagination="false"
                         :scroll="table_scroll">
                         <template #bodyCell="{ column, text, record }">
-                            <!-- <template
-                                v-if="['notes_Id', 'user_name', 'character_name', 'group_name', 'org_name'].includes(column.dataIndex)">
-                                <div class="input-container">
-                                    <a-input v-if="editableData[record.key] && (record.dataIndex == 'user_name')"
-                                        v-model:value="editableData[record.key][column.dataIndex]" class="input-wrapper">
-                                    </a-input>
-                                    <template v-else>{{ text }}</template>
-                                </div>
-                            </template> -->
                             <template v-if="column.dataIndex === 'user_name'">
                                 <div class="input-container">
                                     <a-input v-if="editableData[record.key]"
@@ -100,7 +91,35 @@
                                     <a-select v-if="editableData[record.key]"
                                         v-model:value="editableData[record.key][column.dataIndex]" class="select-wrapper">
                                         <template #suffixIcon>
-                                            <icon-down size="16" fill="#86909C"></icon-down>
+                                            <icon-down size="16" fill="#86909C" class="d_flex fai_c"></icon-down>
+                                        </template>
+                                        <a-select-option v-for="item in character_group.filter((a) => { return a.ref_code != 0 })" :key="item.ref_code" :value="item.ref_name">{{item.ref_name}}</a-select-option>
+                                    </a-select>
+                                    <template v-else>{{ text }}</template>
+                                </div>
+                            </template>
+                            <template v-else-if="column.dataIndex === 'group_name'">
+                                <div class="input-container">
+                                    <a-select v-if="editableData[record.key]"
+                                        v-model:value="editableData[record.key][column.dataIndex]" class="select-wrapper">
+                                        <template #suffixIcon>
+                                            <icon-down size="16" fill="#86909C" class="d_flex fai_c"></icon-down>
+                                        </template>
+                                        <a-select-option v-for="item in group_group.filter((a) => { return a.ref_code != 0 })" :key="item.ref_code" :value="item.ref_name">{{item.ref_name}}条线</a-select-option>
+                                    </a-select>
+                                    <template v-else>{{ text }}条线</template>
+                                </div>
+                            </template>
+                            <template v-else-if="column.dataIndex === 'org_name'">
+                                <div class="input-container">
+                                    <a-select v-if="editableData[record.key]" class="select-wrapper" 
+                                        v-model:value="editableData[record.key][column.dataIndex]" 
+                                        :show-arrow="false" 
+                                        :options="org_searchRes"
+                                        show-search 
+                                        @search="debounceSearch">
+                                        <template #notFoundContent v-if="org_fetching">
+                                            <a-spin size="small"></a-spin>
                                         </template>
                                     </a-select>
                                     <template v-else>{{ text }}</template>
@@ -115,7 +134,7 @@
                                         </a-popconfirm>
                                     </span>
                                     <span v-else>
-                                        <a @click="editTable(record.key)">编辑</a>
+                                        <a @click="editTable(record.key)" :class="{'disabled_link':!can_edit}">编辑</a>
                                     </span>
                                 </div>
                             </template>
@@ -180,7 +199,7 @@
                                 </a-input>
                                 <template #overlay>
                                     <a-menu>
-                                        <a-menu-item v-for="item in charater_group.filter((a) => { return a.key != 'all' })"
+                                        <a-menu-item v-for="item in character_group.filter((a) => { return a.key != 'all' })"
                                             :key="item.key" @click="chooseMenuItem(item, 'add_charater')">{{ item.value
                                             }}</a-menu-item>
                                     </a-menu>
@@ -199,7 +218,7 @@
                                 </a-input>
                                 <template #overlay>
                                     <a-menu>
-                                        <a-menu-item v-for="item in line_more.filter((a) => { return a.key != 'all' })"
+                                        <a-menu-item v-for="item in group_group.filter((a) => { return a.key != 'all' })"
                                             :key="item.key" @click="chooseMenuItem(item, 'add_line')">{{ item.value
                                             }}</a-menu-item>
                                     </a-menu>
@@ -282,75 +301,79 @@
 @import url('@/assets/style/colorset.css');
 @import url('@/assets/style/overwrite.css');
 
+.input-container input {
+    height: 30px;
+    background-color: #f2f3f5;
+    border: none;
+    color: #4e5969;
+    border-radius: 2px;
+    padding-left: 8px;
+}
+.input-container input:focus {
+    color: #C9CDD4;
+}
 .input-container {
     max-width: 100%;
-    /* overflow: hidden; */
+    display: flex;
+    align-items: center;
     height: 20px;
     line-height: 20px;
 }
-
 .input-container .ant-input {
     width: 100%;
 }
-
 .input-container .input-wrapper {
     max-width: 100%;
     overflow: hidden;
     font-size: 13px;
+    width: 100%;
 }
 .input-container .select-wrapper {
     height: 20px;
     line-height: 20px;
     align-items: center;
     font-size: 13px;
+    display: flex;
+    width: 100%;
 }
 .input-container .select-wrapper div.ant-select-selector {
-    height: 20px;
-    line-height: 20px;
-    background-color: transparent;
-    padding-left: 0px;
+    height: 30px;
+    line-height: 30px;
+    /* background-color: transparent; */
+    padding-left: 8px;
     padding-right: 24px;
 }
 .input-container .select-wrapper div.ant-select-selector span {
     font-size: 13px;
-    line-height: 20px;
+    line-height: 30px;
 }
 .input-container .select-wrapper div.ant-select-selector span.ant-select-selection-search input {
     font-size: 13px;
     line-height: 20px;
     height: 20px;
 }
-</style>
-
-<style scoped>
-.ant-table-cell .input-container input {
-    padding: 0px !important;
-    height: 100% !important;
-    background-color: transparent;
-    border: none;
+.input-container .ant-select-single .ant-select-selector span.ant-select-selection-search {
+    inset-inline-start: 8px;
+    inset-inline-end: 8px
+}
+.disabled_link {
+    pointer-events: none;
+    cursor: not-allowed;
     color: #C9CDD4;
-    border-radius: 0px;
-}
-
-.ant-table-cell .input-container input:focus {
-    color: #165dff;
-}
-
-.ant-select-single .ant-select-selector {
-    font-size: 13px;
 }
 </style>
 
 <script>
 import { defineComponent, ref, reactive } from 'vue';
 import { Down, Search, Redo, AddFour, Close, Check } from '@icon-park/vue-next';
-import { Dropdown, Menu, MenuItem, Input, Divider, Button, Table, Popconfirm, Pagination, Modal, Radio, RadioGroup, Spin, Select } from 'ant-design-vue';
-import { cloneDeep } from 'lodash-es'
+import { Dropdown, Menu, MenuItem, Input, Divider, Button, Table, Popconfirm, Pagination, Modal, Radio, RadioGroup, Spin, Select, SelectOption, message } from 'ant-design-vue';
+import { cloneDeep, debounce } from 'lodash-es'
 
 import axios from 'axios';
 import FileInput from '@/components/other/file-input.vue';
 import { tableScrollYResize } from '@/utils/tableScrollYResize';
 import { userTableHead } from '@/utils/commonTableHeader';
+import { valueFindKey } from '@/utils/valueFindKey'
 
 const api = axios.create({
     baseURL: process.env.VUE_APP_BASE_URL
@@ -359,12 +382,7 @@ const api = axios.create({
 export default defineComponent({
     name: "OrgManage",
     components: {
-        'icon-down': Down,
-        'icon-search': Search,
-        'icon-redo': Redo,
-        'icon-add': AddFour,
-        'icon-close': Close,
-        'icon-check': Check,
+        'icon-down': Down,'icon-search': Search,'icon-redo': Redo,'icon-add': AddFour,'icon-close': Close,'icon-check': Check,
         'a-dropdown': Dropdown,
         'a-menu': Menu,
         'a-menu-item': MenuItem,
@@ -379,6 +397,7 @@ export default defineComponent({
         'a-radio-group': RadioGroup,
         'a-spin': Spin,
         'a-select': Select,
+        'a-select-option': SelectOption,
         'file-input': FileInput,
     },
     data() {
@@ -398,8 +417,8 @@ export default defineComponent({
                 sizeOptions: ['15', '30', '60']
             }),
             table_scroll: ref({ y: 0 }),
-            search_orgGroup: ref({ ref_code: 0, ref_name: '全部' }),
-            search_charater: ref({ ref_code: 0, ref_name: '全部' }),
+            search_orgGroup: ref({ ref_code: 0, ref_name: '全部分组' }),
+            search_charater: ref({ ref_code: 0, ref_name: '全部角色' }),
             search_line: ref({ ref_code: 0, ref_name: '全部' }),
             search_keyword: ref(''),
             add_charater: ref({ key: '00', value: '超级管理员' }),
@@ -408,11 +427,13 @@ export default defineComponent({
             lead_manager: ref({ key: '101203', value: '真汉子比尔曼' }),
             user_notesid: ref(),
             user_name: ref(),
-            spin_status: ref(true)
+            spin_status: ref(true),
+            org_searchRes: ref([]),
+            org_fetching: ref(false),
+            can_edit: ref(true)
         }
     },
     mounted() {
-
         this.getFilterData(this.filter_list);
         this.getUserList()
         window.addEventListener('resize', tableScrollYResize('user_table', this.table_scroll));
@@ -420,9 +441,66 @@ export default defineComponent({
     methods: {
 
         save(key) {
+            // 文本直接赋值
             Object.assign(this.user_list.filter(item => key === item.key)[0], this.editableData[key]);
+            // 根据文本调整对应的码值
+            this.user_list.filter(item => key === item.key)[0]['user_character'] = valueFindKey(this.character_group,this.editableData[key]['character_name'],'ref_name','ref_code')
+            this.user_list.filter(item => key === item.key)[0]['user_belong_group'] = valueFindKey(this.group_group,this.editableData[key]['group_name'],'ref_name','ref_code')
+            // 如果机构这里没有数据的话，说明没有发起过查询，就跳过了
+            if (this.org_searchRes.length !== 0) {
+                this.user_list.filter(item => key === item.key)[0]['user_belong_org'] = valueFindKey(this.org_searchRes,this.editableData[key]['org_name'],'label','key');
+                // 清空org_searchRes
+                this.org_searchRes = []
+            }
             delete this.editableData[key];
-            console.log(this.user_list.filter(item => key === item.key)[0], this.editableData[key])
+            console.log(this.user_list.filter(item => key === item.key)[0])
+            // 提交修改
+            const post_headers = {
+                'Authorization': localStorage.getItem('access')
+            };
+            const post_data = {
+                'user': this.user_list.filter(item => key === item.key)[0]['notes_id'],
+                'type': 'update',
+                'update_data':{
+                    'user_name': this.user_list.filter(item => key === item.key)[0]['user_name'],
+                    'user_character': this.user_list.filter(item => key === item.key)[0]['user_character'],
+                    'user_belong_group': this.user_list.filter(item => key === item.key)[0]['user_belong_group'],
+                    'user_belong_org': this.user_list.filter(item => key === item.key)[0]['user_belong_org']
+                }
+            };
+            console.log(post_data);
+            message.loading({
+                content:'提交修改,请稍后...',
+                duration:0,
+                class:'msg_loading'
+            });
+            this.can_edit = false;
+            api.post('/api/user/updateUser',post_data,{headers:post_headers}).then(
+                (response) => {
+                    console.log(response);
+                    message.destroy();
+                    message.success({
+                        content:'修改完成',
+                        duration: 1.5,
+                        class: 'msg_loading',
+                        onClose: () => {
+                            this.getUserList();
+                        }
+                    })
+                    this.can_edit = true
+                }
+            ).catch(
+                () => {
+                    message.error({
+                        content:'提交失败,请检查网络...',
+                        duration:3,
+                        class:'msg_loading',
+                        onClose: () => {
+                            this.can_edit = true;
+                        }
+                    })
+                }
+            ) 
         },
         cancel(key) {
             delete this.editableData[key];
@@ -440,9 +518,9 @@ export default defineComponent({
             this[target] = item
         },
         resetSearch() {
-            this.search_orgGroup = { ref_code: 0, ref_name: '全部' };
-            this.search_charater = { ref_code: 0, ref_name: '全部' };
-            this.search_line = { ref_code: 0, ref_name: '全部' };
+            this.search_orgGroup = { ref_code: 0, ref_name: '全部分组' };
+            this.search_charater = { ref_code: 0, ref_name: '全部角色' };
+            this.search_line = { ref_code: 0, ref_name: '全部条线' };
             this.search_keyword = ''
         },
         confirmSearch() {
@@ -461,7 +539,6 @@ export default defineComponent({
                 size: this.page_obj.pageSize,
                 ext: this.search_keyword
             }
-            console.log(get_params);
             const get_headers = {
                 'Authorization': localStorage.getItem('access')
             }
@@ -479,11 +556,10 @@ export default defineComponent({
                 'Authorization': localStorage.getItem('access')
             }
             const filter_data = await api('/api/other/getFilter', { params: get_params, headers: get_headers })
-            console.log(filter_data.data)
             if (filter_data.data.code == 0) {
                 this.org_group = filter_data.data.data.org_group
-                this.charater_group = filter_data.data.data.user_character
-                this.line_more = filter_data.data.data.user_belong_group
+                this.character_group = filter_data.data.data.user_character
+                this.group_group = filter_data.data.data.user_belong_group
             }
 
         },
@@ -503,8 +579,39 @@ export default defineComponent({
         // 编辑行数据
         editTable(key) {
             this.editableData[key] = cloneDeep(this.user_list.filter(item => key === item.key)[0]);
-            console.log(this.editableData[key])
+            // console.log(this.editableData[key])
         },
+        // 机构搜索
+        async orgSearch(keyword) {
+            const get_params = {
+                level: 0,
+                group: 0,
+                client: 0,
+                size: 10,
+                ext: keyword
+            };
+            const get_headers = {
+                'Authorization': localStorage.getItem('access')
+            };
+            const org_searchRes = await api('/api/org/getOrgList',{ params: get_params, headers: get_headers });
+            // console.log(org_searchRes);
+            return org_searchRes.data;
+        },
+        debounceSearch: debounce(function(value){
+            this.org_fetching = true;
+            if(value.length>=2) {
+                this.orgSearch(value).then((response)=>{
+                    if(response.code==200) {
+                        this.org_searchRes = response.data.map(obj=>({
+                            label: obj.org_name,
+                            key: obj.org_num,
+                            value: obj.org_name
+                        }))
+                    }
+                    this.org_fetching = false
+                })
+            }
+        },750)
     }
 });
 

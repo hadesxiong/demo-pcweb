@@ -40,13 +40,13 @@ class UsersSerializer(serializers.ModelSerializer):
         return self.ref_dict[f'user_character_{obj.user_character}']
     
     def get_group_name(self,obj):
-        return self.ref_dict[f'user_belong_group_{obj.user_belong_group}'] + '条线'
+        return self.ref_dict[f'user_belong_group_{obj.user_belong_group}']
 
     class Meta:
 
         model = Users
         # fields = '__all__'
-        fields = ('notes_id','user_name','user_character','user_belong_group','org_name','org_manager','character_name','group_name')
+        fields = ('notes_id','user_name','user_character','user_belong_group', 'user_belong_org', 'org_name','org_manager','character_name','group_name')
 
 class OrgSerializer(serializers.ModelSerializer):
 
