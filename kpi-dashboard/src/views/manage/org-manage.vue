@@ -214,39 +214,69 @@
 @import url('@/assets/style/common.css');
 @import url('@/assets/style/colorset.css');
 @import url('@/assets/style/overwrite.css');
-
+.input-container input {
+    height: 30px;
+    background-color: #f2f3f5;
+    border: none;
+    color: #4e5969;
+    border-radius: 2px;
+    padding-left: 8px;
+}
+.input-container input:focus {
+    color: #C9CDD4;
+}
 .input-container {
     max-width: 100%;
-    overflow: hidden;
+    display: flex;
+    align-items: center;
+    height: 20px;
+    line-height: 20px;
+    font-size: 13px;
 }
-
 .input-container .ant-input {
     width: 100%;
 }
-
 .input-container .input-wrapper {
     max-width: 100%;
     overflow: hidden;
     font-size: 13px;
-}
-
-.input-container .input-wrapper .input-component {
     width: 100%;
 }
-</style>
-
-<style scoped>
-.ant-table-cell .input-container input {
-    padding: 0px !important;
-    height: 100% !important;
-    background-color: transparent;
-    border: none;
-    color: #C9CDD4;
-    border-radius: 0px;
+.input-container .select-wrapper {
+    height: 20px;
+    line-height: 20px;
+    align-items: center;
+    font-size: 13px;
+    display: flex;
+    width: 100%;
 }
-
-.ant-table-cell .input-container input:focus {
-    color: #165dff;
+.input-container .select-wrapper div.ant-select-selector {
+    height: 30px;
+    line-height: 30px;
+    /* background-color: transparent; */
+    padding-left: 8px;
+    padding-right: 24px;
+}
+.input-container .select-wrapper div.ant-select-selector span {
+    font-size: 13px;
+    line-height: 30px;
+}
+.input-container .select-wrapper div.ant-select-selector span.ant-select-selection-search input {
+    font-size: 13px;
+    line-height: 20px;
+    height: 20px;
+}
+.input-container .ant-select-single .ant-select-selector span.ant-select-selection-search {
+    inset-inline-start: 8px;
+    inset-inline-end: 8px
+}
+.input-container .ant-select-single .ant-select-selector span.ant-select-selection-item {
+    height: 30px;
+}
+.disabled_link {
+    pointer-events: none;
+    cursor: not-allowed;
+    color: #C9CDD4;
 }
 </style>
 

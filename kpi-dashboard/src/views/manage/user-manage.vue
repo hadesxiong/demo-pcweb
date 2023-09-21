@@ -10,7 +10,7 @@
                     </a>
                     <template #overlay>
                         <a-menu>
-                            <a-menu-item v-for="item in org_group" :key="item.ref_code"
+                            <a-menu-item v-for="item in org_group.filter((a) => { return a.ref_code != 5 })" :key="item.ref_code"
                                 @click="chooseMenuItem(item, 'search_orgGroup')">{{ item.ref_name }}</a-menu-item>
                         </a-menu>
                     </template>
@@ -93,7 +93,9 @@
                                         <template #suffixIcon>
                                             <icon-down size="16" fill="#86909C" class="d_flex fai_c"></icon-down>
                                         </template>
-                                        <a-select-option v-for="item in character_group.filter((a) => { return a.ref_code != 0 })" :key="item.ref_code" :value="item.ref_name">{{item.ref_name}}</a-select-option>
+                                        <a-select-option
+                                            v-for="item in character_group.filter((a) => { return a.ref_code != 0 })"
+                                            :key="item.ref_code" :value="item.ref_name">{{ item.ref_name }}</a-select-option>
                                     </a-select>
                                     <template v-else>{{ text }}</template>
                                 </div>
@@ -105,19 +107,19 @@
                                         <template #suffixIcon>
                                             <icon-down size="16" fill="#86909C" class="d_flex fai_c"></icon-down>
                                         </template>
-                                        <a-select-option v-for="item in group_group.filter((a) => { return a.ref_code != 0 })" :key="item.ref_code" :value="item.ref_name">{{item.ref_name}}条线</a-select-option>
+                                        <a-select-option
+                                            v-for="item in group_group.filter((a) => { return a.ref_code != 0 })"
+                                            :key="item.ref_code"
+                                            :value="item.ref_name">{{ item.ref_name }}条线</a-select-option>
                                     </a-select>
                                     <template v-else>{{ text }}条线</template>
                                 </div>
                             </template>
                             <template v-else-if="column.dataIndex === 'org_name'">
                                 <div class="input-container">
-                                    <a-select v-if="editableData[record.key]" class="select-wrapper" 
-                                        v-model:value="editableData[record.key][column.dataIndex]" 
-                                        :show-arrow="false" 
-                                        :options="org_searchRes"
-                                        show-search 
-                                        @search="debounceSearch">
+                                    <a-select v-if="editableData[record.key]" class="select-wrapper"
+                                        v-model:value="editableData[record.key][column.dataIndex]" :show-arrow="false"
+                                        :options="org_searchRes" show-search @search="debounceSearch">
                                         <template #notFoundContent v-if="org_fetching">
                                             <a-spin size="small"></a-spin>
                                         </template>
@@ -134,7 +136,7 @@
                                         </a-popconfirm>
                                     </span>
                                     <span v-else>
-                                        <a @click="editTable(record.key)" :class="{'disabled_link':!can_edit}">编辑</a>
+                                        <a @click="editTable(record.key)" :class="{ 'disabled_link': !can_edit }">编辑</a>
                                     </span>
                                 </div>
                             </template>
@@ -169,7 +171,7 @@
                             <div class="fc_l2 font_14 minw_60">NotesID</div>
                             <a-dropdown
                                 class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                                <a-input :value="user_notesid" class="w_240">
+                                <a-input v-model:value="user_notesid" class="w_240">
                                     <template #suffix></template>
                                 </a-input>
                             </a-dropdown>
@@ -178,7 +180,7 @@
                             <div class="fc_l2 font_14 minw_60">用户名称</div>
                             <a-dropdown
                                 class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                                <a-input :value="user_name" class="w_240">
+                                <a-input v-model:value="user_name" class="w_240">
                                     <template #suffix></template>
                                 </a-input>
                             </a-dropdown>
@@ -191,7 +193,7 @@
                             <div class="fc_l2 font_14 minw_60">用户角色</div>
                             <a-dropdown
                                 class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                                <a-input :value="add_charater.value" class="w_240">
+                                <a-input v-model:value="add_charater.ref_name" class="w_240">
                                     <template #suffix>
                                         <!-- <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park> -->
                                         <icon-down class="lh_1" fill="#86909C"></icon-down>
@@ -199,8 +201,10 @@
                                 </a-input>
                                 <template #overlay>
                                     <a-menu>
-                                        <a-menu-item v-for="item in character_group.filter((a) => { return a.key != 'all' })"
-                                            :key="item.key" @click="chooseMenuItem(item, 'add_charater')">{{ item.value
+                                        <a-menu-item
+                                            v-for="item in character_group.filter((a) => { return a.ref_code != 0 })"
+                                            :key="item.ref_code" @click="chooseMenuItem(item, 'add_charater')">{{
+                                                item.ref_name
                                             }}</a-menu-item>
                                     </a-menu>
                                 </template>
@@ -210,7 +214,7 @@
                             <div class="fc_l2 font_14 minw_60">归属条线</div>
                             <a-dropdown
                                 class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                                <a-input :value="add_line.value" class="w_240">
+                                <a-input v-model:value="add_line.ref_name" class="w_240">
                                     <template #suffix>
                                         <!-- <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park> -->
                                         <icon-down size="16" class="lh_1" fill="#86909C"></icon-down>
@@ -218,8 +222,8 @@
                                 </a-input>
                                 <template #overlay>
                                     <a-menu>
-                                        <a-menu-item v-for="item in group_group.filter((a) => { return a.key != 'all' })"
-                                            :key="item.key" @click="chooseMenuItem(item, 'add_line')">{{ item.value
+                                        <a-menu-item v-for="item in group_group.filter((a) => { return a.ref_code != 0 })"
+                                            :key="item.ref_code" @click="chooseMenuItem(item, 'add_line')">{{ item.ref_name
                                             }}</a-menu-item>
                                     </a-menu>
                                 </template>
@@ -232,21 +236,13 @@
                         <div class="d_flex fai_c gap_16">
                             <div class="fc_l2 font_14 minw_60">归属机构</div>
                             <a-dropdown
-                                class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                                <a-input :value="belong_org.value" class="w_240">
-                                    上海分行
-                                    <template #suffix>
-                                        <!-- <icon-park type="Down" class="lh_1" fill="#86909C"></icon-park> -->
-                                        <icon-down class="lh_1" fill="#86909C"></icon-down>
+                                class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pr_12 tover_ell ws_no minw_100 w_180">
+                                <a-select class="select-wrapper w_240" v-model:value="belong_org.value" :show-arrow="false"
+                                    :options="org_searchRes" show-search @search="debounceSearch">
+                                    <template #notFoundContent v-if="org_fetching">
+                                        <a-spin size="small"></a-spin>
                                     </template>
-                                </a-input>
-
-                                <template #overlay>
-                                    <a-menu>
-                                        <a-menu-item>上海分行</a-menu-item>
-                                        <a-menu-item>其他区域中心支行</a-menu-item>
-                                    </a-menu>
-                                </template>
+                                </a-select>
                             </a-dropdown>
                         </div>
                         <div class="d_flex fai_c gap_16 jc_sb">
@@ -309,25 +305,31 @@
     border-radius: 2px;
     padding-left: 8px;
 }
+
 .input-container input:focus {
     color: #C9CDD4;
 }
+
 .input-container {
     max-width: 100%;
     display: flex;
     align-items: center;
     height: 20px;
     line-height: 20px;
+    font-size: 13px;
 }
+
 .input-container .ant-input {
     width: 100%;
 }
+
 .input-container .input-wrapper {
     max-width: 100%;
     overflow: hidden;
     font-size: 13px;
     width: 100%;
 }
+
 .input-container .select-wrapper {
     height: 20px;
     line-height: 20px;
@@ -336,6 +338,7 @@
     display: flex;
     width: 100%;
 }
+
 .input-container .select-wrapper div.ant-select-selector {
     height: 30px;
     line-height: 30px;
@@ -343,19 +346,27 @@
     padding-left: 8px;
     padding-right: 24px;
 }
+
 .input-container .select-wrapper div.ant-select-selector span {
     font-size: 13px;
     line-height: 30px;
 }
+
 .input-container .select-wrapper div.ant-select-selector span.ant-select-selection-search input {
     font-size: 13px;
     line-height: 20px;
     height: 20px;
 }
+
 .input-container .ant-select-single .ant-select-selector span.ant-select-selection-search {
     inset-inline-start: 8px;
     inset-inline-end: 8px
 }
+
+.input-container .ant-select-single .ant-select-selector span.ant-select-selection-item {
+    height: 30px;
+}
+
 .disabled_link {
     pointer-events: none;
     cursor: not-allowed;
@@ -382,7 +393,7 @@ const api = axios.create({
 export default defineComponent({
     name: "OrgManage",
     components: {
-        'icon-down': Down,'icon-search': Search,'icon-redo': Redo,'icon-add': AddFour,'icon-close': Close,'icon-check': Check,
+        'icon-down': Down, 'icon-search': Search, 'icon-redo': Redo, 'icon-add': AddFour, 'icon-close': Close, 'icon-check': Check,
         'a-dropdown': Dropdown,
         'a-menu': Menu,
         'a-menu-item': MenuItem,
@@ -421,10 +432,10 @@ export default defineComponent({
             search_charater: ref({ ref_code: 0, ref_name: '全部角色' }),
             search_line: ref({ ref_code: 0, ref_name: '全部' }),
             search_keyword: ref(''),
-            add_charater: ref({ key: '00', value: '超级管理员' }),
-            add_line: ref({ key: 'enterprise', value: '企金序列' }),
-            belong_org: ref({ key: '3100001', value: '上海分行' }),
-            lead_manager: ref({ key: '101203', value: '真汉子比尔曼' }),
+            add_charater: ref({}),
+            add_line: ref({}),
+            belong_org: ref({ key: '', value: '' }),
+            lead_manager: ref({ key: '', value: '' }),
             user_notesid: ref(),
             user_name: ref(),
             spin_status: ref(true),
@@ -440,71 +451,6 @@ export default defineComponent({
     },
     methods: {
 
-        save(key) {
-            // 文本直接赋值
-            Object.assign(this.user_list.filter(item => key === item.key)[0], this.editableData[key]);
-            // 根据文本调整对应的码值
-            this.user_list.filter(item => key === item.key)[0]['user_character'] = valueFindKey(this.character_group,this.editableData[key]['character_name'],'ref_name','ref_code')
-            this.user_list.filter(item => key === item.key)[0]['user_belong_group'] = valueFindKey(this.group_group,this.editableData[key]['group_name'],'ref_name','ref_code')
-            // 如果机构这里没有数据的话，说明没有发起过查询，就跳过了
-            if (this.org_searchRes.length !== 0) {
-                this.user_list.filter(item => key === item.key)[0]['user_belong_org'] = valueFindKey(this.org_searchRes,this.editableData[key]['org_name'],'label','key');
-                // 清空org_searchRes
-                this.org_searchRes = []
-            }
-            delete this.editableData[key];
-            console.log(this.user_list.filter(item => key === item.key)[0])
-            // 提交修改
-            const post_headers = {
-                'Authorization': localStorage.getItem('access')
-            };
-            const post_data = {
-                'user': this.user_list.filter(item => key === item.key)[0]['notes_id'],
-                'type': 'update',
-                'update_data':{
-                    'user_name': this.user_list.filter(item => key === item.key)[0]['user_name'],
-                    'user_character': this.user_list.filter(item => key === item.key)[0]['user_character'],
-                    'user_belong_group': this.user_list.filter(item => key === item.key)[0]['user_belong_group'],
-                    'user_belong_org': this.user_list.filter(item => key === item.key)[0]['user_belong_org']
-                }
-            };
-            console.log(post_data);
-            message.loading({
-                content:'提交修改,请稍后...',
-                duration:0,
-                class:'msg_loading'
-            });
-            this.can_edit = false;
-            api.post('/api/user/updateUser',post_data,{headers:post_headers}).then(
-                (response) => {
-                    console.log(response);
-                    message.destroy();
-                    message.success({
-                        content:'修改完成',
-                        duration: 1.5,
-                        class: 'msg_loading',
-                        onClose: () => {
-                            this.getUserList();
-                        }
-                    })
-                    this.can_edit = true
-                }
-            ).catch(
-                () => {
-                    message.error({
-                        content:'提交失败,请检查网络...',
-                        duration:3,
-                        class:'msg_loading',
-                        onClose: () => {
-                            this.can_edit = true;
-                        }
-                    })
-                }
-            ) 
-        },
-        cancel(key) {
-            delete this.editableData[key];
-        },
         showModal() {
             this.modal_visible = true;
         },
@@ -513,16 +459,21 @@ export default defineComponent({
         },
         confirmUpload() {
             this.modal_visible = false;
+            // 更新this.belong_org的key
+            this.belong_org['key'] = valueFindKey(this.org_searchRes,this.belong_org['value'],'label','key')
+            console.log(this.user_notesid, this.user_name,this.belong_org)
         },
         chooseMenuItem(item, target) {
             this[target] = item
         },
+        // 重置查询条件
         resetSearch() {
             this.search_orgGroup = { ref_code: 0, ref_name: '全部分组' };
             this.search_charater = { ref_code: 0, ref_name: '全部角色' };
             this.search_line = { ref_code: 0, ref_name: '全部条线' };
             this.search_keyword = ''
         },
+        // 提交查询
         confirmSearch() {
             console.log(this.search_orgGroup, this.search_charater, this.search_line);
             this.getUserList();
@@ -561,7 +512,7 @@ export default defineComponent({
                 this.character_group = filter_data.data.data.user_character
                 this.group_group = filter_data.data.data.user_belong_group
             }
-
+            console.log(this.org_group)
         },
         // 设定pageSize
         changeSizeOptions(_, size) {
@@ -593,16 +544,16 @@ export default defineComponent({
             const get_headers = {
                 'Authorization': localStorage.getItem('access')
             };
-            const org_searchRes = await api('/api/org/getOrgList',{ params: get_params, headers: get_headers });
+            const org_searchRes = await api('/api/org/getOrgList', { params: get_params, headers: get_headers });
             // console.log(org_searchRes);
             return org_searchRes.data;
         },
-        debounceSearch: debounce(function(value){
+        debounceSearch: debounce(function (value) {
             this.org_fetching = true;
-            if(value.length>=2) {
-                this.orgSearch(value).then((response)=>{
-                    if(response.code==200) {
-                        this.org_searchRes = response.data.map(obj=>({
+            if (value.length >= 2) {
+                this.orgSearch(value).then((response) => {
+                    if (response.code == 200) {
+                        this.org_searchRes = response.data.map(obj => ({
                             label: obj.org_name,
                             key: obj.org_num,
                             value: obj.org_name
@@ -611,7 +562,74 @@ export default defineComponent({
                     this.org_fetching = false
                 })
             }
-        },750)
+        }, 750),
+        // 保存表格编辑
+        save(key) {
+            // 文本直接赋值
+            Object.assign(this.user_list.filter(item => key === item.key)[0], this.editableData[key]);
+            // 根据文本调整对应的码值
+            this.user_list.filter(item => key === item.key)[0]['user_character'] = valueFindKey(this.character_group, this.editableData[key]['character_name'], 'ref_name', 'ref_code')
+            this.user_list.filter(item => key === item.key)[0]['user_belong_group'] = valueFindKey(this.group_group, this.editableData[key]['group_name'], 'ref_name', 'ref_code')
+            // 如果机构这里没有数据的话，说明没有发起过查询，就跳过了
+            if (this.org_searchRes.length !== 0) {
+                this.user_list.filter(item => key === item.key)[0]['user_belong_org'] = valueFindKey(this.org_searchRes, this.editableData[key]['org_name'], 'label', 'key');
+                // 清空org_searchRes
+                this.org_searchRes = []
+            }
+            delete this.editableData[key];
+            console.log(this.user_list.filter(item => key === item.key)[0])
+            // 提交修改
+            const post_headers = {
+                'Authorization': localStorage.getItem('access')
+            };
+            const post_data = {
+                'user': this.user_list.filter(item => key === item.key)[0]['notes_id'],
+                'type': 'update',
+                'update_data': {
+                    'user_name': this.user_list.filter(item => key === item.key)[0]['user_name'],
+                    'user_character': this.user_list.filter(item => key === item.key)[0]['user_character'],
+                    'user_belong_group': this.user_list.filter(item => key === item.key)[0]['user_belong_group'],
+                    'user_belong_org': this.user_list.filter(item => key === item.key)[0]['user_belong_org']
+                }
+            };
+            console.log(post_data);
+            message.loading({
+                content: '提交修改,请稍后...',
+                duration: 0,
+                class: 'msg_loading'
+            });
+            this.can_edit = false;
+            api.post('/api/user/updateUser', post_data, { headers: post_headers }).then(
+                (response) => {
+                    console.log(response);
+                    message.destroy();
+                    message.success({
+                        content: '修改完成',
+                        duration: 1.5,
+                        class: 'msg_loading',
+                        onClose: () => {
+                            this.getUserList();
+                        }
+                    })
+                    this.can_edit = true
+                }
+            ).catch(
+                () => {
+                    message.error({
+                        content: '提交失败,请检查网络...',
+                        duration: 3,
+                        class: 'msg_loading',
+                        onClose: () => {
+                            this.can_edit = true;
+                        }
+                    })
+                }
+            )
+        },
+        // 取消表格编辑
+        cancel(key) {
+            delete this.editableData[key];
+        },
     }
 });
 
