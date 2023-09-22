@@ -6,7 +6,7 @@ urlpatterns = [
     # user
     path('api/user/getUserList',views.getUserList),
     path('api/user/updateUser',views.updateUser),
-    path('api/user/createuser',views.createUser),
+    path('api/user/createUser',views.createUser),
 
     # org
     path('api/org/getOrgList',views.getOrgList),

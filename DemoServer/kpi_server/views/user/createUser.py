@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 from django.http.response import JsonResponse
+from django.conf import settings
 
 from kpi_server.models import Users
 
@@ -39,9 +40,6 @@ def createUser(request):
                 'user_character':int(row[2].split('-')[0]),
                 'user_belong_group':int(row[3].split('-')[0]),
                 'user_belong_org':int(row[4]),
-                'user_state':0,
-                'user_create': datetime.date.today().strftime("%Y-%m-%d"),
-                'user_update': datetime.date.today().strftime("%Y-%m-%d"),
             }
             user_list.append(each_user)
 
@@ -70,16 +68,16 @@ def createUser(request):
 
         try:
             user_obj = Users.objects.get(notes_id=body_data.get('update_data').get('notes_id'))
-            re_msg = {'code':'2','msg':'users exists.'}
+            re_msg = {'code':303,'msg':settings.KPI_ERROR_MESSAGES['global'][303]}
 
         except Users.MultipleObjectsReturned:
-            re_msg = {'code':3,'msg':'multi users exists'}
+            re_msg = {'code':306,'msg':settings.KPI_ERROR_MESSAGES['global'][306]}
 
         except Users.DoesNotExist:
             new_user = Users()
             for (x,y) in body_data.get('update_data').items():
                 setattr(new_user,x,y)
             new_user.save()
-            re_msg = {'code':0,'msg':'create_success'}
+            re_msg = {'code':300,'msg':settings.KPI_ERROR_MESSAGES['global'][300]}
 
     return JsonResponse(re_msg,safe=False)
