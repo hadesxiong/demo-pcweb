@@ -88,6 +88,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:8080',
     'http://localhost:3000',
+    'http://server.bearman.xyz'
 ]
 CORS_ALLOW_HEADERS = [
     'Authorization',
