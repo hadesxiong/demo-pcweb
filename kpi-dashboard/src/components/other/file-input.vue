@@ -78,6 +78,8 @@ export default defineComponent({
         this.fileName = file.name;
         this.$refs.fileInput.value = ""; // 清空文件选择框的值
       }
+      console.log(file)
+      this.$emit('file-upload',file);
     },
     beforeUpload(file) {
       // 在上传之前的处理逻辑，例如限制文件类型和大小

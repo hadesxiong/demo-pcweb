@@ -238,7 +238,7 @@
                             <a-dropdown
                                 class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pr_12 tover_ell ws_no minw_100 w_180">
                                 <a-select class="select-wrapper w_240" v-model:value="belong_org.value" :show-arrow="false"
-                                    :options="org_searchRes" show-search @search="debounceSearch">
+                                    :options="org_searchRes" show-search @search="debounceSearch" placeholder="请输入机构名称进行搜索">
                                     <template #notFoundContent v-if="org_fetching">
                                         <a-spin size="small"></a-spin>
                                     </template>
@@ -262,7 +262,7 @@
                     <div class="d_flex fd_r fai_c jc_sb gap_20">
                         <div class="d_flex fai_c gap_16">
                             <div class="fc_l2 font_14 minw_60">导入文件</div>
-                            <file-input></file-input>
+                            <file-input @file-upload="handleFileUpload"></file-input>
                         </div>
                         <div class="d_flex fai_c gap_16" style="width:316px">
                             <a class="fc_brand6 font_14">下载模版</a>
@@ -434,14 +434,15 @@ export default defineComponent({
             search_keyword: ref(''),
             add_charater: ref({}),
             add_line: ref({}),
-            belong_org: ref({ key: '', value: '' }),
+            belong_org: ref({ key: '2100001', value: '上海分行' }),
             lead_manager: ref({ key: '', value: '' }),
             user_notesid: ref(),
             user_name: ref(),
             spin_status: ref(true),
             org_searchRes: ref([]),
             org_fetching: ref(false),
-            can_edit: ref(true)
+            can_edit: ref(true),
+            upload_file: ref({})
         }
     },
     mounted() {
@@ -450,7 +451,6 @@ export default defineComponent({
         window.addEventListener('resize', tableScrollYResize('user_table', this.table_scroll));
     },
     methods: {
-
         showModal() {
             this.modal_visible = true;
         },
@@ -458,10 +458,119 @@ export default defineComponent({
             this.modal_visible = false;
         },
         confirmUpload() {
-            this.modal_visible = false;
-            // 更新this.belong_org的key
-            this.belong_org['key'] = valueFindKey(this.org_searchRes,this.belong_org['value'],'label','key')
-            console.log(this.user_notesid, this.user_name,this.belong_org)
+
+            // 根据type判断字段校验
+            if (this.create_type == 1) {
+                const error_list = [];
+                // 参数校验
+                try {
+                    const post_data = {
+                        'is_multi': false,
+                        'update_data': {
+                            'notes_id': this.user_notesid,
+                            'user_name': this.user_name,
+                            'user_belong_org': valueFindKey(this.org_searchRes,this.belong_org['value'],'label','key'),
+                            'user_belong_group': this.add_line,
+                            'user_character': this.add_charater
+                        }
+                    }
+                    // 赋值遍历检查，简单版本
+                    for (const key in post_data.update_data) {
+                        if(!post_data.update_data[key]) {
+                            throw new Error({'key':key,'msg':'赋值失败,请检查'})
+                        }
+                    }
+                    // 提交修改
+                    const post_headers = {
+                        'Authorization': localStorage.getItem('access')
+                    };
+                    console.log(post_data);
+                    message.loading({
+                        content:'正在创建用户,请稍后...',
+                        duration:0,
+                        class: 'msg_loading'
+                    })
+                    api.post('/api/user/createUser',post_data,{headers:post_headers}).then(
+                        (response) => {
+                            console.log(response);
+                            message.destroy();
+                            message.success({
+                                content: '用户创建完成',
+                                duration: 1.5,
+                                class: 'msg_loading',
+                                onClose: () => {
+                                    this.getUserList();
+                                    this.modal_visible = false;
+                                }
+                            })
+                        }
+                    ).catch(
+                        (response) => {
+                            console.log(response);
+                            message.destroy();
+                            message.error({
+                                content: `'用户创建失败,'${response.data.msg}`,
+                                duration: 3,
+                                class: 'msg_loading',
+                                onClose: () => {
+                                    this.modal_visible = false;
+                                }
+                            })
+                        }
+                    )
+
+                } catch(error) {
+                    error_list.push(error);
+                }
+                console.log(error_list)
+            } else if (this.create_type == 2) {
+                // 拼接表单
+                const post_data = new FormData();
+                post_data.append('is_multi',true);
+                post_data.append('update_file',this.upload_file);
+
+                const post_headers = {
+                        'Authorization': localStorage.getItem('access'),
+                        'Content-Type': 'multipart/form-data'
+                    };
+                
+                message.loading({
+                    content:'正在提交数据,请稍后...',
+                    duration: 0,
+                    class: 'msg_loading'
+                })
+                api.post('/api/user/createUser',post_data,{headers:post_headers}).then(
+                    (response) => {
+                        console.log(response);
+                        message.destroy();
+                        message.success({
+                            content:'数据提交成功',
+                            duration: 1.5,
+                            class: 'msg_loading',
+                            onClose: () => {
+                                this.getUserList();
+                                this.modal_visible = false;
+                            }
+                        })
+                    }
+                ).catch(
+                    (response) => {
+                        console.log(response);
+                        message.destroy();
+                        message.error({
+                            content:'数据提交失败',
+                            duration: 1.5,
+                            class:'msg_loading',
+                            onClose: () => {
+                                this.modal_visible = false;
+                            }
+                        })
+                    }
+                )
+
+            }
+            
+
         },
         chooseMenuItem(item, target) {
             this[target] = item
@@ -470,7 +579,7 @@ export default defineComponent({
         resetSearch() {
             this.search_orgGroup = { ref_code: 0, ref_name: '全部分组' };
             this.search_charater = { ref_code: 0, ref_name: '全部角色' };
-            this.search_line = { ref_code: 0, ref_name: '全部条线' };
+            this.search_line = { ref_code: 0, ref_name: '全部' };
             this.search_keyword = ''
         },
         // 提交查询
@@ -512,7 +621,9 @@ export default defineComponent({
                 this.character_group = filter_data.data.data.user_character
                 this.group_group = filter_data.data.data.user_belong_group
             }
-            console.log(this.org_group)
+            // 处理character_group/org_group的全部
+            this.org_group.filter((a) => { return a.ref_code == 0 })[0]['ref_name'] = '全部分组'
+            this.character_group.filter((a) => { return a.ref_code == 0 })[0]['ref_name'] = '全部角色'
         },
         // 设定pageSize
         changeSizeOptions(_, size) {
@@ -615,6 +726,7 @@ export default defineComponent({
                 }
             ).catch(
                 () => {
+                    message.destroy();
                     message.error({
                         content: '提交失败,请检查网络...',
                         duration: 3,
@@ -630,6 +742,9 @@ export default defineComponent({
         cancel(key) {
             delete this.editableData[key];
         },
+        handleFileUpload(file) {
+            this.upload_file = file;
+        }
     }
 });
 
