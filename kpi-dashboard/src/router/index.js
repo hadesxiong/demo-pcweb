@@ -105,6 +105,17 @@ const routes = [
           requireAuth:true
         },
       },
+      {
+        name:"custom-manage",
+        path: "/custom-manage",
+        component: () => import("@/views/manage/custom-manage.vue"),
+        meta: {
+          breadcrumb: ["数据管理", "自定义管理"],
+          sub:"settings",
+          menu:"custom-manage",
+          requireAuth:true
+        },
+      },
     ]
   },
 ];

@@ -2,7 +2,8 @@
     <div class="d_flex fd_c gap_20 h_p100">
         <div class="d_flex p_20 bg_white fd_r gap_20 fai_c jc_sb">
             <div class="d_flex gap_20">
-                <menu-input v-if="cp_data" :cp_data="cp_data" @menu-select="handleMenuSelect"></menu-input>
+                <!-- <search-input v-if="api_info" :api_info="api_info" :res_map="res_map" @search-select="handleMenuSelect"></search-input>
+                <menu-input v-if="cp_data" :cp_data="cp_data" @menu-select="handleMenuSelect"></menu-input> -->
                 <a-dropdown
                     class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
                     <a>
@@ -383,7 +384,8 @@ import { cloneDeep, debounce } from 'lodash-es'
 
 import axios from 'axios';
 import FileInput from '@/components/other/file-input.vue';
-import MenuInput from '@/components/other/menu-input.vue';
+// import MenuInput from '@/components/other/menu-input.vue';
+// import SearchInput from '@/components/other/search-input.vue';
 import { tableScrollYResize } from '@/utils/tableScrollYResize';
 import { userTableHead } from '@/utils/commonTableHeader';
 import { valueFindKey } from '@/utils/valueFindKey'
@@ -412,7 +414,8 @@ export default defineComponent({
         'a-select': Select,
         'a-select-option': SelectOption,
         'file-input': FileInput,
-        'menu-input': MenuInput
+        // 'menu-input': MenuInput,
+        // 'search-input': SearchInput,
     },
     data() {
         return { filter_list: 'ubg.uc.og' }
@@ -446,13 +449,17 @@ export default defineComponent({
             org_fetching: ref(false),
             can_edit: ref(true),
             upload_file: ref({}),
-            cp_data: ref({
-                'menu_data': [{code:1,value:1},{code:2,value:2}],
-                'menu_key': {code:'code',label:'value'},
-            }),
-            cp_filter:ref([1]),
-            cp_label: ref({need_label:true,label_name:'标签名字'}),
-            cp_suffix: ref({front:true,end:false,suffix:'条线'})
+            // // 测试
+            // cp_data: ref({
+            //     'menu_data': [{code:1,value:1},{code:2,value:2}],
+            //     'menu_key': {code:'code',label:'value'},
+            // }),
+            // cp_filter:ref([1]),
+            // cp_label: ref({need_label:true,label_name:'标签名字'}),
+            // cp_suffix: ref({front:true,end:false,suffix:'条线'}),
+            // // 测试
+            // api_info:ref({url:'/api/org/getOrgList',params:{ext:'虹口'}}),
+            // res_map: ref({key:'org_num',value:'org_name',label:'org_name'})
         }
     },
     mounted() {
@@ -759,6 +766,7 @@ export default defineComponent({
         handleMenuSelect(obj) {
             console.log(obj.title,obj.data)
         }
+
     }
 });
 

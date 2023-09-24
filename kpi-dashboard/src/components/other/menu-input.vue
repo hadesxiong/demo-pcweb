@@ -54,14 +54,15 @@ export default defineComponent({
         }
     },
     setup(props) {
-
+        console.log(props)
         const {menu_data,menu_key}  = toRefs(props.cp_data)
         const {need_label,label_name} = toRefs(props.label_data)
         const {front,end,suffix} = toRefs(props.suffix_info)
-        
         const item_list = menu_data.value.filter((a) => !props.cp_filter.includes(a[menu_key.value.code]))
+        // const item_list = menu_data.value
+        console.log(item_list)
         return {
-            'item_list': ref(item_list),
+            item_list: ref(item_list),
             'item_code': ref(menu_key.value.code),
             'item_label': ref(menu_key.value.label),
             'item_choosen': ref(item_list[0]),

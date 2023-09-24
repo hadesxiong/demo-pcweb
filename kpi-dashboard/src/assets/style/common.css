@@ -34,6 +34,9 @@
 .minw_p100 {
   min-width: 100%;
 }
+.maxw_p100 {
+  max-width: 100%;
+}
 .h_p100 {
   height: 100%;
 }
@@ -46,6 +49,9 @@
 .h_24 {
   height: 24px;
 }
+.h_20 {
+  height: 20px;
+}
 .h_32 {
   height: 32px;
 }
@@ -57,6 +63,9 @@
 }
 .lh_24 {
   line-height: 24px;
+}
+.lh_20 {
+  line-height: 20px;
 }
 .minh_120 {
   min-height: 120px;
@@ -146,6 +155,9 @@
 }
 .pt_20 {
   padding-top: 20px;
+}
+.pl_8 {
+  padding-left: 8px;
 }
 .pl_12 {
   padding-left: 12px;

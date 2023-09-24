@@ -84,6 +84,12 @@
                 "menu_title": "用户管理",
                 "menu_icon": "",
                 "menu_name": "user-manage"
+            },
+            {
+                "menu_key": "custom-manage",
+                "menu_title": "自定义管理",
+                "menu_icon": "",
+                "menu_name": "custom-manage"
             }
         ]
     }
