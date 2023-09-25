@@ -51,11 +51,10 @@ import { Col, Row, Input, Divider, Button, Pagination } from 'ant-design-vue';
 import { Search as SearchIcon, Redo, AddFour } from '@icon-park/vue-next';
 
 import MenuInput from '@/components/other/menu-input.vue';
-// import SearchInput from '@/components/other/search-input.vue';
 import EditTable from '@/components/manage/edit-table.vue';
 
 import { api } from '@/utils/commonApi.js';
-import { userTableHead, userEditIndex, userEditMap } from '@/utils/commonTableHeader.js';
+import { userTableHead, userEditIndex, userEditMap, searchInfo } from '@/utils/commonTableHeader.js';
 
 const myApi = api();
 
@@ -63,7 +62,6 @@ export default defineComponent({
     name: 'CustomManage',
     components: {
         'menu-input': MenuInput,
-        // 'search-input': SearchInput,
         'edit-table': EditTable,
         'a-col': Col,
         'a-row': Row,
@@ -94,7 +92,8 @@ export default defineComponent({
                 columns: ref(userTableHead),
                 data: ref([]),
                 editIndex: ref(userEditIndex),
-                editMap: ref(userEditMap)
+                editMap: ref(userEditMap),
+                search_obj: ref(searchInfo)
             }),
             status: ref(false)
         }

@@ -23,7 +23,7 @@
                             <template v-else>{{ text }}</template>
                         </div>
                         <div v-else-if="item.type==='search' && item.column === column.dataIndex" class="input-container d_flex fai_c font_13 h_20 lh_20 maxw_p100">
-                            <search-input v-if="editableData[record.key]"></search-input>
+                            <search-input v-if="editableData[record.key]" :res_map="search_map[column.dataIndex]" :api_info="search_api" :target_title="column.dataIndex" @search-select="handleSearchInput"></search-input>
                             <template v-else>{{ text }}</template>
                         </div>
                     </template>
@@ -78,10 +78,14 @@
     font-size: 13px;
     line-height: 30px;
 }
-.input-container .ant-select-single .ant-select-selector span.ant-select-selection-search {
+.input-container .select-wrapper div.ant-select-selector span.ant-select-selection-item {
+    font-size: 13px;
+    line-height: 30px;
+}
+/* .input-container .ant-select-single .ant-select-selector span.ant-select-selection-search {
     inset-inline-start: 8px;
     inset-inline-end: 8px
-}
+} */
 .disabled_link {
     pointer-events: none;
     cursor: not-allowed;
@@ -132,6 +136,9 @@ export default defineComponent({
             table_scroll: ref({ y: 0 }),
             editableData: ref([]),
             editMap: ref(props.table_obj.editMap),
+            search_map: ref(props.table_obj.search_obj.search_map),
+            search_api: ref(props.table_obj.search_obj.search_api),
+            search_res: ref({}),
             can_edit: ref(true)
         }
     },
@@ -147,19 +154,34 @@ export default defineComponent({
             delete this.editableData[key];
         },
         saveTable(key) {
-            console.log(this.data.filter(item => key === item.key)[0])
+            // 抽出目标行
+            let target_data = this.data.filter(item => key === item.key)[0]
+            // let target_data = this.editableData[key]
             // 文本直接赋值
             Object.assign(this.data.filter(item => key === item.key)[0],this.editableData[key]);
             // 结合editMap匹配对应的码值
             this.editMap.forEach((each) => {
-                console.log(each);
-                this.data.filter(item => key === item.key)[0][each.code_target] = valueFindKey(each.range,each.name_target,'ref_name','ref_code')
+                target_data[each.code_target] = valueFindKey(each.range,target_data[each.name_target],'ref_name','ref_code')
             })
-            // 搜索项
-
+            // 结合search_map匹配对应的码值
+            for (let key in this.search_res) {
+                console.log(key);
+                console.log(this.search_res[key],this.search_map[key])
+                // target_data[]
+                target_data[this.search_map[key]['key']] = this.search_res[key]['key']
+            }
             // 保存
             console.log(this.data.filter(item => key === item.key)[0])
             delete this.editableData[key];
+        },
+        handleSearchInput(value) {
+            console.log(value);
+            // 判断title有没有存在过，没有的话则保存用于遍历
+            if(!(value.title in this.search_res)) {
+                this.search_res[value.title] = value.data
+            }
+            console.log(this.search_res)
+            console.log(this.search_map)
         }
     }
 })

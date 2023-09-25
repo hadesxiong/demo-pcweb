@@ -60,6 +60,11 @@ export const userEditIndex = [
         column: 'group_name',
         type:'select',
         option_list:[]
+    },
+    {
+        column: 'org_name',
+        type: 'search',
+        option_list: []
     }
 ]
 
@@ -75,3 +80,23 @@ export const userEditMap = [
         range: []
     }
 ]
+
+export const searchInfo = {
+    search_map: {
+        'org_name':{
+            label:'org_name',
+            key:'org_num',
+            value:'org_name'
+        }
+    },
+    search_api: {
+        url:'/api/org/getOrgList',
+        params: {
+            level:0,
+            group:0,
+            client:0,
+            size:10,
+            ext:''
+        }
+    }
+}
