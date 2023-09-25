@@ -39,8 +39,39 @@ export const userTableHead = [
     },
     {
         "title":"操作",
-        "key":"org_operation",
-        "dataIndex":"org_operation",
+        "key":"operation",
+        "dataIndex":"operation",
         "width":"20%"
+    }
+]
+
+export const userEditIndex = [
+    {
+        column: 'user_name',
+        type: 'input',
+        option_list: [],
+    },
+    {
+        column: 'character_name',
+        type: 'select',
+        option_list: []
+    },
+    {
+        column: 'group_name',
+        type:'select',
+        option_list:[]
+    }
+]
+
+export const userEditMap = [
+    {
+        code_target: 'user_character',
+        name_target: 'character_name',
+        range: []
+    },
+    {
+        code_target: 'user_belong_group',
+        name_target: 'group_name',
+        range: []
     }
 ]

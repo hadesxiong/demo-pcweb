@@ -19,7 +19,7 @@ def getUserList(request):
 
     # params解析
     query_params = {
-        'belong_group': int(request.query_params.get('group',0)),
+        'belong_group': int(request.query_params.get('line',0)),
         'user_character': int(request.query_params.get('character',0)),
         'org_level': int(request.query_params.get('org',0)),
         'key_word':request.query_params.get('ext',None),

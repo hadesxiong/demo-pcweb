@@ -129,7 +129,7 @@
                                     <template v-else>{{ text }}</template>
                                 </div>
                             </template>
-                            <template v-else-if="column.dataIndex === 'org_operation'">
+                            <template v-else-if="column.dataIndex === 'operation'">
                                 <div>
                                     <span v-if="editableData[record.key]" class="d_iflex gap_8 font_13">
                                         <a @click="save(record.key)">保存</a>
