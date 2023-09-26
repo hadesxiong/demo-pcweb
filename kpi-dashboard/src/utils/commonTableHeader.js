@@ -83,10 +83,9 @@ export const userEditMap = [
 
 export const searchInfo = {
     search_map: {
-        'org_name':{
-            label:'org_name',
-            key:'org_num',
-            value:'org_name'
+        org_name: {
+            in:{label:'org_name',key:'org_num',value:'org_name'},
+            out: {label:'org_name',key:'user_belong_org',value:'org_name'}
         }
     },
     search_api: {

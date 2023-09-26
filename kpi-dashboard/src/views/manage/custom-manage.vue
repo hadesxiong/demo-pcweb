@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="d_flex p_20 bg_white gap_20 fd_c h_p100">
-            <edit-table :table_obj="table_obj" :status="status"></edit-table>
+            <edit-table :table_obj="table_obj" :status="status" :editable="can_edit" @table-edit="handleTableEdit"></edit-table>
             <div class="d_flex fai_c jc_fe">
                 <a-pagination :current="page_obj.current" :total="page_obj.total" :pageSize="page_obj.size"
                     :pageSizeOptions="page_obj.sizeOptions" @change="changePage"
@@ -47,7 +47,7 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { Col, Row, Input, Divider, Button, Pagination } from 'ant-design-vue';
+import { Col, Row, Input, Divider, Button, Pagination, message } from 'ant-design-vue';
 import { Search as SearchIcon, Redo, AddFour } from '@icon-park/vue-next';
 
 import MenuInput from '@/components/other/menu-input.vue';
@@ -95,7 +95,8 @@ export default defineComponent({
                 editMap: ref(userEditMap),
                 search_obj: ref(searchInfo)
             }),
-            status: ref(false)
+            status: ref(false),
+            can_edit: ref(true)
         }
     },
     mounted() {
@@ -112,7 +113,37 @@ export default defineComponent({
     methods: {
         // 接收menuSelect带来的参数
         handleMenuSelect(value) {
-            this.search_form[value.title] = value.data
+            this.search_form[value.title] = value.data;
+        },
+        handleTableEdit(value) {
+            console.log(value);
+            const post_data = {
+                'user': value.notes_id,
+                'type': 'update',
+                'update_data': {
+                    'user_name': value.user_name,
+                    'user_character': value.user_character,
+                    'user_belong_group': value.user_belong_group,
+                    'user_belong_org': value.user_belong_org
+                }
+            }
+            message.loading({content:'提交修改,请稍后...',duration:0,class:'msg_loading'});
+            this.can_edit = false;
+            myApi.post('/api/user/updateUser',post_data).then(
+                (response) => {
+                    console.log(response);
+                    message.destroy();
+                    message.success({content:'修改完成',duration:1.5,class:'msg_loading',onClose:()=>{this.getUserList();}})
+                    this.can_edit = true;
+                }
+            ).catch(
+                (response) => {
+                    console.log(response);
+                    message.destroy();
+                    message.error({content:'提交失败...',duration:1.5,class:'msg_loading',onClose:()=>{this.can_edit=true;}})
+                }
+            )
+
         },
         async getUserList() {
             // loading 开始
@@ -169,8 +200,6 @@ export default defineComponent({
         changeSizeOptions(_, size) {
             // 设定size，页数重置
             this.page_obj.size = size;
-            // this.page_obj.current = 1
-            // this.changePage(this.page_obj.current);
             this.$nextTick(()=>{
                 this.page_obj.current = 1;
                 this.getUserList();

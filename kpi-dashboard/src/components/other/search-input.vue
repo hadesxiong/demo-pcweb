@@ -50,6 +50,7 @@ export default defineComponent({
         res_map: {type:Object},
         api_info: {type:Object},
         target_title: {type:String},
+        init_result: {type:Object,default: ()=> {return {}}},
         label_info: {
             type:Object,
             default: () => {return reactive({'need_label':false,'label_name':''})}
@@ -66,7 +67,7 @@ export default defineComponent({
             res_key: ref(props.res_map.key),
             res_value: ref(props.res_map.value),
             search_option: ref([]),
-            search_result: ref({}),
+            search_result: ref(props.init_result),
             data_title: ref(props.target_title)
         }
     },
@@ -88,10 +89,12 @@ export default defineComponent({
             }
         },750),
         emitSelectValue() {
+            // console.log(value);
+            // console.log(this.res_value)
             const emit_result = this.search_option.find(
                 (option) => {
-                    console.log(option[this.res_value]); 
-                    return option.value ===this.search_result[this.res_value]
+                    console.log(option.value,this.search_result,this.search_option,this.res_value)
+                    return option.value === this.search_result[this.res_value]
             });
             this.$emit('search-select',{title:this.data_title,data:emit_result});
             this.search_option = [];

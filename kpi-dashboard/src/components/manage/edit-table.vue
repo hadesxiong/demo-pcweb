@@ -23,7 +23,7 @@
                             <template v-else>{{ text }}</template>
                         </div>
                         <div v-else-if="item.type==='search' && item.column === column.dataIndex" class="input-container d_flex fai_c font_13 h_20 lh_20 maxw_p100">
-                            <search-input v-if="editableData[record.key]" :res_map="search_map[column.dataIndex]" :api_info="search_api" :target_title="column.dataIndex" @search-select="handleSearchInput"></search-input>
+                            <search-input v-if="editableData[record.key]" :res_map="search_map[column.dataIndex]['in']" :api_info="search_api" :target_title="column.dataIndex" :init_result="{[column.dataIndex]:text}" @search-select="handleSearchInput"></search-input>
                             <template v-else>{{ text }}</template>
                         </div>
                     </template>
@@ -82,10 +82,6 @@
     font-size: 13px;
     line-height: 30px;
 }
-/* .input-container .ant-select-single .ant-select-selector span.ant-select-selection-search {
-    inset-inline-start: 8px;
-    inset-inline-end: 8px
-} */
 .disabled_link {
     pointer-events: none;
     cursor: not-allowed;
@@ -117,20 +113,24 @@ export default defineComponent({
     },
     props: {
         'table_obj': {type:Object},
-        'status': {type: Boolean,default:false}
+        'status': {type: Boolean,default:false},
+        'editable': {type: Boolean,default:true}
     },
     setup(props) {
         const data = ref(props.table_obj.data);
-        const spin_status = ref(props.status)
+        const spin_status = ref(props.status);
+        const can_edit = ref(props.editable);
 
         watch(props, () => {
             spin_status.value = props.status
             data.value = props.table_obj.data;
+            can_edit.value = props.editable;
         }, { deep: true });
 
         return {
             columns: ref(props.table_obj.columns),
             data,
+            can_edit,
             spin_status,
             editIndex: ref(props.table_obj.editIndex),
             table_scroll: ref({ y: 0 }),
@@ -139,7 +139,6 @@ export default defineComponent({
             search_map: ref(props.table_obj.search_obj.search_map),
             search_api: ref(props.table_obj.search_obj.search_api),
             search_res: ref({}),
-            can_edit: ref(true)
         }
     },
     mounted() {
@@ -148,7 +147,6 @@ export default defineComponent({
     methods: {
         editTable(key) {
             this.editableData[key] = cloneDeep(this.data.filter(item => key === item.key)[0]);
-            console.log(this.editableData[key])
         },
         cancelTable(key) {
             delete this.editableData[key];
@@ -165,23 +163,19 @@ export default defineComponent({
             })
             // 结合search_map匹配对应的码值
             for (let key in this.search_res) {
-                console.log(key);
-                console.log(this.search_res[key],this.search_map[key])
-                // target_data[]
-                target_data[this.search_map[key]['key']] = this.search_res[key]['key']
+                target_data[this.search_map[key]['out']['key']] = this.search_res[key]['key']
+                target_data[this.search_map[key]['out']['value']] = this.search_res[key]['value']
             }
-            // 保存
-            console.log(this.data.filter(item => key === item.key)[0])
+            // 保存，传递给父组件
+            // console.log(this.data.filter(item => key === item.key)[0])
+            this.$emit('table-edit',target_data)
             delete this.editableData[key];
         },
         handleSearchInput(value) {
-            console.log(value);
             // 判断title有没有存在过，没有的话则保存用于遍历
             if(!(value.title in this.search_res)) {
                 this.search_res[value.title] = value.data
             }
-            console.log(this.search_res)
-            console.log(this.search_map)
         }
     }
 })
