@@ -1,5 +1,5 @@
 <template>
-    <div class="h_p100"  ref="modal">
+    <!-- <div class="h_p100"> -->
         <a-modal v-model:open="modal_visible" :width="660" :title="modal_title" centered :closable="false" :maskClosable="false">
             <div class="d_flex fai_c pt_20 pb_30 jc_sb">
                 <div class="d_flex fd_r fai_c jc_sb gap_20 w_p100">
@@ -55,7 +55,7 @@
                 </div>
             </template>
         </a-modal>
-    </div>
+    <!-- </div> -->
 </template>
 
 <style>
@@ -105,7 +105,7 @@ export default defineComponent({
         watch(props,()=>{
             console.log(props.visible)
             modal_visible.value = props.visible
-        },{deep:true});
+        });
         return {
             modal_visible,
             modal_title: ref(props.modal_obj.title),
@@ -118,25 +118,24 @@ export default defineComponent({
     methods:{
         handleFileUpload(file) {
             this.form_data.upload_file = file;
-            console.log(this.form_data);
+            // console.log(this.form_data);
         },
         handleMenuSelect(value) {
             this.form_data[value.title] = value.data;
-            console.log(this.form_data);
+            // console.log(this.form_data);
         },
         handleSearchInput(value) {
             // 判断title有没有存在过，没有的话则保存用于遍历
             if(!(value.title in this.form_data)) {
                 this.form_data[value.title] = value.data
             }
-            console.log(this.form_data)
+            // console.log(this.form_data)
         },
         cancelModal() {
-            this.modal_visible = !this.modal_visible;
+            this.$emit('modal-confirm',{type:1})
         },
         confirmModal() {
-            this.modal_visible = false;
-            this.$emit('modal-confirm',this.form_data)
+            this.$emit('modal-confirm',{type:2,data:this.form_data})
         }
     }
 })

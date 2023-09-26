@@ -182,7 +182,6 @@ export default defineComponent({
         },
         // 展示新增表单
         showModal() {
-            console.log(this.visible)
             this.visible = true
         },
         // 重置查询条件
@@ -214,7 +213,10 @@ export default defineComponent({
             })
         },
         handleModalConfirm(value) {
-            console.log(value)
+            if (value.type == 2) {
+                console.log(value.data) 
+            }
+            this.visible = !this.visible
         }
     }
 })
