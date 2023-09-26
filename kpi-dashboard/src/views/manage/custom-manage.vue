@@ -35,7 +35,10 @@
                     :pageSizeOptions="page_obj.sizeOptions" @change="changePage"
                     @showSizeChange="changeSizeOptions"></a-pagination>
             </div>
-        </div>
+        </div>    
+    </div>
+    <div class="modal_con">
+        <modal-input :modal_obj="modal_obj" :visible="visible" @modal-confirm="handleModalConfirm"></modal-input>
     </div>
 </template>
 
@@ -51,10 +54,11 @@ import { Col, Row, Input, Divider, Button, Pagination, message } from 'ant-desig
 import { Search as SearchIcon, Redo, AddFour } from '@icon-park/vue-next';
 
 import MenuInput from '@/components/other/menu-input.vue';
+import ModalInput from '@/components/other/modal-input.vue';
 import EditTable from '@/components/manage/edit-table.vue';
 
 import { api } from '@/utils/commonApi.js';
-import { userTableHead, userEditIndex, userEditMap, searchInfo } from '@/utils/commonTableHeader.js';
+import { userTableHead, userEditIndex, userEditMap, searchInfo, updateUserModal } from '@/utils/commonTableHeader.js';
 
 const myApi = api();
 
@@ -63,6 +67,7 @@ export default defineComponent({
     components: {
         'menu-input': MenuInput,
         'edit-table': EditTable,
+        'modal-input': ModalInput,
         'a-col': Col,
         'a-row': Row,
         'a-input': Input,
@@ -76,7 +81,7 @@ export default defineComponent({
     data() {
         return {}
     },
-    setup() {
+    setup() {       
         return {
             character_option: ref({menu_data:[{ref_code:0,ref_name:'全部'}],menu_key:{code:'ref_code',label:'ref_name'},select_title:'character_option'}),
             org_option: ref({menu_data:[{ref_code:0,ref_name:'全部'}],menu_key:{code:'ref_code',label:'ref_name'},select_title:'org_option'}),
@@ -96,7 +101,9 @@ export default defineComponent({
                 search_obj: ref(searchInfo)
             }),
             status: ref(false),
-            can_edit: ref(true)
+            can_edit: ref(true),
+            modal_obj: ref({title:'新增用户',data:ref(updateUserModal)}),
+            visible: ref(false)
         }
     },
     mounted() {
@@ -175,7 +182,8 @@ export default defineComponent({
         },
         // 展示新增表单
         showModal() {
-            return {}
+            console.log(this.visible)
+            this.visible = true
         },
         // 重置查询条件
         resetSearch() {
@@ -205,6 +213,9 @@ export default defineComponent({
                 this.getUserList();
             })
         },
+        handleModalConfirm(value) {
+            console.log(value)
+        }
     }
 })
 </script>
