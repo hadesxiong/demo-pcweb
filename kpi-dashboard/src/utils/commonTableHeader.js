@@ -191,11 +191,11 @@ export const userSearchInfo = {
 export const orgSearchInfo = {
     search_map: {
         parent_org_name:{
-            in:{label:'org_name',key:'org_num',value:'org_name'},
+            in:{label:'parent_org_name',key:'org_num',value:'parent_org_name'},
             out:{label: 'parent_org_name',key:'parent_org_id',value:'parent_org_name'}
         },
         org_manager_name:{
-            in:{label:'user_name',key:'notes_id',value:'user_name'},
+            in:{label:'user_name_withId',key:'notes_id',value:'user_name_withId'},
             out:{label:'org_manager_name',key:'org_manager',value:'org_manager_name'}
         }
     },
@@ -421,7 +421,7 @@ export const updateOrgModal = {
             option:[],
             optionIndex:'',
             search_map:{
-                in:{label:'user_name',key:'notes_id',value:'user_name'},
+                in:{label:'user_name_withId',key:'notes_id',value:'user_name_withId'},
                 out:{label:'org_manager_name',key:'org_manager',value:'org_manager_name'}
             },
             search_func:{

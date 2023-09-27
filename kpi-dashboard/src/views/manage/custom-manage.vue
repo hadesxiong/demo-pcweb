@@ -77,7 +77,7 @@ export default defineComponent({
         'icon-redo': Redo,
         'icon-add': AddFour
     },
-    data() {},
+    data() {return {}},
     setup() {
         return {
             org_option: ref({menu_data:[{ref_code:0,ref_name:'全部'}],menu_key:{code:'ref_code',label:'ref_name'},select_title:'org_option'}),
@@ -204,7 +204,33 @@ export default defineComponent({
         },
         handleModalConfirm(value) {
             if (value.type ==2) {
-                console.log(value)
+                const post_data = {
+                    type: 'create',
+                    num: value.data.org_num,
+                    update_data:{
+                        org_name: value.data.org_name,
+                        parent_org: value.data.parent_org_name.key,
+                        org_level: value.data.level_name.ref_code,
+                        org_group: value.data.group_name.ref_code,
+                        org_manager: value.data.org_manager_name.key
+                    }
+                }
+                message.loading({content:'提交修改,请稍后...',duration:0,class:'msg_loading'});
+                this.can_edit = false;
+                myApi.post('/api/org/updateOrg',post_data).then(
+                    (response) => {
+                        console.log(response);
+                        message.destroy();
+                        message.success({content:'修改完成',duration:1.5,class:'msg_loading',onClose:()=>{this.getOrgList();}})
+                        this.can_edit = true;
+                    }
+                ).catch(
+                    (response) => {
+                        console.log(response);
+                        message.destroy();
+                        message.error({content:'提交失败...',duration:1.5,class:'msg_loading',onClose:()=>{this.can_edit=true;}})
+                    }
+                )
             }
             this.visible = !this.visible
         }

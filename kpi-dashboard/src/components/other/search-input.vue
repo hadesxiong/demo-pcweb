@@ -57,6 +57,7 @@ export default defineComponent({
         }
     },
     setup(props) {
+        console.log(props.init_result,props.res_map.value)
         return {
             in_fetching: ref(false),
             need_label: ref(props.label_info.need_label),

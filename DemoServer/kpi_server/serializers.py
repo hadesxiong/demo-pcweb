@@ -30,6 +30,8 @@ class UsersSerializer(serializers.ModelSerializer):
     character_name = serializers.SerializerMethodField()
     group_name = serializers.SerializerMethodField()
 
+    user_name_withId = serializers.SerializerMethodField()
+
     def get_org_name(self,obj):
         return self.org_dict[obj.user_belong_org]['org_name']
     
@@ -41,12 +43,15 @@ class UsersSerializer(serializers.ModelSerializer):
     
     def get_group_name(self,obj):
         return self.ref_dict[f'user_belong_group_{obj.user_belong_group}']
+    
+    def get_user_name_withId(self,obj):
+        return f'{obj.user_name} - {obj.notes_id}'
 
     class Meta:
 
         model = Users
         # fields = '__all__'
-        fields = ('notes_id','user_name','user_character','user_belong_group', 'user_belong_org', 'org_name','org_manager','character_name','group_name')
+        fields = ('notes_id','user_name','user_character','user_belong_group', 'user_belong_org', 'org_name','org_manager','character_name','group_name','user_name_withId')
 
 class OrgSerializer(serializers.ModelSerializer):
 
