@@ -348,7 +348,8 @@ export const updateOrgModal = {
             option:[],
             optionIndex:'',
             search_map:{},
-            search_func:{}
+            search_func:{},
+            required:true
         },
         {
             group:0,
@@ -358,7 +359,8 @@ export const updateOrgModal = {
             option:[],
             optionIndex:'',
             search_map:{},
-            search_func:{}
+            search_func:{},
+            required:true
         },
         {
             group:0,
@@ -389,7 +391,8 @@ export const updateOrgModal = {
                 {ref_code:5,ref_name:'经营机构部门'}
             ],
             search_map:{},
-            search_func:{}
+            search_func:{},
+            required:true
         },
         {
             group:0,
@@ -411,7 +414,8 @@ export const updateOrgModal = {
                     size:10,
                     ext:''
                 }
-            }
+            },
+            required:true
         },
         {
             group:0,
@@ -433,7 +437,8 @@ export const updateOrgModal = {
                     size:10,
                     ext:''
                 }
-            }
+            },
+            required:true
         }
     ]
 

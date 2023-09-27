@@ -1,212 +1,43 @@
 <template>
-    <div class="d_flex fd_c gap_20 h_p100">
-        <div class="d_flex p_20 bg_white fd_r gap_20 fai_c jc_sb">
-            <div class="d_flex gap_20">
-                <a-dropdown
-                    class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                    <a>
-                        {{ search_orgGroup.value }}
-                        <icon-down class="lh_1" fill="#86909C"></icon-down>
-                    </a>
-                    <template #overlay>
-                        <a-menu>
-                            <a-menu-item v-for="item in org_group" :key="item.key"
-                                @click="chooseMenuItem(item, 'search_orgGroup')">{{ item.value }}</a-menu-item>
-                        </a-menu>
-                    </template>
-                </a-dropdown>
-                <a-dropdown
-                    class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                    <a>
-                        {{ search_orgLevel.value }}
-                        <icon-down class="lh_1" fill="#86909C"></icon-down>
-                    </a>
-                    <template #overlay>
-                        <a-menu>
-                            <a-menu-item v-for="item in org_level" :key="item.key"
-                                @click="chooseMenuItem(item, 'search_orgLevel')">{{ item.value }}</a-menu-item>
-                        </a-menu>
-                    </template>
-                </a-dropdown>
-                <a-input placeholder="输入导入人信息或者导入编号进行搜索"
-                    class="w_360 fai_c bg_l2 br_2  ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 b_n">
-                    <template #suffix>
-                        <icon-search size="14" class="mr_8 lh_1"></icon-search>
-                    </template>
-                </a-input>
-            </div>
+    <div class="d_flex fd_c gap_20 h_p100 w_p100">
+        <div class="d_flex p_20 bg_white gap_20 fai_c w_p100 jc_sb">
+            <a-row :gutter="[20,20]" class="fwrap_n w_p100">
+                <a-col :span="4"><menu-input :cp_data="org_option" @menu-select="handleMenuSelect"></menu-input></a-col>
+                <a-col :span="4"><menu-input :cp_data="level_option" @menu-select="handleMenuSelect"></menu-input></a-col>
+                <a-col :span="8">                
+                    <a-input v-model:value='search_form.key_word' placeholder="输入导入人信息或者导入编号进行搜索"
+                        class="fai_c bg_l2 br_2  ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no b_n">
+                        <template #suffix><icon-search size="14" class="mr_8 lh_1"></icon-search></template>
+                    </a-input>
+                </a-col>
+            </a-row>
             <div class="d_flex gap_20 fai_c">
                 <a-divider type="vertical" style="height: 18px; border-color: #E5E6EB; top: 0;"></a-divider>
-                <div class="d_flex gap_20">
-                    <a-button type="default" class="br_2 fai_c d_flex fc_l2 bg_l2 b_n" @click="resetSearch">
-                        <template #icon>
-                            <icon-redo size="14" class="mr_8 lh_1"></icon-redo>
-                        </template>
-                        重置
-                    </a-button>
-                    <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="confirmSearch">
-                        <template #icon>
-                            <icon-search size="14" class="mr_8 lh_1"></icon-search>
-                        </template>
-                        查询
-                    </a-button>
-                    <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="showModal">
-                        <template #icon>
-                            <icon-add size="14" class="mr_8 lh_1"></icon-add>
-                        </template>
-                        新增
-                    </a-button>
-                </div>
+                <a-button type="default" class="br_2 fai_c d_flex fc_l2 bg_l2 b_n" @click="resetSearch">
+                    <template #icon><icon-redo size="14" class="mr_8 lh_1"></icon-redo></template>
+                    重置
+                </a-button>
+                <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="confirmSearch">
+                    <template #icon><icon-search size="14" class="mr_8 lh_1"></icon-search></template>
+                    查询
+                </a-button>
+                <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="showModal">
+                    <template #icon><icon-add size="14" class="mr_8 lh_1"></icon-add></template>
+                    新增
+                </a-button>
             </div>
         </div>
-        <div class="p_20 bg_white h_p100 d_flex fd_c gap_20">
-            <div class="of_a fg_1">
-                <a-table :columns="table_data.table_columns" :data-source="table_data.table_data" :pagination="false"
-                    class="b_w1c2_so br_2">
-                    <template #bodyCell="{ column, text, record }">
-                        <template
-                            v-if="['org_num', 'org_name', 'org_group', 'org_level', 'lead_org'].includes(column.dataIndex)">
-                            <div class="input-container">
-                                <a-input v-if="editableData[record.key]"
-                                    v-model:value="editableData[record.key][column.dataIndex]" class="input-wrapper">
-                                </a-input>
-                                <template v-else>{{ text }}</template>
-                            </div>
-                        </template>
-                        <template v-else-if="column.dataIndex === 'org_operation'">
-                            <div>
-                                <span v-if="editableData[record.key]" class="d_iflex gap_8 font_13">
-                                    <a @click="save(record.key)">保存</a>
-                                    <a-popconfirm title="Sure to cancel?" @confirm="cancel(record.key)">
-                                        <a>取消</a>
-                                    </a-popconfirm>
-                                </span>
-                                <span v-else>
-                                    <a @click="edit(record.key)">编辑</a>
-                                </span>
-                            </div>
-                        </template>
-                    </template>
-                </a-table>
-            </div>
+        <div class="d_flex p_20 bg_white gap_20 fd_c h_p100">
+            <edit-table :table_obj="table_obj" :status="status" :editable="can_edit" @table-edit="handleTableEdit"></edit-table>
             <div class="d_flex fai_c jc_fe">
-                <a-pagination :current="page_obj.current" :total="page_obj.total" :pageSize="page_obj.pageSize"
-                    @change="handlePageChange"></a-pagination>
+                <a-pagination :current="page_obj.current" :total="page_obj.total" :pageSize="page_obj.size"
+                    :pageSizeOptions="page_obj.sizeOptions" @change="changePage"
+                    @showSizeChange="changeSizeOptions"></a-pagination>
             </div>
-        </div>
+        </div>    
     </div>
-    <div class="modalCon" ref="modal">
-        <a-modal v-model:open='modal_visible' width="auto" title="新增机构" centered :closable="false">
-            <div class="d_flex fai_c pt_20 pb_10 jc_sb">
-                <div class="d_flex fd_r fai_c jc_sb gap_20 w_p100">
-                    <div class="d_flex fai_c gap_16">
-                        <div class="fc_l2 font_14 minw_60">机构编号</div>
-                        <a-dropdown
-                            class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                            <a-input :value="org_num" class="w_240">
-                                <template #suffix></template>
-                            </a-input>
-                        </a-dropdown>
-                    </div>
-                    <div class="d_flex fai_c gap_16">
-                        <div class="fc_l2 font_14 minw_60">机构名称</div>
-                        <a-dropdown
-                            class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                            <a-input :value="org_name" class="w_240">
-                                <template #suffix></template>
-                            </a-input>
-                        </a-dropdown>
-                    </div>
-                </div>
-            </div>
-            <div class="d_flex fai_c pt_20 pb_10 jc_sb">
-                <div class="d_flex fd_r fai_c jc_sb gap_20 w_p100">
-                    <div class="d_flex fai_c gap_16">
-                        <div class="fc_l2 font_14 minw_60">机构分组</div>
-                        <a-dropdown
-                            class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                            <a-input :value="add_orgGroup.value" class="w_240">
-                                <template #suffix>
-                                    <icon-down class="lh_1" fill="#86909C"></icon-down>
-                                </template>
-                            </a-input>
-                            <template #overlay>
-                                <a-menu>
-                                    <a-menu-item v-for="item in org_group.filter((a) => { return a.key != 'all' })"
-                                        :key="item.key" @click="chooseMenuItem(item, 'add_orgGroup')">{{ item.value
-                                        }}</a-menu-item>
-                                </a-menu>
-                            </template>
-                        </a-dropdown>
-                    </div>
-                    <div class="d_flex fai_c gap_16">
-                        <div class="fc_l2 font_14 minw_60">机构层级</div>
-                        <a-dropdown
-                            class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                            <a-input :value="add_orgLevel.value" class="w_240">
-                                <template #suffix>
-                                    <icon-down class="lh_1" fill="#86909C"></icon-down>
-                                </template>
-                            </a-input>
-                            <template #overlay>
-                                <a-menu>
-                                    <a-menu-item v-for="item in org_level.filter((a) => { return a.key != 'all' })"
-                                        :key="item.key" @click="chooseMenuItem(item, 'add_orgLevel')">{{ item.value
-                                        }}</a-menu-item>
-                                </a-menu>
-                            </template>
-                        </a-dropdown>
-                    </div>
-                </div>
-            </div>
-            <div class="d_flex fai_c pt_20 pb_20 jc_sb">
-                <div class="d_flex fd_r fai_c jc_sb gap_20 w_p100">
-                    <div class="d_flex fai_c gap_16">
-                        <div class="fc_l2 font_14 minw_60">上级机构</div>
-                        <a-dropdown
-                            class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                            <a-input :value="lead_org.value" class="w_240">
-                                <template #suffix>
-                                    <icon-down class="lh_1" fill="#86909C"></icon-down>
-                                </template>
-                            </a-input>
-
-                            <template #overlay>
-                                <a-menu>
-                                    <a-menu-item>上海分行</a-menu-item>
-                                    <a-menu-item>其他区域中心支行</a-menu-item>
-                                </a-menu>
-                            </template>
-                        </a-dropdown>
-                    </div>
-                    <div class="d_flex fai_c gap_16 jc_sb">
-                        <div class="fc_l2 font_14 minw_60">负责人</div>
-                        <a-dropdown
-                            class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                            <a-input :value="org_manager" class="w_240">
-                                <template #suffix></template>
-                            </a-input>
-                        </a-dropdown>
-                    </div>
-                </div>
-            </div>
-            <template #footer>
-                <div class="d_flex jc_fe gap_8">
-                    <a-button type="default" class="br_2 fai_c d_flex fc_l2 bg_l2 b_n" @click="cancelUpload">
-                        <template #icon>
-                            <icon-close size="14" class="mr_8 lh_1"></icon-close>
-                        </template>
-                        取消
-                    </a-button>
-                    <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="confirmUpload">
-                        <template #icon>
-                            <icon-check size="14" class="mr_8 lh_1"></icon-check>
-                        </template>
-                        提交
-                    </a-button>
-                </div>
-            </template>
-        </a-modal>
+    <div class="modal_con">
+        <modal-input :modal_obj="modal_obj" :visible="visible" @modal-confirm="handleModalConfirm"></modal-input>
     </div>
 </template>
 
@@ -214,175 +45,196 @@
 @import url('@/assets/style/common.css');
 @import url('@/assets/style/colorset.css');
 @import url('@/assets/style/overwrite.css');
-.input-container input {
-    height: 30px;
-    background-color: #f2f3f5;
-    border: none;
-    color: #4e5969;
-    border-radius: 2px;
-    padding-left: 8px;
-}
-.input-container input:focus {
-    color: #C9CDD4;
-}
-.input-container {
-    max-width: 100%;
-    display: flex;
-    align-items: center;
-    height: 20px;
-    line-height: 20px;
-    font-size: 13px;
-}
-.input-container .ant-input {
-    width: 100%;
-}
-.input-container .input-wrapper {
-    max-width: 100%;
-    overflow: hidden;
-    font-size: 13px;
-    width: 100%;
-}
-.input-container .select-wrapper {
-    height: 20px;
-    line-height: 20px;
-    align-items: center;
-    font-size: 13px;
-    display: flex;
-    width: 100%;
-}
-.input-container .select-wrapper div.ant-select-selector {
-    height: 30px;
-    line-height: 30px;
-    /* background-color: transparent; */
-    padding-left: 8px;
-    padding-right: 24px;
-}
-.input-container .select-wrapper div.ant-select-selector span {
-    font-size: 13px;
-    line-height: 30px;
-}
-.input-container .select-wrapper div.ant-select-selector span.ant-select-selection-search input {
-    font-size: 13px;
-    line-height: 20px;
-    height: 20px;
-}
-.input-container .ant-select-single .ant-select-selector span.ant-select-selection-search {
-    inset-inline-start: 8px;
-    inset-inline-end: 8px
-}
-.input-container .ant-select-single .ant-select-selector span.ant-select-selection-item {
-    height: 30px;
-}
-.disabled_link {
-    pointer-events: none;
-    cursor: not-allowed;
-    color: #C9CDD4;
-}
 </style>
 
 <script>
-import { defineComponent, reactive, ref } from 'vue';
-import { Down, Search, Redo, AddFour, Close, Check } from '@icon-park/vue-next';
-import { Dropdown, Menu, MenuItem, Input, Divider, Button, Table, Popconfirm, Pagination, Modal } from 'ant-design-vue';
-import axios from 'axios';
-import { cloneDeep } from 'lodash-es'
+import { defineComponent, ref } from 'vue';
+import { Col, Row, Input, Divider, Button, Pagination, message } from 'ant-design-vue';
+import { Search as SearchIcon, Redo, AddFour } from '@icon-park/vue-next';
+
+import MenuInput from '@/components/other/menu-input.vue';
+import ModalInput from '@/components/other/modal-input.vue';
+import EditTable from '@/components/manage/edit-table.vue';
+
+import { api } from '@/utils/commonApi.js';
+import { orgTableHead, orgEditIndex, orgEditMap, orgSearchInfo, updateOrgModal } from '@/utils/commonTableHeader.js'
+
+const myApi = api();
 
 export default defineComponent({
-    name: "OrgManage",
+    name: 'OrgManage',
     components: {
-        'icon-down': Down,
-        'icon-search': Search,
-        'icon-redo': Redo,
-        'icon-add': AddFour,
-        'icon-close': Close,
-        'icon-check': Check,
-        'a-dropdown': Dropdown,
-        'a-menu': Menu,
-        'a-menu-item': MenuItem,
+        'menu-input': MenuInput,
+        'edit-table': EditTable,
+        'modal-input': ModalInput,
+        'a-col': Col,
+        'a-row': Row,
         'a-input': Input,
         'a-divider': Divider,
         'a-button': Button,
-        'a-table': Table,
         'a-pagination': Pagination,
-        'a-modal': Modal,
-        'a-popconfirm': Popconfirm,
+        'icon-search': SearchIcon,
+        'icon-redo': Redo,
+        'icon-add': AddFour
     },
+    data() {return {}},
     setup() {
-        const table_data = ref({});
-        const dataSource = ref(table_data);
-        const modal_visible = ref(false);
-        const editableData = reactive({});
         return {
-            table_data,
-            editableData,
-            dataSource,
-            modal_visible,
-            page_obj: ref({
-                current: 1,
-                pageSize: 10,
-                total: 100
+            org_option: ref({menu_data:[{ref_code:0,ref_name:'全部'}],menu_key:{code:'ref_code',label:'ref_name'},select_title:'org_option'}),
+            level_option: ref({menu_data:[{ref_code:0,ref_name:'全部'}],menu_key:{code:'ref_code',label:'ref_name'},select_title:'level_option'}),
+            search_form: ref({
+                org_option: {ref_code:0,ref_name:'全部'},
+                level_option: {ref_code:0,ref_name:'全部'},
+                key_word: ''
             }),
-            search_orgGroup: ref({ key: 'all', value: '全部分组' }),
-            org_group: ref([]),
-            search_orgLevel: ref({ key: 'all', value: '全部层级' }),
-            org_level: ref([]),
-            add_orgGroup: ref({ key: 'qyzxzh', value: '区域中心支行' }),
-            add_orgLevel: ref({ key: '04', value: '四级机构' }),
-            lead_org: ref({ key: '3100001', value: '上海分行' }),
-            org_num: ref(),
-            org_name: ref(''),
-            org_manager: ref('')
+            page_obj: ref({current:1,size:15,total:100,sizeOptions:['15', '30', '60']}),
+            table_obj: ref({
+                columns: ref(orgTableHead),
+                data: ref([]),
+                editIndex: ref(orgEditIndex),
+                editMap: ref(orgEditMap),
+                search_obj: ref(orgSearchInfo)
+            }),
+            status: ref(false),
+            can_edit: ref(true),
+            modal_obj: ref({title:'新增机构',data:ref(updateOrgModal)}),
+            visible: ref(false)
         }
     },
     mounted() {
-        this.getOrgData();
-        this.getFilterData();
+        // 选项初始化
+        myApi.get('/api/other/getFilter',{params:{type:'og.ol'}}).then(
+            (response) => {
+                this.org_option.menu_data = response.data.data.org_group,
+                this.level_option.menu_data = response.data.data.org_level
+            }
+        );
+        this.getOrgList();
     },
-    methods: {
-        async getOrgData() {
-            const org_res = await axios.get('/demo/manage/org-manage.json');
-            this.table_data = org_res.data
+    methods:{
+        handleMenuSelect(value) {
+            this.search_form[value.title] = value.data;
         },
-        async getFilterData() {
-            const filter_res = await axios.get('/demo/filter/normal_filter.json');
-            this.org_group = filter_res.data.org_group;
-            this.org_level = filter_res.data.org_level;
+        handleTableEdit(value) {
+            console.log(value);
+            const post_data = {
+                'type':'update',
+                'num': value.org_num,
+                'update_data': {
+                    'org_name': value.org_name,
+                    'org_group': value.org_group,
+                    'org_level': value.org_level,
+                    'org_manager': value.org_manager,
+                    'parent_org_id': value.parent_org_id
+                }
+            }
+            message.loading({content:'提交修改,请稍后...',duration:0,class:'msg_loading'})
+            this.can_edit = false;
+            myApi.post('/api/org/updateOrg',post_data).then(
+                (response) => {
+                    console.log(response);
+                    message.destroy();
+                    message.success({content:'修改完成',duration:1.5,class:'msg_loading',onClose:()=>{this.getOrgList()}})
+                    this.can_edit = true;
+                }
+            ).catch(
+                (response) => {
+                    console.log(response);
+                    message.destroy();
+                    message.error({content:'提交失败...',duration:1.5,class:'msg_loading',onClose:()=>{this.can_edit=true;}})
+                }
+            )
         },
-        edit(key) {
-            // console.log(this.dataSource.table_data,key)
-            this.editableData[key] = cloneDeep(this.dataSource.table_data.filter(item => key === item.key)[0]);
+        async getOrgList() {
+            // loading开始
+            this.status = true;
+            // 主逻辑
+            const get_params = {
+                level: this.search_form.level_option.ref_code,
+                group: this.search_form.org_option.ref_code,
+                client: 0,
+                page: this.page_obj.current,
+                size: this.page_obj.size,
+                ext: this.search_form.key_word
+            }
+            const org_list = await myApi.get('/api/org/getOrgList',{params:get_params})
+            // 组装table_obj
+            this.table_obj.data = org_list.data.data;
+            // 为data添加key
+            this.table_obj.data = this.table_obj.data.map((item, index) => { return { ...item, key: index.toString() } });
+            this.page_obj.total = org_list.data.data_total
+            // 处理editIndex
+            this.table_obj.editIndex.find(item=>item.column == 'level_name').option_list = this.level_option.menu_data
+            this.table_obj.editIndex.find(item=>item.column == 'group_name').option_list = this.org_option.menu_data
+            // 处理editMap的range属性
+            this.table_obj.editMap.find(item=>item.name_target == 'level_name').range = this.level_option.menu_data
+            this.table_obj.editMap.find(item=>item.name_target == 'group_name').range = this.org_option.menu_data
+            // loading结束
+            this.status = false;
         },
-        save(key) {
-            Object.assign(this.dataSource.table_data.filter(item => key === item.key)[0], this.editableData[key]);
-            delete this.editableData[key];
-        },
-        cancel(key) {
-            delete this.editableData[key];
-        },
+        // 展示新增表单
         showModal() {
-            this.modal_visible = true;
+            this.visible = true
         },
-        cancelUpload() {
-            this.modal_visible = false;
-        },
-        confirmUpload() {
-            this.modal_visible = false;
-        },
-        handlePageChange(page) {
-            console.log(page)
-            this.page_obj.current = page
-        },
-        chooseMenuItem(item, target) {
-            this[target] = item
-        },
+        // 重置查询条件
         resetSearch() {
-            this.search_orgGroup = { key: 'all', value: '全部分组' };
-            this.search_orgLevel = { key: 'all', value: '全部层级' };
+            this.search_form = {
+                level_option: {ref_code:0,ref_name:'全部'},
+                org_option: {ref_code:0,ref_name:'全部'},
+                key_word: ''
+            }
         },
+        // 提交查询
         confirmSearch() {
-            console.log(this.search_orgGroup, this.search_orgLevel)
+            this.getOrgList();
+        },
+        // 翻页
+        changePage(page) {
+            this.page_obj.current = page
+            this.getOrgList()
+        },
+        // 设定pageSize
+        changeSizeOptions(_, size) {
+            // 设定size，页数重置
+            this.page_obj.size = size;
+            this.$nextTick(()=>{
+                this.page_obj.current = 1;
+                this.getOrgList();
+            })
+        },
+        handleModalConfirm(value) {
+            if (value.type ==2) {
+                const post_data = {
+                    type: 'create',
+                    num: value.data.org_num,
+                    update_data:{
+                        org_name: value.data.org_name,
+                        parent_org: value.data.parent_org_name.key,
+                        org_level: value.data.level_name.ref_code,
+                        org_group: value.data.group_name.ref_code,
+                        org_manager: value.data.org_manager_name.key
+                    }
+                }
+                message.loading({content:'提交修改,请稍后...',duration:0,class:'msg_loading'});
+                this.can_edit = false;
+                myApi.post('/api/org/updateOrg',post_data).then(
+                    (response) => {
+                        console.log(response);
+                        message.destroy();
+                        message.success({content:'修改完成',duration:1.5,class:'msg_loading',onClose:()=>{this.getOrgList();}})
+                        this.can_edit = true;
+                    }
+                ).catch(
+                    (response) => {
+                        console.log(response);
+                        message.destroy();
+                        message.error({content:'提交失败...',duration:1.5,class:'msg_loading',onClose:()=>{this.can_edit=true;}})
+                    }
+                )
+            }
+            this.visible = !this.visible
         }
     }
-});
+})
 
 </script>
