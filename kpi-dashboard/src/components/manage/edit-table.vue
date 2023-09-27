@@ -23,7 +23,7 @@
                             <template v-else>{{ text }}</template>
                         </div>
                         <div v-else-if="item.type==='search' && item.column === column.dataIndex" class="input-container d_flex fai_c font_13 h_20 lh_20 maxw_p100">
-                            <search-input v-if="editableData[record.key]" :res_map="search_map[column.dataIndex]['in']" :api_info="search_api" :target_title="column.dataIndex" :init_result="{[column.dataIndex]:text}" @search-select="handleSearchInput"></search-input>
+                            <search-input v-if="editableData[record.key]" :res_map="search_map[column.dataIndex]['in']" :api_info="search_api[column.dataIndex]" :target_title="column.dataIndex" :init_result="{[column.dataIndex]:text}" @search-select="handleSearchInput"></search-input>
                             <template v-else>{{ text }}</template>
                         </div>
                     </template>

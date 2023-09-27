@@ -161,7 +161,7 @@ export default defineComponent({
             const login_res = await api.post('/api/auth/userLogin',user_data,{ withCredentials: true })
             // 处理结果
             if (login_res.data.code == 100) {
-                console.log(login_res)
+                // console.log(login_res)
                 localStorage.setItem('refresh',login_res['headers'].get('x-refresh-token'))
                 localStorage.setItem('access',login_res['headers'].get('authorization'))
             } else {

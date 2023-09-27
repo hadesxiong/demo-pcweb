@@ -65,7 +65,7 @@ export default defineComponent({
     //   this.menu_data = menu_res.data;
     // },
     handleMenuClick() {
-      console.log(this.selectedKeys,this.openKeys)
+      // console.log(this.selectedKeys,this.openKeys)
     }
   },
   mounted() {}

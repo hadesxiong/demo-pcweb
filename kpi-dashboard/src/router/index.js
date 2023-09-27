@@ -95,17 +95,6 @@ const routes = [
         },
       },
       {
-        name:"user-manage",
-        path: "/user-manage",
-        component: () => import("@/views/manage/user-manage.vue"),
-        meta: {
-          breadcrumb: ["数据管理", "用户管理"],
-          sub:"settings",
-          menu:"user-manage",
-          requireAuth:true
-        },
-      },
-      {
         name:"custom-manage",
         path: "/custom-manage",
         component: () => import("@/views/manage/custom-manage.vue"),
@@ -113,6 +102,17 @@ const routes = [
           breadcrumb: ["数据管理", "自定义管理"],
           sub:"settings",
           menu:"custom-manage",
+          requireAuth:true
+        },
+      },
+      {
+        name:"user-manage",
+        path: "/user-manage",
+        component: () => import("@/views/manage/user-manage.vue"),
+        meta: {
+          breadcrumb: ["数据管理", "用户管理"],
+          sub:"settings",
+          menu:"user-manage",
           requireAuth:true
         },
       },

@@ -1,17 +1,17 @@
 <template>
     <!-- <div class="h_p100"> -->
         <a-modal v-model:open="modal_visible" :width="660" :title="modal_title" centered :closable="false" :maskClosable="false">
-            <div class="d_flex fai_c pt_20 pb_30 jc_sb">
+            <div class="d_flex fai_c pt_20 jc_sb" v-if="group_info.need_show">
                 <div class="d_flex fd_r fai_c jc_sb gap_20 w_p100">
                     <div class="d_flex fai_c gap_16">
                         <div class="fc_l2 font_14 minw_60">{{ group_info.label }}</div>
-                        <a-radio-group v-model:value="radio_group">
+                        <a-radio-group v-model:value="radio_group" @change="changeRadio">
                             <a-radio v-for="item in group_info.data" :value="item.key" :key="item.key">{{ item.label }}</a-radio>
                         </a-radio-group>
                     </div>
                 </div>
             </div>
-            <a-row :gutter="[20,]" :wrap="true" justify="space-between">
+            <a-row :gutter="[20,]" :wrap="true" justify="space-between" class="pt_30">
                 <a-col :span="12" v-for="(item,index) in modal_data.form_list" :key="index" class="wp_100">
                     <div class="d_flex fai_c gap_16 w_p100 fg_1 pb_30" v-if="item.group===radio_group">
                         <div class="fc_l2 font_14 minw_60">{{ item.label }}</div>
@@ -72,7 +72,7 @@ span {
 
 <script>
 import { defineComponent, ref, watch } from 'vue';
-import { Col, Row, Modal, RadioGroup, Radio, Input, Button } from 'ant-design-vue';
+import { Col, Row, Modal, RadioGroup, Radio, Input, Button, message } from 'ant-design-vue';
 import { Close, Check } from '@icon-park/vue-next';
 
 import MenuInput from '@/components/other/menu-input.vue';
@@ -100,12 +100,10 @@ export default defineComponent({
         visible: {type:Boolean,default: false}
     },
     setup(props) {
+
         const modal_visible = ref(props.visible);
-        // 判断是否有分类
-        watch(props,()=>{
-            console.log(props.visible)
-            modal_visible.value = props.visible
-        });
+        watch(props,()=>{modal_visible.value = props.visible});
+
         return {
             modal_visible,
             modal_title: ref(props.modal_obj.title),
@@ -115,7 +113,23 @@ export default defineComponent({
             form_data: ref({})
         }
     },
+    mounted() {
+        this.initFormData();
+    },
     methods:{
+        // 选项菜单获取初始值填入form_data
+        initFormData() {
+            this.modal_data.form_list.forEach((item)=>{
+                if(item.type == 'select') {
+                    // console.log(item)
+                    this.form_data[item.dataIndex] = item.option[0]
+                }
+            })
+        },
+        // 切换radio时清除表单
+        changeRadio() {
+            this.form_data = {}
+        },
         handleFileUpload(file) {
             this.form_data.upload_file = file;
             // console.log(this.form_data);
@@ -135,7 +149,14 @@ export default defineComponent({
             this.$emit('modal-confirm',{type:1})
         },
         confirmModal() {
-            this.$emit('modal-confirm',{type:2,data:this.form_data})
+            this.form_data.type = this.radio_group
+            // 检查字段，如果不存在则无法提交
+            const dataIndex_list = this.modal_data.form_list.filter(item => (item.group == this.radio_group && item.required)).map(item => item.dataIndex)
+            if (dataIndex_list.every(field => field in this.form_data)) {
+                this.$emit('modal-confirm',{type:2,data:this.form_data})
+            } else {
+                message.error({content:'请检查录入参数',duration:2,class:'msg_loading'})
+            }
         }
     }
 })

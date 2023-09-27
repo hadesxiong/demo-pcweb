@@ -186,7 +186,7 @@ export default defineComponent({
         drawLine() {
             let myChart = echarts.init(document.getElementById(this.id));
             let myChart_option = this.db_data.db_option;
-            console.log(myChart_option);
+            // console.log(myChart_option);
             myChart_option.series[0].areaStyle.color = new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
                 { offset: 0, color: "rgba(100, 162, 255, 0.12)" },
                 { offset: 1, color: 'rgba(52, 105, 255, 0.01)' }
