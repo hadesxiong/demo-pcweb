@@ -2,12 +2,15 @@
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import IsAuthenticated
 
+from django.core.paginator import Paginator
 from django.db.models import Q,Subquery
-
 from django.http.response import JsonResponse
+from django.conf import settings
 
 from kpi_server.models import UploadRecord,Users
 from kpi_server.serializers import UploadRecordSerializer
+
+import math
 
 # 查询上传记录
 @api_view(['GET'])
@@ -20,12 +23,15 @@ def getUploadList(request):
         'start_date': request.query_params.get('start',None),
         'end_date': request.query_params.get('end',None),
         'key_word': request.query_params.get('key','all'),
-        'record_date': request.query_params.get('date','all')
+        'record_date': request.query_params.get('date','all'),
+        'user_client': request.query_params.get('client',None),
+        'page_size': int(request.query_params.get('size',15)),
+        'page': int(request.query_params.get('page',1))
     }
 
     # 参数检查
     if None in query_params.values():
-        re_msg = {'code':1,'msg':'err params.'}
+        re_msg = {'code':202,'msg':settings.KPI_ERROR_MESSAGES['global'][202]}
 
     else:
         # 关键词匹配(用户名，notesid)
@@ -52,8 +58,26 @@ def getUploadList(request):
             record_update_time__range=[query_params['start_date'],query_params['end_date']]
         ).filter(rd_condition).filter(class_condition).filter(kw_condition)
 
-        record_data = UploadRecordSerializer(record_queryset,many=True).data
+        # 分页
+        page_inator = Paginator(record_queryset,query_params['page_size'])
+        page_max = math.ceil(len(record_queryset)/query_params['page_size'])
 
-        re_msg = {'code':0,'data':record_data}
+        if query_params['page'] <= page_max:
+            each_record_list = page_inator.page(query_params['page'])
+            record_data = UploadRecordSerializer(each_record_list,many=True).data
+            re_msg = {
+                'code':200,
+                'msg':settings.KPI_ERROR_MESSAGES['global'][200],
+                'data':record_data,
+                'has_next': (query_params['page']<page_max),
+                'page_total': page_max,
+                'page_no': query_params['page'],
+                'data_total': len(record_queryset)
+            }
+        else:
+            re_msg = {
+                'code': 203,
+                'msg':settings.KPI_ERROR_MESSAGES['global'][203]
+            }
 
     return JsonResponse(re_msg,safe=False)

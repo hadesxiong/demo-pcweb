@@ -2,7 +2,7 @@
   <div class="custom-upload">
     <input type="file" style="display: none" ref="fileInput" @change="handleFileChange" />
     <a-upload :show-upload-list="false" :before-upload="beforeUpload" :on-success="onSuccess"
-      class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h tover_ell ws_no minw_100 w_240">
+      class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h tover_ell ws_no minw_100 w_a">
       <a-input v-model="fileName" :placeholder="fileName" readonly @click="openFileSelection" class="d_flex fai_c jc_sb p_0 input_file h_32">
         <template #suffix>
           <a @click="cleanFile" class="h_32 lh_32 d_flex fai_c">

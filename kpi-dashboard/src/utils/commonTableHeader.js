@@ -376,7 +376,8 @@ export const updateOrgModal = {
             ],
             optionindex:'org_group',
             search_map:{},
-            search_func:{}
+            search_func:{},
+            required:true
         },
         {
             group:0,

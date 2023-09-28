@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 from django.http.response import JsonResponse
+from django.conf import settings
 
 from kpi_server.models import IndexDetail,Index,UploadRecord,UploadDetail,Org
 from kpi_server.serializers import UploadDetailSerializer
@@ -64,7 +65,7 @@ def createUpload(request):
     }
 
     if None in body_data.values():
-        re_msg = {'code':1,'msg':'err msg.'}
+        re_msg = {'code':202,'msg':settings.KPI_ERROR_MESSAGES['global'][202]}
     
     else:
         # 标准部分处理
@@ -80,11 +81,13 @@ def createUpload(request):
         org_dict = pd.DataFrame(org_queryset).set_index('org_name')['org_num'].to_dict()
 
         # 判断class与date是否存在对应值，如果存在，则为更新，反之则为创建
-        try:
-            record_queryset = UploadRecord.objects.get(
-                record_class= body_data['record_class'],
-                record_date = body_data['record_date']
-            )
+        # try:
+            # record_queryset = UploadRecord.objects.get(
+            #     record_class= body_data['record_class'],
+            #     record_date = body_data['record_date']
+            # )
+        record_queryset = UploadRecord.objects.filter(record_class= body_data['record_class'],record_date = body_data['record_date'])
+        if len(record_queryset) != 0:
 
             old_active = UploadDetail.objects.get(record_id=record_queryset.record_id,detail_active=1)
 
@@ -117,9 +120,10 @@ def createUpload(request):
             newIndex_data = readDetail(file=body_data['update_file'],detail_id=detail_id,index_dict=index_dict,org_dict=org_dict)
             IndexDetail.objects.bulk_create(newIndex_data)
 
-            re_msg = {'code':0,'msg':'update'}
+            re_msg = {'code':301,'msg':settings.KPI_ERROR_MESSAGES['global'][301]}
 
-        except UploadRecord.DoesNotExist:
+        # except UploadRecord.DoesNotExist as e:
+        else:
 
             # 新建数据并保存
             # 新建record
@@ -129,10 +133,10 @@ def createUpload(request):
                 'record_class':body_data['record_class'],
                 'record_date': now_date.strftime("%Y-%m-%d"),
                 'record_update_user': body_data['update_user'],
-                'record_update_time': now_date.strftime("%Y-%m-%d %H-%M-%S"),
-                'record_udpate_state':0,
-                'record_crate': now_date.strftime("%Y-%m-%d %H-%M-%S"),
-                'record_update': now_date.strftime("%Y-%m-%d %H-%M-%S"),
+                'record_update_time': now_date.strftime("%Y-%m-%d %H:%M:%S"),
+                'record_update_state':0,
+                'record_create': now_date.strftime("%Y-%m-%d %H:%M:%S"),
+                'record_update': now_date.strftime("%Y-%m-%d %H:%M:%S"),
                 'record_update_ext_info':''
             }
 
@@ -142,7 +146,7 @@ def createUpload(request):
             newIndex_data = readDetail(file=body_data['update_file'],detail_id=detail_id,index_dict=index_dict,org_dict=org_dict)
             IndexDetail.objects.bulk_create(newIndex_data)
 
-            re_msg = {'code':0,'msg':'create'}
+            re_msg = {'code':300,'msg':settings.KPI_ERROR_MESSAGES['global'][300]}
 
     return JsonResponse(re_msg,safe=False)
 
@@ -160,7 +164,7 @@ def publishUpload(request):
     }
 
     if None in body_data.values():
-        re_msg = {'code':1,'msg':'err msg'}
+        re_msg = {'code':202,'msg':settings.KPI_ERROR_MESSAGES['global'][202]}
 
     else:
         # 获取当前在生效的detail_id
@@ -178,6 +182,6 @@ def publishUpload(request):
         update_datetime = datetime.datetime.now().strftime("%Y-%m-%d")
         record_obj.update(record_update_state=1,record_update=update_datetime)
 
-        re_msg = {'code':0,'msg':'success'}
+        re_msg = {'code':307,'msg':settings.KPI_ERROR_MESSAGES['global'][307]}
 
     return JsonResponse(re_msg,safe=False)

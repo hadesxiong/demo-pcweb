@@ -32,9 +32,13 @@
                             </a-input>
                         </div>
                         <div v-else-if="item.type==='file'" class="d_flex fg_1">
-                            <file-input @file-upload="handleFileUpload"></file-input>
+                            <file-input @file-upload="handleFileUpload" class="w_p100"></file-input>
                         </div>
-
+                        <div v-else-if="item.type==='date-month'" class="d_flex fg_1">
+                            <a-date-picker picker="month" class="w_a fg_1" :allowClear="false" format="YYYY-MM"
+                                :value="form_data[item.dataIndex]" @change="dateChange(item.dataIndex,$event)" placeholder="请选择数据通报月份">
+                            </a-date-picker>
+                        </div>
                     </div>
                 </a-col>
             </a-row>
@@ -68,11 +72,14 @@
 span {
     font-size: 14px !important;
 }
+.ant-picker:hover, .ant-picker-focused {
+    border-color: transparent;
+}
 </style>
 
 <script>
 import { defineComponent, ref, watch } from 'vue';
-import { Col, Row, Modal, RadioGroup, Radio, Input, Button, message } from 'ant-design-vue';
+import { Col, Row, Modal, RadioGroup, Radio, Input, Button, DatePicker, message } from 'ant-design-vue';
 import { Close, Check } from '@icon-park/vue-next';
 
 import MenuInput from '@/components/other/menu-input.vue';
@@ -89,6 +96,7 @@ export default defineComponent({
         'a-radio': Radio,
         'a-input': Input,
         'a-button': Button,
+        'a-date-picker': DatePicker,
         'menu-input': MenuInput,
         'search-input': SearchInput,
         'file-input': FileInput,
@@ -121,7 +129,6 @@ export default defineComponent({
         initFormData() {
             this.modal_data.form_list.forEach((item)=>{
                 if(item.type == 'select') {
-                    // console.log(item)
                     this.form_data[item.dataIndex] = item.option[0]
                 }
             })
@@ -132,21 +139,19 @@ export default defineComponent({
         },
         handleFileUpload(file) {
             this.form_data.upload_file = file;
-            // console.log(this.form_data);
         },
         handleMenuSelect(value) {
             this.form_data[value.title] = value.data;
-            // console.log(this.form_data);
         },
         handleSearchInput(value) {
             // 判断title有没有存在过，没有的话则保存用于遍历
             if(!(value.title in this.form_data)) {
                 this.form_data[value.title] = value.data
             }
-            // console.log(this.form_data)
         },
         cancelModal() {
             this.$emit('modal-confirm',{type:1})
+            this.form_data = {}
         },
         confirmModal() {
             this.form_data.type = this.radio_group
@@ -154,9 +159,16 @@ export default defineComponent({
             const dataIndex_list = this.modal_data.form_list.filter(item => (item.group == this.radio_group && item.required)).map(item => item.dataIndex)
             if (dataIndex_list.every(field => field in this.form_data)) {
                 this.$emit('modal-confirm',{type:2,data:this.form_data})
+                this.form_data = {}
             } else {
+                console.log(dataIndex_list)
                 message.error({content:'请检查录入参数',duration:2,class:'msg_loading'})
             }
+            
+        },
+        dateChange(title,value) {
+            this.form_data[title] = value
+            console.log(this.form_data)
         }
     }
 })
