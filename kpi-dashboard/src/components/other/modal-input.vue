@@ -151,7 +151,8 @@ export default defineComponent({
         },
         cancelModal() {
             this.$emit('modal-confirm',{type:1})
-            this.form_data = {}
+            Object.keys(this.form_data).forEach(key => delete this.form_data[key]);
+            console.log(this.form_data)
         },
         confirmModal() {
             this.form_data.type = this.radio_group
@@ -159,7 +160,7 @@ export default defineComponent({
             const dataIndex_list = this.modal_data.form_list.filter(item => (item.group == this.radio_group && item.required)).map(item => item.dataIndex)
             if (dataIndex_list.every(field => field in this.form_data)) {
                 this.$emit('modal-confirm',{type:2,data:this.form_data})
-                this.form_data = {}
+                Object.assign({},this.form_data)
             } else {
                 console.log(dataIndex_list)
                 message.error({content:'请检查录入参数',duration:2,class:'msg_loading'})

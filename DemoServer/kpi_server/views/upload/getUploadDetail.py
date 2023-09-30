@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q,Subquery
 
 from django.http.response import JsonResponse
+from django.conf import settings
 
 from kpi_server.models import UploadDetail,UploadRecord,IndexDetail,Index,Org
 from kpi_server.serializers import UploadDetailSerializer,UploadRecordSerializer
@@ -23,7 +24,7 @@ def getUploadDetail(request):
 
     # 参数检查
     if None in query_params.values():
-        re_msg = {'code':1,'msg':'err params'}
+        re_msg = {'code':202,'msg':settings.KPI_ERROR_MESSAGES['global'][202]}
 
     else:
         # 获取detail列表
@@ -36,7 +37,7 @@ def getUploadDetail(request):
 
         # 获取基本信息
         record_queryset = UploadRecord.objects.filter(record_id=query_params['record_id'])
-        record_data = UploadRecordSerializer(record_queryset,many=True).data
+        record_data = UploadRecordSerializer(record_queryset,many=True).data[0]
 
         # 获取数据，排序获取最新的数据
         index_queryset = IndexDetail.objects.filter(
@@ -55,12 +56,13 @@ def getUploadDetail(request):
         pivot_df = pd.pivot(merge_df,values='detail_value',index=['detail_date','org_name'],columns=['index_num']).reset_index()
 
         index_data = pivot_df.to_dict(orient='records')
-        print(index_data)
         
         # 拼接表头
         filter_df = merge_df[['detail_date','org_name','index_num']].drop_duplicates()
         
         header_list = [{'dataIndex':'detail_date','key':'detail_date','title':'数据日期'},{'dataIndex':'org_name','key':'org_name','title':'机构名称'}]
+        print(filter_df)
+        print(merge_df)
         for _, row in filter_df.iterrows():
             header_dict = {
                 'dataIndex': row['index_num'],
@@ -69,6 +71,21 @@ def getUploadDetail(request):
             }
             header_list.append(header_dict)
 
-        re_msg = {'code':0,'data':{'detail':detail_data,'info':record_data,'title':header_list,'index':index_data}}
+        header_list = list(set(tuple(item.items()) for item in header_list))
+        header_list = [dict(item) for item in header_list]
+
+        # 表头排序
+        header_list = sorted(header_list,key=lambda item:(0 if item['dataIndex'] == 'org_name' else 1, 0 if item['dataIndex'] == 'detail_date' else 1))
+
+        re_msg = {
+            'code':200,
+            'data':{
+                'detail':detail_data,
+                'info':record_data,
+                'title':header_list,
+                'index':index_data
+            },
+            'msg': settings.KPI_ERROR_MESSAGES['global'][200]
+        }
 
     return JsonResponse(re_msg,safe=False)

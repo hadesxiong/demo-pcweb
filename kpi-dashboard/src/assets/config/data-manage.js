@@ -36,7 +36,9 @@ export const dataEditIndex = []
 
 export const dataEditMap = []
 
-export const dataViewMap = []
+export const dataViewMap = [
+    {text:'查看详情',target:'record_id',path_name:'data-detail',params:'data_id'}
+]
 
 export const dataViewInfo = []
 

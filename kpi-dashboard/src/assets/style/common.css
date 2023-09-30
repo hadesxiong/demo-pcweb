@@ -10,6 +10,9 @@
 .w_p100 {
   width: 100%;
 }
+.w_p60 {
+  width: 60%;
+}
 .w_auto {
   width: auto;
 }

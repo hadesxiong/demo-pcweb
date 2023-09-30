@@ -181,7 +181,7 @@ export default defineComponent({
                     this.userLogin(this.formContent.username,this.formContent.password).then(
                         (response) => {
                             console.log(response);
-                            localStorage.setItem('notes_id',this.user_name)
+                            localStorage.setItem('notes_id',this.formContent.user_name)
                             message.destroy();
                             // 判断回复的code
                             message.success({

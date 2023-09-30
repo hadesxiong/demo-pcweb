@@ -10,7 +10,7 @@ from django.conf import settings
 from kpi_server.models import UploadRecord,Users
 from kpi_server.serializers import UploadRecordSerializer
 
-import math
+import math,datetime
 
 # 查询上传记录
 @api_view(['GET'])
@@ -54,6 +54,9 @@ def getUploadList(request):
             rd_condition = Q(record_date=query_params['record_date'])
 
         # 上传记录匹配
+        # 补充处理end日期
+        date_value = datetime.datetime.strptime(query_params['end_date'],'%Y-%m-%d')
+        query_params['end_date'] = datetime.datetime.combine(date_value,datetime.time(23,59,59))
         record_queryset = UploadRecord.objects.filter(
             record_update_time__range=[query_params['start_date'],query_params['end_date']]
         ).filter(rd_condition).filter(class_condition).filter(kw_condition)

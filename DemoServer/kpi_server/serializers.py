@@ -293,7 +293,7 @@ class UploadRecordSerializer(serializers.ModelSerializer):
 
         model = UploadRecord
         # fields = '__all__'
-        fields = ('record_id','record_class','record_dt','record_update_time','user_name','class_name')
+        fields = ('record_id','record_class','record_dt','record_date','record_update_time','user_name','class_name')
 
 class UploadDetailSerializer(serializers.ModelSerializer):
 

@@ -40,6 +40,13 @@
                             </span>
                         </div>
                     </template>
+                    <template v-else-if="column.dataIndex === 'view_more'">
+                        <div>
+                            <span class="d_iflex gap_8 font_13">
+                                <router-link v-for="(item,index) in text.split('.')" :key="index" :to="toRouteLink(record)">{{ item }}</router-link>
+                            </span>
+                        </div>
+                    </template>
                 </template>
             </a-table>
         </a-spin>
@@ -138,6 +145,7 @@ export default defineComponent({
             editMap: ref(props.table_obj.editMap),
             search_map: ref(props.table_obj.search_obj.search_map),
             search_api: ref(props.table_obj.search_obj.search_api),
+            view_map: ref(props.table_obj.viewMap),
             search_res: ref({}),
         }
     },
@@ -175,6 +183,13 @@ export default defineComponent({
             // 判断title有没有存在过，没有的话则保存用于遍历
             if(!(value.title in this.search_res)) {
                 this.search_res[value.title] = value.data
+            }
+        },
+        // 跳转逻辑
+        toRouteLink(value) {
+            return {
+                name: this.view_map[0].path_name,
+                params: {[this.view_map[0].params]:value[this.view_map[0].target]}
             }
         }
     }
