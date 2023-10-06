@@ -21,7 +21,7 @@
         </div>
         <div class="of_a h_p100">
             <a-table :columns="table_data.table_columns" :data-source="table_data.table_data" :expandIconColumnIndex="1" :pagination="false"
-                :expandIconAsCell="false" :indentSize="0" expand="expandRows" class="b_w1c2_so br_2">
+                :expandIconAsCell="false" :indentSize="0" expand="expandRows" class="br_2" :scroll="{x:2000}" bordered>
                 <template #customFilterIcon>
                     <icon-filter size='14' fill="#C9CDD4" theme="filled" class="d_flex"></icon-filter>
                 </template>
@@ -38,12 +38,15 @@
 .ant-picker {
   border: 1px solid var(--color-fill-2);
 }
-:where(.css-dev-only-do-not-override-eq3tly).ant-picker:hover, :where(.css-dev-only-do-not-override-eq3tly).ant-picker-focused {
+.ant-picker:hover, .ant-picker-focused {
   border-color: none;
   background-color: #fff;
 }
 .ant-picker-input-active {
   background-color: var(--color-fill-2);
+}
+.ant-table-cell {
+  white-space: nowrap;
 }
 
 </style>
@@ -80,7 +83,7 @@ export default defineComponent({
         return {
             locale,
             pannel_mode: ref(['month', 'month']),
-            date_value: ref([dayjs().add(-5,'month'),dayjs()]),
+            date_value: ref([dayjs().add(-5,'month'),dayjs().add(-5,'month')]),
             w_table_data: ref({}),
             page_obj: ref({
                 current:1,
@@ -100,7 +103,7 @@ export default defineComponent({
         handleChange(status) {
             if(!status) {
                 // console.log(this.date_value)
-                this.$emit('getFilterOptions',{date_range:this.date_value})
+                this.$emit('getDateRange',{date_range:this.date_value})
             }
         },
         expandRows(expanded,record) {

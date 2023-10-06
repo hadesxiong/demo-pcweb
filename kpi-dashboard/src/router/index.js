@@ -58,6 +58,7 @@ const routes = [
         meta:{
           breadcrumb:['数据报表'],
           sub:"table",
+          menu:'table-detail',
           requireAuth:true
         }
       },

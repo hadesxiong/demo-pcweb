@@ -111,7 +111,7 @@ class IndexSerializer(serializers.ModelSerializer):
 
         model = Index
         # fields = '__all__'
-        fields = ('index_num',)
+        fields = ('index_num','index_name','index_class')
 
 # rank用指标序列化
 class IndexDetailRankSerializer(serializers.ModelSerializer):

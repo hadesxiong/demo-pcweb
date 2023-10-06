@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div>
-                <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="handleSearch(default_org,filterIndexList)">
+                <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6" @click="handleSearch(default_org,filterIndexClass,filterIndexList)">
                     <template #icon>
                         <icon-find size="14" class="mr_8 lh_1"></icon-find>
                     </template>
@@ -24,7 +24,7 @@
                 <div class="fc_l3 filter_title ta_l">指标分类</div>
                 <div class="d_flex">
                     <custom-multi v-if="filter_data.index_class" :custom_options="filter_data.index_class"
-                        :option_type="'class'" @getSelectedOptions="execIndexList"></custom-multi>
+                        :option_type="'class'" @getSelectedOptions="execIndexList" key="class"></custom-multi>
                 </div>
             </div>
             <div>
@@ -49,7 +49,7 @@
                 <div class="fc_l3 filter_title ta_l">指标名称</div>
                 <div class="d_flex">
                     <custom-multi v-if="selectedIndexList" :custom_options="selectedIndexList"
-                        :option_type="'index'" @getSelectedOptions="execIndexList"></custom-multi>
+                        :option_type="'index'" @getSelectedOptions="execIndexList" key="index"></custom-multi>
                 </div>
             </div>
         </div>
@@ -116,7 +116,7 @@
 </style>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import { Find, DoubleUp, DoubleDown } from '@icon-park/vue-next';
 import { RadioGroup, RadioButton, Button } from 'ant-design-vue';
 
@@ -137,20 +137,28 @@ export default defineComponent({
         filter_data: {
             type: Object
         },
-
     },
     data() {
         return {}
     },
-    setup() {
+    setup(props) {
+        // console.log(props.filter_data)
+        const selectedIndexList = ref()
+        const filterIndexClass = ref()
+        watch(props, () => {
+            selectedIndexList.value = props.filter_data['index_list'].map(item=>item.label_list).flat()
+            filterIndexClass.value = props.filter_data['index_class'].filter(item => item.value != 'all').map(item=>item.value)
+            // console.log(filterIndexClass)
+        }, { deep: true });
         return {
-            default_org: ref('qyzxzh'),
+            default_org: ref(1),
             label_collaspe: ref(false),
-            selectedIndexList: ref([]),
+            selectedIndexList,
+            filterIndexClass,
             filterIndexList: ref([])
         }
     },
-    mounted() { },
+    mounted() {},
     methods: {
         execIndexList(selected_object) {
 
@@ -168,29 +176,41 @@ export default defineComponent({
                             target_data.push(each_label);
                         })
                     });
+                    this.filterIndexClass = this.filter_data.index_class.filter(item=>item.value!='all').map(item=>item.value)
                 } else {
-                    // console.log('222');
                     target_data.push({ "label": "全部", "value": "all" });
-                    // console.log(this.filter_data.index_list,selected_object.list)
                     this.filter_data.index_list.filter(function (each_class) {
                         if (selected_object.list.includes(each_class.class)) {
                             // console.log(each_class.label_list)
                             target_data = target_data.concat(each_class.label_list)
                         }
                     });
+                    this.filterIndexClass = selected_object.list
                 }
                 this.selectedIndexList = target_data;
             } else if (selected_object.class=='index') {
-                // console.log(selected_object.class,selected_object.list)
                 this.filterIndexList = selected_object.list;
             }
         },
         toggleIndex() {
             this.label_collaspe = !this.label_collaspe;
         },
-        handleSearch(org,list) {
-            console.log(org,list);
-            this.$emit('getFilterOptions',{org:org,list:list})
+        handleSearch(org_list,class_list,index_list) {
+            // 检查并处理index_list
+            let index_result = []
+            if (index_list.includes('all') || index_list.length == 0) {
+                console.log('all')
+                console.log(class_list)
+                index_result = class_list.flatMap(each_class => {
+                    const obj = this.filter_data.index_list.find(item => item.class == each_class);
+                    return obj? obj.label_list:[]
+                }).map(item=>item.value)
+                console.log(index_result)
+            } else {
+                index_result = index_list
+                console.log(index_result)
+            }
+            this.$emit('getFilterOptions',{'org':org_list,'class':class_list,'index':index_result})
         }
     }
 });

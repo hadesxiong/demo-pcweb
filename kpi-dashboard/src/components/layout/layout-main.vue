@@ -26,7 +26,7 @@
                     </a-breadcrumb>
                 </div>
                 <div class="c-main_con mt_20">
-                    <router-view></router-view>
+                    <router-view :key="$route.path"></router-view>
                 </div>
             </a-layout-content>
         </a-layout>

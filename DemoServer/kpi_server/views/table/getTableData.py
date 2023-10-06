@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.db.models import Q,Subquery
 from django.http.response import JsonResponse
+from django.conf import settings
 
 from kpi_server.models import IndexDetail,Users,Org,Index
 
@@ -18,18 +19,28 @@ def getTableData(request):
         'index_num': request.data.get('index',None),
         'data_date': request.data.get('date',None),
         'org_group': request.data.get('group',None),
-        'notes_id': request.data.get('user',None) 
+        # 'notes_id': request.data.get('user',None),
+        'type': request.data.get('type','normal'),
+        'parent_id': request.data.get('parent','2100001')
     }
 
     # 参数判断
     if None in body_data.values():
-        re_msg = {'code':1,'msg':'err params.'}
+        re_msg = {'code':202,'msg':settings.KPI_ERROR_MESSAGES['global'][202]}
 
     else:
 
         # 机构筛选
         # 处理逻辑，获取当前登陆用户所在的机构
-        org_queryset = Org.objects.filter(org_group=body_data['org_group'])
+
+        if body_data['type'] == 'parent':
+            org_queryset = Org.objects.filter(parent_org_id=body_data['parent_id'])
+
+        elif body_data['org_group'] == 1:
+            org_queryset = Org.objects.filter(org_group=body_data['org_group'],org_level=3)
+
+        else:
+            org_queryset = Org.objects.filter(org_group=body_data['org_group'])
 
         # 根据用户所在层级判断 - 待补充
 
@@ -39,8 +50,9 @@ def getTableData(request):
             detail_belong__in=Subquery(org_queryset.values('org_num'))
         ).filter(Q(detail_date__range=body_data['data_date'])).values('detail_date','detail_belong','index_num','detail_value')
 
+        print(detail_done_queryset)
         dd_df = pd.DataFrame(detail_done_queryset)
-
+    
         # done转置并重置索引
         dd_df_pivot = dd_df.pivot_table(index=['detail_date','detail_belong'],columns='index_num',values='detail_value')
         dd_df_pivot = dd_df_pivot.reset_index()
@@ -119,7 +131,6 @@ def getTableData(request):
         ib_df = pd.DataFrame(ib_query)
         print(ib_df)
 
- 
         # 处理顺序
         new_order = merge_df.columns.sort_values().tolist()
         new_order.remove('detail_belong')
@@ -132,7 +143,10 @@ def getTableData(request):
         print(merge_df)
 
         # 处理表头
-        title_list = []
+        title_list = [
+            {'title':'数据月份','dataIndex':'detail_date','key':'detail_date','fixed':'left','width':120},
+            {'title':'机构名称','dataIndex':'org_name','key':'org_name','fixed':'left','width':200}
+        ]
         ct_map = {'cp':'期末比上年','tm':'期末','ly':'上年','pl':'计划','rt':'计划完成率'}
 
         for _,row in ib_df.iterrows():
@@ -154,11 +168,13 @@ def getTableData(request):
                     child_dict = {
                         'dataIndex': dataIndex,
                         'key': key,
-                        'title': column_title
+                        'title': column_title,
+                        'width':100,
+                        'align':'right'
                     }
                     children_list.append(child_dict)
             
-            title_dict = {'title':title,'chidlren':children_list}
+            title_dict = {'title':title,'children':children_list}
             title_list.append(title_dict)
 
         # 处理成字典,orient=records

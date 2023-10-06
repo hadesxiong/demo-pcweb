@@ -22,6 +22,7 @@ urlpatterns = [
 
     # table
     path('api/table/getTableData',views.getTableData),
+    path('api/table/getTableFilter',views.getTableFilter),
 
     # auth
     path('api/auth/userLogin',views.userLogin),

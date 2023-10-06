@@ -83,6 +83,7 @@
 .ant-table-wrapper tfoot > tr > th,
 .ant-table-wrapper tfoot > tr > td {
   padding: 12px 16px;
+  white-space: nowrap;
 }
 
 .ant-table-wrapper .ant-table {

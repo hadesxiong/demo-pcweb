@@ -57,7 +57,9 @@ export default defineComponent({
             }
         }
     },
-    setup() { },
+    setup() {
+        // console.log(props)
+    },
     mounted() {
         // 默认选择全部选项
         this.toggleOption('all');
@@ -67,6 +69,7 @@ export default defineComponent({
             return this.selectedOptions.includes(optionValue);
         },
         toggleOption(optionValue) {
+            // console.log(optionValue)
             if (this.isSelected(optionValue) && optionValue != 'all') {
                 this.deselectOption(optionValue);
             } else {
