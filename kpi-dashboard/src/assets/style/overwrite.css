@@ -74,9 +74,9 @@
 }
 
 /* 表格部分 */
-.ant-table-tbody > tr:last-child td {
+/* .ant-table-tbody > tr:last-child td {
   border-bottom: none !important;
-}
+} */
 
 .ant-table-wrapper .ant-table-thead > tr > th,
 .ant-table-wrapper .ant-table-tbody > tr > td,
@@ -370,4 +370,21 @@
 /* spin部分 */
 .ant-spin-nested-loading >div>.ant-spin {
   max-height: 100%;
+}
+
+/* 隐藏滚动条的背景色和背景边框 */
+/* ::-webkit-scrollbar {
+  background-color: transparent;
+  border: none;
+} */
+
+/* 隐藏滚动条上的按钮和轨道 */
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-track {
+  display: none;
+}
+
+/* 隐藏滚动条上的滑块 */
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
 }
