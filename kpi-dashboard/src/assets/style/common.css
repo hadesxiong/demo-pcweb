@@ -421,7 +421,7 @@
 }
 .tag_blue {
   background-color: var(--blue-level-1);
-  color: var(--blue-level-1);
+  color: var(--blue-level-6);
   border: 1px solid var(--blue-level-1);
   margin: auto;
   padding-left: 8px;

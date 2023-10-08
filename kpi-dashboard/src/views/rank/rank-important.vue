@@ -2,7 +2,7 @@
         <div class="w_p100 h_p100 bg_white d_flex fd_c">
             <div class="d_flex jc_sb pt_20 pl_20 pr_20 fs_0">
                 <div class="d_flex">
-                    <a-radio-group v-model:value="choose_line" button-style="solid" class="d_flex gap_12 h_30 lh_30"
+                    <a-radio-group v-model:value="active_line" button-style="solid" class="d_flex gap_12 h_30 lh_30"
                         @change="changeLine">
                         <a-radio-button v-for="item in line_data" :key="item.key" :value="item.key"
                             class="br_100 h_30 lh_30 of_h tover_ell">{{ item.value }}</a-radio-button>
@@ -12,11 +12,11 @@
                     <a-dropdown
                         class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
                         <a>
-                            {{ choose_class.value }}
+                            {{ search_form.class.value }}
                             <icon-down class="lh_1" fill="#86909C"></icon-down>
                         </a>
                         <template #overlay>
-                            <a-menu v-model:value="choose_class">
+                            <a-menu v-model:value="search_form.class">
                                 <a-menu-item v-for="item in class_data" :key="item.key"
                                     @click="chooseIndex(item, 'class')">{{ item.value }}</a-menu-item>
                             </a-menu>
@@ -25,11 +25,11 @@
                     <a-dropdown
                         class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
                         <a>
-                            {{ choose_group.value }}
+                            {{ search_form.group.value }}
                             <icon-down class="lh_1" fill="#86909C"></icon-down>
                         </a>
                         <template #overlay>
-                            <a-menu v-model:value="choose_group">
+                            <a-menu v-model:value="search_form.group">
                                 <a-menu-item v-for="item in group_data" :key="item.key"
                                     @click="chooseIndex(item, 'group')">{{ item.value }}</a-menu-item>
                             </a-menu>
@@ -37,7 +37,7 @@
                     </a-dropdown>
                     <a-dropdown
                         class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 w_180">
-                        <a-date-picker picker="month" :placeholder="'数据日期'" :allowClear="false" v-model:value="date_value">
+                        <a-date-picker picker="month" :placeholder="'数据日期'" :allowClear="false" v-model:value="search_form.date" @change="changeDate">
                             <template #suffixIcon>
                                 <icon-calendar fill="#86909C" size="14"></icon-calendar>
                             </template>
@@ -45,8 +45,16 @@
                     </a-dropdown>
                 </div>
             </div>
-            <div class="mt_20 ml_20 mr_20 fg_1 ofy_a ofx_h">
-                <rank-main v-if="rank_list" :rank_list="rank_list"></rank-main>
+            <div class="d_flex fd_c h_p100 w_p100 jc_c" v-if="spin_status">
+                <a-spin :spinning="spin_status" size="large" :delay="100" tip="数据加载中">
+                </a-spin>
+            </div>
+            <div class="m_20 fg_1 ofy_a ofx_h" v-if="!spin_status">
+                <rank-main v-if="rank_data" 
+                :rank_data="rank_data" 
+                :show_pannel="show_pannel"
+                :active_pannel="active_pannel"
+                :detail_params="detail_params"></rank-main>
             </div>
         </div>
 </template>
@@ -142,15 +150,20 @@
 <script>
 import { defineComponent, ref } from 'vue';
 import { Down, CalendarThirty } from '@icon-park/vue-next';
-import { RadioGroup, RadioButton, Dropdown, Menu, MenuItem, DatePicker } from 'ant-design-vue';
-import RankMain from '@/components/rank/rank-main';
-import axios from 'axios';
+import { RadioGroup, RadioButton, Dropdown, Menu, MenuItem, DatePicker, Spin } from 'ant-design-vue';
 
+import RankMain from '@/components/rank/rank-main';
+// import axios from 'axios';
+
+import { api } from '@/utils/commonApi.js';
+import { lineMap, classMap, groupMap, tagMap } from '@/assets/config/rank-important.js';
+
+import { cloneDeep } from 'lodash-es';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
-import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
+// import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 
-dayjs.locale('zh-cn');
+const myApi = api();
 
 export default defineComponent({
     name: 'rank-important',
@@ -163,41 +176,43 @@ export default defineComponent({
         'a-menu': Menu,
         'a-menu-item': MenuItem,
         'a-date-picker': DatePicker,
+        'a-spin': Spin,
         'rank-main': RankMain,
     },
     data() {
         return {
-            rank_list: [],
-            line_data: [
-                { key: "all", value: "全部指标" },
-                { key: "enterprise", value: "企金指标" },
-                { key: "retail", value: "零售指标" },
-                { key: "bank", value: "同业指标" },
-                { key: "other", value: "其他指标" },
-            ],
-            class_data: [
-                { key: "all", value: "全部分类" },
-                { key: "cwxy", value: "财务效益" },
-                { key: "khjs", value: "客户建设" },
-                { key: "zxfz", value: "转型与发展质量" },
-                { key: "fxhg", value: "风险合规" },
-                { key: "shzr", value: "社会责任" }
-            ],
-            group_data: [
-                { key: "qyzxzh", value: "按区域中心支行查看" },
-                { key: "ddzh", value: "按单点支行查看" },
-                { key: "zlkhb", value: "按战略客户部查看" },
-                { key: "fzjg", value: "按4级分支机构查看" }
-            ]
+            line_data: ref(lineMap),
+            class_data: ref(classMap),
+            group_data: ref(groupMap),
+            tag_data: ref(tagMap)
         }
     },
     setup() {
         return {
-            locale,
-            choose_line: ref('all'),
-            choose_class: ref({ key: "all", value: "全部分类" }),
-            choose_group: ref({ key: "qyzxzh", value: "按区域中心支行查看" }),
-            date_value: ref(dayjs())
+            // locale,
+            spin_status: ref(false),
+            show_pannel: ref(false),
+            active_pannel: ref('1'),
+            raw_data: ref({
+                column: ref([]),
+                data: ref([]),
+                title: ref([])
+            }),
+            rank_data: ref({
+                column: ref([]),
+                data: ref([]),
+                title: ref([])
+            }),
+            search_form: ref({
+                class: ref({key:0,value:'全部分类'}),
+                group: ref({key:1,value:'按区域中心支行查看'}),
+                date: ref(dayjs().endOf('month'))
+            }),
+            detail_params: ref({
+                group: ref(),
+                date: ref()
+            }),
+            active_line: ref(0)
         }
     },
     mounted() {
@@ -205,22 +220,61 @@ export default defineComponent({
     },
     methods: {
         async getRankData() {
-            const rank_res = await axios.get('/demo/rank/rank-important.json');
-            // console.log(rank_res);
-            this.rank_list = rank_res.data;
-            // console.log(this.rank_list)
+            this.spin_status = true;
+            const get_params = {
+                class: this.search_form.class.key,
+                group: this.search_form.group.key,
+                date: this.search_form.date.format('YYYY-MM-DD'),
+                page: 1
+            }
+            const rank_res = await myApi.get('/api/rank/getRank',{params:get_params})
+            this.raw_data.column = rank_res.data.column
+            this.raw_data.data = Object.values(rank_res.data.data)
+            this.raw_data.title = Object.keys(rank_res.data.data).map(
+                (item)=>{
+                    return {
+                        title:lineMap[Number(item)].value,
+                        key:Number(item),
+                        count: rank_res.data.data[Number(item)].length 
+                    }})
+            // 调用过滤方法进行展示
+            this.mapLineData();
+            // 根据active情况过滤
+            this.spin_status = false;
+            // 补充设置detail_params
+            this.detail_params.group = cloneDeep(this.search_form.group)
+            this.detail_params.date = cloneDeep(this.search_form.date.format('YYYY-MM-DD'))
         },
         chooseIndex(item, section) {
-            console.log(item, section);
+            // console.log(item, section);
             if (section == 'class') {
-                this.choose_class = item;
+                this.search_form.class = item;
             } else if (section == 'group') {
-                this.choose_group = item;
+                this.search_form.group = item;
             }
+            console.log(this.search_form)
+            this.getRankData()
         },
         changeLine(e) {
-            console.log(e.target.value);
-            this.choose_line = e.target.value
+            this.active_line = e.target.value;
+            // console.log(this.active_line);
+            this.mapLineData();
+        },
+        mapLineData() {
+            if (this.active_line == 0) {
+                this.rank_data = cloneDeep(this.raw_data)
+                // this.active_pannel = '1'
+            } else {
+                this.rank_data.column = cloneDeep(this.raw_data.column);
+                this.rank_data.title = cloneDeep(this.raw_data.title.filter(item=>item.key === this.active_line))
+                const target_index = this.raw_data.title.map(item=>item.key).indexOf(this.active_line)
+                this.rank_data.data = [cloneDeep(this.raw_data.data[target_index])]
+                this.active_pannel = String(this.active_line)
+            }
+        },
+        changeDate(date) {
+            this.search_form.date = date;
+            this.getRankData();
         }
     }
 });

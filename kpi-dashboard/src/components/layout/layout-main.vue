@@ -56,6 +56,7 @@
 
 .c-header_other {
     display: flex;
+    align-items: center;
 }
 
 .c-bread_con {
@@ -78,11 +79,14 @@ import { defineComponent, ref } from 'vue';
 import { MenuFoldOne, MenuUnfoldOne } from '@icon-park/vue-next';
 import { Layout, LayoutHeader, LayoutSider, LayoutContent, Breadcrumb, BreadcrumbItem } from 'ant-design-vue';
 
+import { api } from '@/utils/commonApi.js';
+
 import HeaderLogo from './header/header-logo.vue';
 import HeaderOther from './header/header-other.vue';
 import SiderMenu from './sider/sider-menu.vue';
 
 import axios from 'axios';
+const myApi = api();
 
 export default defineComponent({
     name: 'LayoutMain',
@@ -113,10 +117,16 @@ export default defineComponent({
             const menu_res = await axios.get('/demo/menu.json');
             this.menu_data = menu_res.data;
         },
+        async getUserInfo() {
+            const notes_id = localStorage.getItem('notes_id')
+            const user_res = await myApi.get('/api/auth/getUserInfo',{params:{user:notes_id}})
+            localStorage.setItem('name_1',user_res.data.data.name_1);
+            localStorage.setItem('name_2',user_res.data.data.name_2);
+        }
     },
     mounted() {
         this.getMenuData();
-        
+        this.getUserInfo();
     },
     computed: {
         breadcrumb() {

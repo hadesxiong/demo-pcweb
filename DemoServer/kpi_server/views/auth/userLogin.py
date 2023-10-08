@@ -8,7 +8,8 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from kpi_server.models import UserAuth,UserToken
+from kpi_server.models import UserAuth,UserToken,Users
+from kpi_server.serializers import UsersSerializer
 
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
@@ -187,5 +188,29 @@ def userRegister(request):
 
             else:
                 re_msg = {'code':106,'msg':settings.KPI_ERROR_MESSAGES['userRegister'][106]}
+
+    return JsonResponse(re_msg,safe=False)
+
+# 获取用户基本信息
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getUserInfo(request):
+
+    # query_params解析
+    query_params = {
+        'notes_id': request.query_params.get('user',None)
+    }
+
+    if None in query_params.values():
+        re_msg = {'code':202,'msg':settings.KPI_ERROR_MESSAGES['userRegister'][202]}
+
+    else:
+        user_queryset = Users.objects.filter(notes_id=query_params['notes_id'])
+        user_data = UsersSerializer(user_queryset,many=True).data[0]
+        re_msg = {
+            'code':200,
+            'msg':settings.KPI_ERROR_MESSAGES['global'][200],
+            'data':{'name_1':user_data['user_name_withId'],'name_2':user_data['user_name']}
+        }
 
     return JsonResponse(re_msg,safe=False)

@@ -9,13 +9,16 @@
                         </template>
                     </a-button>
                 </div>
-                <div class="font_18 fw_500">{{ detail_data.table_title }}</div>
+                <div class="font_18 fw_500">{{ detail_info.index_name }}</div>
                 <div>
-                    <a-tag :class="detail_data.tag_class">{{ detail_data.tag_title }}</a-tag>
+                    <a-tag :class="detail_info.tag_class">{{ detail_info.class_name }}</a-tag>
                 </div>
                 <a-divider type="vertical" style="height: 18px; border-color: #E5E6EB; top: 0;"></a-divider>
                 <div class="fc_l3">
-                    查看方式:{{ detail_data.table_view }}
+                    数据月份: {{ detail_info.date.slice(0,7) }}
+                </div>
+                <div class="fc_l3">
+                    查看方式: {{ detail_info.view_method }}
                 </div>
             </div>
             <div>
@@ -143,6 +146,7 @@ import { Left, Download, Close } from '@icon-park/vue-next';
 import { Button, Divider, Tag, Table, Pagination, Drawer } from 'ant-design-vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
+import { Base64 } from 'js-base64';
 
 import * as echarts from 'echarts/lib/echarts.js';
 import 'echarts/lib/component/tooltip';
@@ -174,8 +178,11 @@ export default defineComponent({
     },
     setup() {
         const route = useRoute();
+        const rank_id = route.params.rank_id;
+        const detail_info = JSON.parse(Base64.decode(rank_id))
+        console.log(detail_info)
         return {
-            index_id: ref(route.params.rank_id),
+            detail_info,
             page_obj: ref({
                 current: 1,
                 pageSize: 10,
@@ -185,7 +192,6 @@ export default defineComponent({
     },
     mounted() {
         this.getRankDetailData();
-        // console.log(this.detail_data)
     },
     methods: {
         async getRankDetailData() {

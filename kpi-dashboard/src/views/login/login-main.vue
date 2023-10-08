@@ -111,13 +111,15 @@ import { defineComponent,reactive,ref } from 'vue';
 import { UserPositioning, Lock } from '@icon-park/vue-next';
 import { Layout, LayoutContent, Input, InputPassword, Checkbox, Button, Form, FormItem, message } from 'ant-design-vue';
 
-import axios from 'axios';
+// import axios from 'axios';
+import { api } from '@/utils/commonApi.js';
 import { useRouter } from 'vue-router';
 import CryptoJS from 'crypto-js';
 
-const api = axios.create({
-    baseURL: process.env.VUE_APP_BASE_URL
-})
+const myApi = api();
+// const api = axios.create({
+//     baseURL: process.env.VUE_APP_BASE_URL
+// })
 
 export default defineComponent({
     name: 'LoginMain',
@@ -158,7 +160,7 @@ export default defineComponent({
             const encrypted_data = CryptoJS.AES.encrypt(encrypted_pw,encrypted_key,{iv:encrypted_iv }).toString();
             const user_data = {notes:user,pw:encrypted_data}
 
-            const login_res = await api.post('/api/auth/userLogin',user_data,{ withCredentials: true })
+            const login_res = await myApi.post('/api/auth/userLogin',user_data,{ withCredentials: true })
             // 处理结果
             if (login_res.data.code == 100) {
                 // console.log(login_res)
@@ -179,9 +181,9 @@ export default defineComponent({
                         class: 'msg_loading',
                     })
                     this.userLogin(this.formContent.username,this.formContent.password).then(
-                        (response) => {
-                            console.log(response);
-                            localStorage.setItem('notes_id',this.formContent.user_name)
+                        () => {
+                            localStorage.setItem('notes_id',this.formContent.username)
+                            // const user_res = await this.getUserInfo(this.formContent.username)
                             message.destroy();
                             // 判断回复的code
                             message.success({

@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.db.models import Subquery,Q
 from django.http.response import JsonResponse
+from django.conf import settings
 
 from kpi_server.models import Org,Index,IndexDetail
 from kpi_server.serializers import IndexDetailRank2Serializer
@@ -54,6 +55,7 @@ def getRankV2(request):
     # print(group_condition)
 
     # 获取计划筛选日期
+    print(query_params['data_date'])
     this_year = int(query_params['data_date'].split('-')[0])
     first_day = datetime.date(this_year,1,1).strftime("%Y-%m-%d")
 
@@ -134,9 +136,9 @@ def getRankV2(request):
     table_columns = [
         {'title':'排名','dataIndex':'rank_sort','key':'rank_sort'},
         {'title':'机构名称','dataIndex':'org_name','key':'org_name'},
-        {'title':'完成情况','dataIndex':'value_done','key':'value_done'},
-        {'title':'完成率','dataIndex':'value_rate','key':'value_rate'}
+        {'title':'完成情况','dataIndex':'value_done','key':'value_done','align':'right'},
+        {'title':'完成率','dataIndex':'value_rate','key':'value_rate','align':'right'}
     ]
-    re_msg = {'data':rankData_group,'code':0, 'column':table_columns}
+    re_msg = {'code':200, 'msg':settings.KPI_ERROR_MESSAGES['global'][200],'data':rankData_group,'column':table_columns}
 
     return JsonResponse(re_msg,safe=False)

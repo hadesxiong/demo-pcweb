@@ -29,6 +29,7 @@ urlpatterns = [
     path('api/auth/userRegister',views.userRegister),
     path('api/auth/refreshToken',views.refreshToken),
     path('api/auth/testToken',views.protected_view),
+    path('api/auth/getUserInfo',views.getUserInfo),
 
     # dashboard
     path('api/dashboard/getDashboard',views.getDashboard),
