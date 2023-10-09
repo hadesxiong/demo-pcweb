@@ -218,6 +218,7 @@ class RankSingleSerializer(serializers.Serializer):
     value_compare = serializers.SerializerMethodField()
     value_ty_plan = serializers.SerializerMethodField()
     value_rate = serializers.SerializerMethodField()
+    children = serializers.SerializerMethodField()
 
     # 定义方法
     def get_detail_belong(self,obj):
@@ -241,11 +242,24 @@ class RankSingleSerializer(serializers.Serializer):
     def get_value_rate(self,obj):
         return obj['value_rate']
     
+    def get_children(self,obj):
+        try:
+            return obj['children']
+        except:
+            return None
     class Meta:
 
         model= IndexDetail
         # fields = '__all__'
-        fields = ('detail_belong','org_name','value_tm_done','value_ly_done','value_compare','value_ty_plan','value_rate')
+        fields = ('detail_belong','org_name','value_tm_done','value_ly_done','value_compare','value_ty_plan','value_rate','children')
+
+    def to_representation(self,instance):
+        representation = super().to_representation(instance)
+
+        if 'children' not in instance:
+            representation.pop('children',None)
+        
+        return representation
 
 class AuthSerializer(serializers.ModelSerializer):
 

@@ -396,3 +396,9 @@
 .ant-collapse-ghost >.ant-collapse-item >.ant-collapse-content >.ant-collapse-content-box {
   padding-block: 0px;
 }
+
+/* message部分 */
+.ant-message-custom-content {
+  display: flex;
+  align-items: center;
+}

@@ -134,7 +134,7 @@ def getRankV2(request):
             rankData_group[new_key] = [item]
 
     table_columns = [
-        {'title':'排名','dataIndex':'rank_sort','key':'rank_sort'},
+        {'title':'排名','dataIndex':'rank_sort','key':'rank_sort','width':'16%'},
         {'title':'机构名称','dataIndex':'org_name','key':'org_name'},
         {'title':'完成情况','dataIndex':'value_done','key':'value_done','align':'right'},
         {'title':'完成率','dataIndex':'value_rate','key':'value_rate','align':'right'}

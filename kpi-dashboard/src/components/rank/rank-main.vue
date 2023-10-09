@@ -47,8 +47,17 @@
                                     <a-table :columns="rank_data.column" :data-source="sub_item.detail_list"
                                         :pagination="false">
                                         <template #bodyCell="{column,index}">
-                                            <div v-if="column.dataIndex == 'rank_sort'">
-                                                {{ index+1 }}
+                                            <div v-if="column.dataIndex == 'rank_sort'" class="d_flex gap_4 jc_sb">
+                                                <div>{{ index+1 }}</div>
+                                                <div v-if="index == 0" class="d_flex fai_c jc_c">
+                                                    <img src="../../assets/gold.png" alt="" class="rank_icon">
+                                                </div>
+                                                <div v-if="index == 1" class="d_flex fai_c jc_c">
+                                                    <img src="../../assets/silver.png" alt="" class="rank_icon">
+                                                </div>
+                                                <div v-if="index == 2" class="d_flex fai_c jc_c">
+                                                    <img src="../../assets/copper.png" alt="" class="rank_icon">
+                                                </div>
                                             </div>
                                         </template>
                                     </a-table>
@@ -91,6 +100,9 @@
 .ant-table-tbody > tr:last-child td {
   border-bottom: none !important;
 }
+.rank_icon {
+    width: 18px;
+}
 </style>
 
 <script>
@@ -126,7 +138,7 @@ export default defineComponent({
     setup(props) {
         const activePannel = ref(props.active_pannel);
         const detail_form = ref(props.detail_params)
-        console.log(detail_form)
+        // console.log(detail_form)
         watch(props,()=>{
             activePannel.value = props.active_pannel
             detail_form.value = props.detail_params

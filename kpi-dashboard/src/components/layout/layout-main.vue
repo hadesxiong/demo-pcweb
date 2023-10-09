@@ -5,7 +5,7 @@
                 <header-logo></header-logo>
             </div>
             <div class="c-header_other">
-                <header-other></header-other>
+                <header-other :user_name="user_name"></header-other>
             </div>
         </a-layout-header>
         <a-layout>
@@ -110,6 +110,7 @@ export default defineComponent({
         return {
             menu_collapsed: ref(false),
             menu_data: ref(),
+            user_name: ref()
         }
     },
     methods: {
@@ -120,8 +121,9 @@ export default defineComponent({
         async getUserInfo() {
             const notes_id = localStorage.getItem('notes_id')
             const user_res = await myApi.get('/api/auth/getUserInfo',{params:{user:notes_id}})
-            localStorage.setItem('name_1',user_res.data.data.name_1);
-            localStorage.setItem('name_2',user_res.data.data.name_2);
+            // localStorage.setItem('name_1',user_res.data.data.name_1);
+            // localStorage.setItem('name_2',user_res.data.data.name_2);
+            this.user_name = user_res.data.data.name_1
         }
     },
     mounted() {

@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.db.models import Subquery
 from django.http.response import JsonResponse
+from django.conf import settings
 
 from kpi_server.models import Org,IndexDetail
 from kpi_server.serializers import RankSingleSerializer
@@ -25,7 +26,7 @@ def getSingleRank(request):
 
     # 判断空参数
     if None in query_params.values():
-        re_msg = {'code':1,'msg':'err params.'}
+        re_msg = {'code':202,'msg':settings.KPI_ERROR_MESSAGES['global'][202]}
 
     elif query_params['rank_type'] != 'histroy':
 
@@ -86,14 +87,19 @@ def getSingleRank(request):
             value_ty_plan = ty['detail_value']
             value_rate = round(tm['detail_value']/ty['detail_value']*100,2)
 
-            rank_data.append({
+            each_data = {
                 'detail_belong':detail_belong,'value_tm_done':value_tm_done,'value_ly_done':value_ly_done,
                 'value_compare':value_compare,'value_ty_plan':value_ty_plan,'value_rate':value_rate
-            })
+            }
+            # 判断是否展开
+            if query_params['rank_type'] == 'single' and query_params['rank_target'] == '1' :
+                each_data['children'] = []
+
+            rank_data.append(each_data)
 
         result = RankSingleSerializer(rank_data,many=True).data
 
-        re_msg = {'data':result,'code':0}
+        re_msg = {'code':200,'msg': settings.KPI_ERROR_MESSAGES['global'][200],'data':result}
 
     else:
         # 日期处理
@@ -108,7 +114,8 @@ def getSingleRank(request):
             detail_belong=query_params['rank_target'],
             detail_type=2,
             index_num=query_params['index_num'],
-            detail_date__year=this_year
+            detail_date__year=this_year,
+            detail_date__lte=query_params['data_date']
         ).values('detail_date','detail_value')
 
         value_plan = IndexDetail.objects.get(
@@ -139,6 +146,6 @@ def getSingleRank(request):
                 'value_compare':value_compare,'value_ty_plan':value_ty_plan,'value_rate':value_rate
             })
             
-        re_msg = {'data':rank_data,'code':0}
+        re_msg = {'code':200,'msg':settings.KPI_ERROR_MESSAGES['global'][200],'data':rank_data[-6:]}
         
     return JsonResponse(re_msg,safe=False)

@@ -6,9 +6,14 @@
         <span class="fc_l2">Long May the Sun Shine.</span>
         <span>🌞🌞🌞</span>
     </div>
-    <div class="d_flex fai_c">
-        <a-avatar shape="circle" size="medium" :style="{backgroundColor:user_color,fontWeight:500}">{{ user_name.substring(0,1) }}</a-avatar>
-    </div>
+    <a-popover placement="bottomRight" arrow-point-at-center>
+        <template #content>
+            <a @click="userLogout">退出登陆</a>
+        </template>
+        <div class="d_flex fai_c">
+            <a-avatar shape="circle" size="medium" :style="{backgroundColor:user_color,fontWeight:500}">{{ user_name.slice(0,1) }}</a-avatar>
+        </div>
+    </a-popover>
 </template>
 
 <style>
@@ -17,19 +22,28 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { Avatar } from 'ant-design-vue';
+import { Avatar, Popover } from 'ant-design-vue';
 
 export default defineComponent({
     name:'HeaderOther',
     components: {
         'a-avatar': Avatar,
+        'a-popover': Popover
+    },
+    props:{
+        user_name: {type:String,default:''}
     },
     setup() {
-        const user_name = localStorage.getItem('name_1')
+        // const user_name = localStorage.getItem('name_1')
         return {
-            user_name,
             user_color: ref('#165DFF')
         };
+    },
+    methods: {
+        userLogout() {
+            localStorage.clear();
+            location.reload();
+        }
     }
 });
 

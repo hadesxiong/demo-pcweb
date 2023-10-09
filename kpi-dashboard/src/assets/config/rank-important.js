@@ -19,9 +19,9 @@ export const classMap = [
 
 export const groupMap = [
     {key:1,value:'按区域中心支行查看'},
-    {key:2,value:'按单点支行查看'},
-    {key:3,value:'按战略客户部查看'},
-    {key:4,value:'按分支机构查看'}
+    {key:2,value:'按战略客户部查看'},
+    {key:3,value:'按单点支行查看'},
+    // {key:4,value:'按分支机构查看'}
 ]
 
 export const tagMap = [

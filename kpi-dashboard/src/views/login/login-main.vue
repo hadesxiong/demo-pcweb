@@ -31,8 +31,8 @@
                             </a-form>
                         </div>
                         <div class="d_flex fai_c jc_sb lh_32 w_p100" style="margin-top: -20px;">
-                            <a-checkbox>记住密码</a-checkbox>
-                            <a class="fc_brand6">忘记密码</a>
+                            <a-checkbox v-model:checked="pw_store">记住密码</a-checkbox>
+                            <a class="fc_brand6" @click="forgetPassword">忘记密码</a>
                         </div>
                         <div class="w_p100 h_32 lh_32">
                             <a-button type="primary" class="bg_brand6 w_p100 h_38 font_16 fw_500" @click="checkForm">登陆</a-button>
@@ -149,6 +149,7 @@ export default defineComponent({
             }),
             btnLoading: ref(false),
             router:useRouter(),
+            pw_store: ref(false)
         }
     },
     methods: {
@@ -186,14 +187,25 @@ export default defineComponent({
                             // const user_res = await this.getUserInfo(this.formContent.username)
                             message.destroy();
                             // 判断回复的code
-                            message.success({
-                                content:'验证成功,正在跳转...',
-                                duration: 1.5,
-                                class: 'msg_loading',
-                                onClose: ()=>{
-                                    this.$router.push('/dashboard-main')
-                                }
-                            })
+                            if (this.pw_store) {
+                                message.warning({
+                                    content:'记住密码功能暂时无法通过 Credential Management API 来实现,1.5秒后跳转主页面...',
+                                    duration: 1.5,
+                                    class:'msg_loading',
+                                    onClose: ()=>{
+                                        this.$router.push('/dashboard-main')
+                                    }
+                                })
+                            } else {
+                                message.success({
+                                    content:'验证成功,正在跳转...',
+                                    duration: 1.5,
+                                    class: 'msg_loading',
+                                    onClose: ()=>{
+                                        this.$router.push('/dashboard-main')
+                                    }
+                                })
+                            }
                         }
                     ).catch(
                         ()=>{
@@ -209,6 +221,13 @@ export default defineComponent({
             ).catch(
                 ()=>{console.log('校验失败')}
             )
+        },
+        forgetPassword() {
+            message.warning({
+                content:'该演示版本不提供密码重置逻辑',
+                duration: 0,
+                class:'msg_loading'
+            })
         }
     }
 })

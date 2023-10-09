@@ -15,7 +15,7 @@
                 </div>
                 <a-divider type="vertical" style="height: 18px; border-color: #E5E6EB; top: 0;"></a-divider>
                 <div class="fc_l3">
-                    数据月份: {{ detail_info.date.slice(0,7) }}
+                    数据月份: {{ detail_info.date.slice(0,4) }}.{{ detail_info.date.slice(5,7) }}
                 </div>
                 <div class="fc_l3">
                     查看方式: {{ detail_info.view_method }}
@@ -29,36 +29,31 @@
                     导出</a-button>
             </div>
         </div>
-        <div class="m_20 of_a h_p100">
-            <a-table :columns="detail_data.table_column" :data-source="detail_data.table_data" :pagination="false"
-                :scroll="{ y: true }" :expandIconColumnIndex="1" :expandIconAsCell="false" :indentSize="0"
-                class="b_w1c2_so br_2">
-                <template #innerExpand="{ record }">
-                    <span v-if="record.children">
-                        <!-- <a @click="toggleExpand(record)">展开</a> -->
-                    </span>
-                </template>
-                <template #bodyCell="{ column, record }">
-                    <template v-if="column.dataIndex === 'data_operation'">
-                        <div class="fc_brand6 d_iflex gap_8">
-                            <a id="history_btn" @click="showHistoryData(record)">查看历史</a>
-                            <!-- <a id="belong_btn">查看下属机构</a> -->
-                        </div>
+        <div class="m_20 of_a h_p100" id="table_con">
+            <a-spin :spinning="rank_spin" size="large" :delay="100" tip="数据加载中">
+                <a-table :columns="detail_table.column" :data-source="detail_table.data" :pagination="false"
+                    :scroll="rank_scroll" :expandIconColumnIndex="1" :expandIconAsCell="false" :indentSize="26"
+                    @expand="expandRows" class="b_w1c2_so br_2">
+                    <template #innerExpand="{ record }">
+                        <span v-if="record.children">
+                            <!-- <a @click="toggleExpand(record)">展开</a> -->
+                        </span>
                     </template>
-                </template>
-            </a-table>
+                    <template #bodyCell="{ column, record, }">
+                        <template v-if="column.dataIndex === 'operation'">
+                            <div class="fc_brand6 d_iflex gap_8">
+                                <a id="history_btn" @click="showHistoryData(record)">查看历史</a>
+                            </div>
+                        </template>
+                    </template>
+                </a-table>
+            </a-spin>
         </div>
-        <div class="d_flex fai_c jc_fe p_20">
-            <a-pagination :current="page_obj.current" :total="page_obj.total" :pageSize="page_obj.pageSize"
-                @change="handlePageChange"></a-pagination>
-        </div>
-        <a-drawer :width="850" :visible="draw_visible" @close="onClose" :closable="false">
+        <a-drawer :width="850" :visible="draw_visible" @close="onClose" :closable="false" :destroyOnClose="false">
             <template #title>
-                <div class="d_flex gap_12 fai_c">
-                    <div class="font_16 fc_l1 fw_500">历史数据</div>
-                    <a-divider type="vertical"></a-divider>
-                    <div class="font_14 fc_l3 fw_normal">徐汇区域中心支行</div>
-                    <div class="font_14 fc_l3 fw_normal">营业净收入</div>
+                <div class="d_flex gap_8 fai_c">
+                    <div class="font_16 fc_l1 fw_500">{{histroy_table.org_name}}</div>
+                    <div class="font_16 fc_l3 fw_normal">{{detail_info.index_name}}</div>
                 </div>
             </template>
             <template #extra>
@@ -68,24 +63,29 @@
                     </template>
                 </a-button>
             </template>
-            <div class="d_flex fd_c w_p100 gap_8">
-                <div class="d_iflex fai_c lh_20 fc_l3 gap_16 lh_32">
+            <div class="d_flex fd_c w_p100 gap_4">
+                <div class="d_iflex fai_c lh_20 fc_l3 gap_16 lh_32 mb_8">
                     <div class="d_iflex gap_12 fai_c">
                         <div class="blue_dot"></div>
                         期末数
                     </div>
                     <div class="d_iflex gap_12 fai_c">
                         <div class="purple_dot"></div>
-                        计划完成率
+                        计划数
                     </div>
                 </div>
                 <div :style="{ height: line_height, width: line_width }" id="line_con"></div>
-                <a-divider></a-divider>
+                <a-divider style="margin: 16px 0;"></a-divider>
                 <div class="ofx_a font_13 fw_400 b_w1c2_so br_4">
-                    <a-table :columns="history_table.table_column" :data-source="history_table.table_data"
-                        :pagination="false">
-
-                    </a-table>
+                    <a-spin :spinning="draw_spin" size="large" :delay="100" tip="数据加载中">
+                        <a-table :columns="histroy_table.column" :data-source="histroy_table.data" :pagination="false">
+                            <template #bodyCell="{ column,text }">
+                                <template v-if="column.dataIndex === 'detail_date'">
+                                    {{ text.slice(0,4) }}.{{text.slice(5,7)}}
+                                </template>
+                            </template>
+                        </a-table>
+                    </a-spin>
                 </div>
             </div>
             <template #footer>
@@ -143,15 +143,22 @@
 <script>
 import { defineComponent, ref } from 'vue';
 import { Left, Download, Close } from '@icon-park/vue-next';
-import { Button, Divider, Tag, Table, Pagination, Drawer } from 'ant-design-vue';
-import axios from 'axios';
+import { Button, Divider, Tag, Table, Drawer, Spin } from 'ant-design-vue';
+
 import { useRoute } from 'vue-router';
 import { Base64 } from 'js-base64';
+import { cloneDeep } from 'lodash-es';
+
+import { api } from '@/utils/commonApi.js';
+import { tableScrollYResize } from '@/utils/tableScrollYResize.js';
+import { detailTableHeadMap, histroyTableHeadMap, histroyEchartsConf } from '@/assets/config/rank-detail.js';
 
 import * as echarts from 'echarts/lib/echarts.js';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/grid';
 import 'echarts/lib/chart/line';
+
+const myApi = api();
 
 export default defineComponent({
     name: 'RankDetail',
@@ -163,14 +170,14 @@ export default defineComponent({
         'a-divider': Divider,
         'a-tag': Tag,
         'a-table': Table,
-        'a-pagination': Pagination,
         'a-drawer': Drawer,
+        'a-spin': Spin
     },
     data() {
         return {
             id: 'line_con',
-            line_width: '780px',
-            line_height: "320px",
+            line_width: '802px',
+            line_height: "340px",
             detail_data: {},
             draw_visible: false,
             history_table: {}
@@ -180,41 +187,69 @@ export default defineComponent({
         const route = useRoute();
         const rank_id = route.params.rank_id;
         const detail_info = JSON.parse(Base64.decode(rank_id))
-        console.log(detail_info)
         return {
             detail_info,
-            page_obj: ref({
-                current: 1,
-                pageSize: 10,
-                total: 100
-            })
+            rank_spin: ref(false),
+            draw_spin: ref(false),
+            rank_scroll: ref({y:500}),
+            detail_table: ref({
+                column: ref(detailTableHeadMap),
+                data: ref([]),
+            }),
+            histroy_table: ref({
+                column: ref(histroyTableHeadMap),
+                data: ref([]),
+                cache: ref({}),
+                org_name: ref('')
+            }),
+            echarts_data: ref(histroyEchartsConf),
+            myChart:ref()
         }
     },
     mounted() {
-        this.getRankDetailData();
+        this.getRankDetailData('single',this.detail_info.group,'detail_table','rank_spin');
+        window.addEventListener('resize',tableScrollYResize('table_con',this.rank_scroll));
     },
     methods: {
-        async getRankDetailData() {
-            const detail_res = await axios.get('/demo/rank/rank-detail.json');
-            // console.log(detail_res.data);
-            this.detail_data = detail_res.data;
-            // console.log(this.detail_data);
-        },
-        async showDrawer() {
-            this.draw_visible = true;
+        async getRankDetailData(type,target,data_ref,spin) {
+            this[spin] = true;
+            const get_params = {
+                index: this.detail_info.index_num,
+                date: this.detail_info.date,
+                type: type,
+                target: target
+            }
+            const rank_res = await myApi.get('/api/rank/getSingleRank',{params:get_params})
+            // console.log(rank_res)
+            if (type == 'belong') {
+                const parent_data = this[data_ref]['data'].find(item => item.detail_belong == target);
+                parent_data['children'] = rank_res.data.data;
+            } else if(type == 'histroy') {
+                this[data_ref]['cache'][target] = rank_res.data.data
+            } else if(type == 'single') {
+                this[data_ref]['data'] = rank_res.data.data
+                this[data_ref]['data'] = this[data_ref]['data'].map((item, index) => { return { ...item, key: (index+1).toString() } });
+            }
+            this[spin] = false
+            // console.log(this[data_ref])
         },
         async showHistoryData(record) {
-
-            console.log(record)
-
             this.draw_visible = true;
-            const history_data = await axios.get('/demo/rank/history-data.json');
-            // console.log(history_data.data);
-            this.history_table = history_data.data.table_data;
-            // console.log(this.history_table);
-            this.line_data = history_data.data.echarts_data
-            let myChart = echarts.init(document.getElementById(this.id));
-            let myChart_option = this.line_data;
+            this.histroy_table.org_name = cloneDeep(record.org_name)
+            // console.log(record)
+            // 判断是否已经有了histroy数据
+            if (!this.histroy_table.cache[record.detail_belong]) {
+                await this.getRankDetailData('histroy',record.detail_belong,'histroy_table','draw_spin')
+            }
+            this.histroy_table.data = cloneDeep(this.histroy_table.cache[record.detail_belong])
+
+            // 处理echarts_data
+            this.echarts_data.xAxis.data = this.histroy_table.data.map(item=> (item.detail_date.slice(0,4)+'.'+item.detail_date.slice(5,7)))
+            this.echarts_data.series[0].data = this.histroy_table.data.map(item=> item.value_tm_done)
+            this.echarts_data.series[1].data = this.histroy_table.data.map(item=> item.value_ty_plan)
+
+            this.myChart = echarts.init(document.getElementById(this.id));
+            let myChart_option = this.echarts_data;
             myChart_option.series[0].areaStyle.color = new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
                 { offset: 0, color: "rgba(100, 162, 255, 0.12)" },
                 { offset: 1, color: 'rgba(52, 105, 255, 0.01)' }
@@ -232,22 +267,26 @@ export default defineComponent({
                     return value;
                 }
             };
-            myChart.setOption(myChart_option);
+            this.myChart.setOption(myChart_option);
             // 添加自适应
             window.addEventListener('resize', function () {
-                myChart.resize();
+                this.myChart.resize();
             })
 
         },
         onClose() {
             this.draw_visible = false;
+            // 重置数据
+            this.myChart.dispose();
+            this.histroy_table.data = []
         },
         goBack() {
             this.$router.go(-1)
         },
-        handlePageChange(page) {
-            console.log(page)
-            this.page_obj.current = page
+        expandRows(expanded,record) {
+            if (expanded && record.children.length == 0) {
+                this.getRankDetailData('belong',record.detail_belong,'detail_table','rank_spin')
+            }
         }
     }
 
