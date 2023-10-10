@@ -45,7 +45,7 @@ def getCardData(org_num,start_date,end_date,index_list):
     result_df['value_compare'] = result_df[this_date] - result_df[last_date]
 
     result_df.drop(last_date,axis=1,inplace=True)
-    result_df = result_df.rename(columns={this_date:'value_current','index_name':'card_title','index_unit':'value_unit'})
+    result_df = result_df.rename(columns={this_date:'value_current','index_unit':'value_unit'})
     result_df['value_status'] = result_df.apply(lambda x: 0 if x['value_compare'] <=0 else 1,axis=1)
 
     # data转换
@@ -213,14 +213,22 @@ def getDashboard(request):
         result_data = function_map[func_type](org_num = query_params['org_num'], start_date = query_params['start_date'],
             end_date = query_params['end_date'], index_list = index_list
         )
+        # print(result_data)
         re_msg = {
             'code':200,
             'msg':settings.KPI_ERROR_MESSAGES['global'][200],
-            'title':db_queryset.db_name,
-            'name':result_data['name'],
-            'data':result_data['data'],
-            'class':db_queryset.db_class,
-            'date':result_data['date']
+            # 'title':db_queryset.db_name,
+            # 'name':result_data['name'],
+            # 'data':result_data['data'],
+            # 'class':db_queryset.db_class,
+            # 'date':result_data['date']
+            'data':{
+                query_params['db_mark']:{
+                    'title': db_queryset.db_name,
+                    # 'name': list(map(lambda x: {'index_num':x['index_num'],'index_name':x['card_title'],'index_unit':x['value_unit']},result_data['data'])),
+                    'data': result_data['data']
+                }
+            }
         }
 
     return JsonResponse(re_msg,safe=False)

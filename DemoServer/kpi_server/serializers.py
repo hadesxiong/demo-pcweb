@@ -21,6 +21,10 @@ class UsersSerializer(serializers.ModelSerializer):
         # 获取相关码值
         ref_queryset = Reference.objects.filter(ref_type__in=['user_belong_group','user_character']).values('ref_type','ref_code','ref_name')
         self.ref_dict = {f'{item["ref_type"]}_{item["ref_code"]}':item['ref_name'] for item in ref_queryset}
+
+        # 获取所有部门负责人
+        manager_querysett = Users.objects.filter(user_character=3).values('notes_id','user_name')
+        self.manager_dict = {item['notes_id']:item['user_name'] for item in manager_querysett}
     
     # 关联获取机构相关信息
     org_name = serializers.SerializerMethodField()
@@ -31,6 +35,7 @@ class UsersSerializer(serializers.ModelSerializer):
     group_name = serializers.SerializerMethodField()
 
     user_name_withId = serializers.SerializerMethodField()
+    org_manager_withName = serializers.SerializerMethodField()
 
     def get_org_name(self,obj):
         return self.org_dict[obj.user_belong_org]['org_name']
@@ -46,12 +51,18 @@ class UsersSerializer(serializers.ModelSerializer):
     
     def get_user_name_withId(self,obj):
         return f'{obj.user_name} - {obj.notes_id}'
+    
+    def get_org_manager_withName(self,obj):
+        try:
+            return f'{self.manager_dict[self.org_dict[obj.user_belong_org]["org_manager"]]} - {self.org_dict[obj.user_belong_org]["org_manager"]}'
+        except:
+            return ''
 
     class Meta:
 
         model = Users
         # fields = '__all__'
-        fields = ('notes_id','user_name','user_character','user_belong_group', 'user_belong_org', 'org_name','org_manager','character_name','group_name','user_name_withId')
+        fields = ('notes_id','user_name','user_character','user_belong_group', 'user_belong_org', 'org_name','org_manager','character_name','group_name','user_name_withId','org_manager_withName')
 
 class OrgSerializer(serializers.ModelSerializer):
 
@@ -83,8 +94,10 @@ class OrgSerializer(serializers.ModelSerializer):
         return self.ref_dict[f'org_level_{obj.org_level}']
     
     def get_parent_org_name(self,obj):
-        return self.org_dict[obj.parent_org_id]['org_name']
-    
+        try:
+            return self.org_dict[obj.parent_org_id]['org_name']
+        except:
+            return ''
     def get_org_manager_name(self,obj):
         try:
             return self.user_dict[obj.org_manager]

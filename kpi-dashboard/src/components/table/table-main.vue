@@ -103,9 +103,10 @@ export default defineComponent({
         const w_table_data = ref(props.table_data)
         const page_obj = ref(props.page_data)
         const expand_keys = ref([])
-        watch(props.clean_expand,()=>{
-            console.log(props.clean_expand)
-            if (props.clean_expand) {expand_keys.value = []}
+        const need_expand = ref(props.clean_expand)
+        watch(need_expand,()=>{
+            console.log(need_expand)
+            if (need_expand.value == true) {expand_keys.value = []}
         })
         return {
             locale,

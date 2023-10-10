@@ -8,6 +8,7 @@ from .user.createUser import *
 # org接口
 from .org.getOrgList import *
 from .org.updateOrg import *
+from .org.getOrgInfo import *
 
 # other接口
 from .other.getFilter import *

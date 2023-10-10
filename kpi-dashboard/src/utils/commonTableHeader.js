@@ -33,8 +33,8 @@ export const userTableHead = [
     },
     {
         "title":"直属上级",
-        "key":"org_manager",
-        "dataIndex":"org_manager",
+        "key":"org_manager_withName",
+        "dataIndex":"org_manager_withName",
         "width":"15%"
     },
     {

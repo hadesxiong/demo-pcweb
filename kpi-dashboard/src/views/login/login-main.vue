@@ -165,62 +165,58 @@ export default defineComponent({
             // 处理结果
             if (login_res.data.code == 100) {
                 // console.log(login_res)
-                localStorage.setItem('refresh',login_res['headers'].get('x-refresh-token'))
-                localStorage.setItem('access',login_res['headers'].get('authorization'))
+                localStorage.setItem('refresh',login_res['headers'].get('x-refresh-token'));
+                localStorage.setItem('access',login_res['headers'].get('authorization'));
+                localStorage.setItem('notes_id',this.formContent.username);
             } else {
                 console.log(login_res.data)
             }
             return login_res.data
         },
-        checkForm() {
-            this.$refs.formObj.validate().then(
-                ()=>{
-                    // console.log('校验通过');
-                    message.loading({
-                        content:'正在登陆,请稍后...',
-                        duration: 0,
-                        class: 'msg_loading',
+        async getUserInfo(notes_id) {
+            const tempApi = api();
+            const user_res = await tempApi.get('/api/auth/getUserInfo',{params:{user:notes_id}});
+            if (user_res.data.code == 200) {
+                localStorage.setItem('user_name',user_res.data.data.name_1);
+                localStorage.setItem('org_num',user_res.data.data.org_num);
+                localStorage.setItem('user_character',user_res.data.data.character);
+                localStorage.setItem('org_name',user_res.data.data.org_name)
+            } else {
+                console.log(user_res.data)
+            }
+            return user_res.data;
+        },
+        async checkForm() {
+            const check_res = await this.$refs.formObj.validate()
+            message.loading({
+                content:'正在登陆,请稍后...',
+                duration:0,
+                class:'msg_loading'
+            });
+            if (check_res) {
+                const login_res = await this.userLogin(this.formContent.username,this.formContent.password);
+                if (login_res.code == 100) {
+                    await this.getUserInfo(this.formContent.username);
+                    message.destroy();
+                    message.success({
+                        content:'验证成功,正在跳转...',
+                        duration: 1.5,
+                        class:'msg_loading',
+                        onClose: async ()=>{
+                            this.$router.push('/dashboard-main')
+                        }
                     })
-                    this.userLogin(this.formContent.username,this.formContent.password).then(
-                        () => {
-                            localStorage.setItem('notes_id',this.formContent.username)
-                            // const user_res = await this.getUserInfo(this.formContent.username)
-                            message.destroy();
-                            // 判断回复的code
-                            if (this.pw_store) {
-                                message.warning({
-                                    content:'记住密码功能暂时无法通过 Credential Management API 来实现,1.5秒后跳转主页面...',
-                                    duration: 1.5,
-                                    class:'msg_loading',
-                                    onClose: ()=>{
-                                        this.$router.push('/dashboard-main')
-                                    }
-                                })
-                            } else {
-                                message.success({
-                                    content:'验证成功,正在跳转...',
-                                    duration: 1.5,
-                                    class: 'msg_loading',
-                                    onClose: ()=>{
-                                        this.$router.push('/dashboard-main')
-                                    }
-                                })
-                            }
-                        }
-                    ).catch(
-                        ()=>{
-                            message.destroy();
-                            message.error({
-                                content:'验证失败,请检查您的用户名或者密码...',
-                                duration:3,
-                                class:'msg_loading'
-                            })
-                        }
-                    )
+                } else {
+                    message.destroy();
+                    message.error({
+                        content:'验证失败,请检查用户名或者密码...',
+                        duration: 3,
+                        class:'msg_loading'
+                    })
                 }
-            ).catch(
-                ()=>{console.log('校验失败')}
-            )
+            } else { 
+                console.log('校验不通过.')
+            }
         },
         forgetPassword() {
             message.warning({
@@ -228,7 +224,7 @@ export default defineComponent({
                 duration: 0,
                 class:'msg_loading'
             })
-        }
+        },
     }
 })
 

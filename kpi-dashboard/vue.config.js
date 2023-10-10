@@ -5,6 +5,9 @@ const CompressionPlugin = require('compression-webpack-plugin')
 module.exports = defineConfig({
   transpileDependencies: true,
   runtimeCompiler: true,
+  chainWebpack: config => {
+    config.plugin('html').tap(args=>{args[0].title='业绩展示系统';return args;})
+  },
   configureWebpack: {
     plugins: [
       new MiniCssExtractPlugin(),

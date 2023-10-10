@@ -2,32 +2,32 @@
     <div class="of_h">
         <a-row :gutter="[20, 20]" style="display: flex; align-items: stretch;">
             <a-col :span="24">
-                <db-card1 v-if="dbCard1_data.db_id" :card_data="dbCard1_data" :org_filter="orgFilter_data"
-                    :cur_org="current_org" :cur_date="current_date"></db-card1>
+                <db-card1 v-if="rt_cb" :card_data="rt_cb" :org_filter="orgFilter_data"
+                    :cur_org="init_org" :cur_date="init_date" :db_index="'rt_cb'" @getDBFilters="handleDBFilters" key="rt_cb"></db-card1>
             </a-col>
             <a-col :span="12">
                 <db-bar2 v-if="dbBar2_data.db_id" :bar_data="dbBar2_data" :db_id="dbBar2_data.db_id"
-                    :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-bar2>
+                    :org_filter="orgFilter_data" :cur_org="init_org" :cur_date="init_date"></db-bar2>
             </a-col>
             <a-col :span="12">
-                <db-card1 v-if="dbCard2_data.db_id" :card_data="dbCard2_data" :org_filter="orgFilter_data"
-                    :cur_org="current_org" :cur_date="current_date"></db-card1>
+                <db-card1 v-if="et_cb" :card_data="et_cb" :org_filter="orgFilter_data"
+                    :cur_org="init_org" :cur_date="init_date" :db_index="'et_cb'"  @getDBFilters="handleDBFilters" key="et_cb"></db-card1>
             </a-col>
             <a-col :span="12">
                 <db-line v-if="dbLine_data.db_id" :db_data="dbLine_data" :db_id="dbLine_data.db_id"
-                    :org_filter="orgFilter_data" :cur_org="current_org" :cur_date="current_date"></db-line>
+                    :org_filter="orgFilter_data" :cur_org="init_org" :cur_date="init_date"></db-line>
             </a-col>
             <a-col :span="12">
                 <db-bar1 v-if="dbBar1_data.db_id" :bar_data="dbBar1_data" :org_filter="orgFilter_data"
-                    :cur_org="current_org" :cur_date="current_date"></db-bar1>
+                    :cur_org="init_org" :cur_date="init_date"></db-bar1>
             </a-col>
             <a-col :span="12">
                 <db-bar1 v-if="dbBar1_2_data.db_id" :bar_data="dbBar1_2_data" :org_filter="orgFilter_data"
-                    :cur_org="current_org" :cur_date="current_date"></db-bar1>
+                    :cur_org="init_org" :cur_date="init_date"></db-bar1>
             </a-col>
             <a-col :span="12">
-                <db-card1 v-if="dbCard3_data.db_id" :card_data="dbCard3_data" :org_filter="orgFilter_data"
-                    :cur_org="current_org" :cur_date="current_date"></db-card1>
+                <db-card1 v-if="all_lcrj" :card_data="all_lcrj" :org_filter="orgFilter_data"
+                    :cur_org="init_org" :cur_date="init_date" :db_index="'all_lcrj'" @getDBFilters="handleDBFilters" key="all_lcrj"></db-card1>
             </a-col>
         </a-row>
     </div>
@@ -39,7 +39,6 @@
 
 ::-webkit-scrollbar {
     display: none;
-    /* Chrome Safari */
 }
 </style>
 
@@ -54,12 +53,14 @@ import LineOne from '@/components/dashboard/line-one.vue';
 import { Col, Row } from 'ant-design-vue';
 
 import axios from 'axios';
+import { api } from '@/utils/commonApi.js';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 
 dayjs.locale('zh-cn');
+const myApi = api();
 
 export default defineComponent({
     name: 'DashboardMain',
@@ -73,44 +74,63 @@ export default defineComponent({
     },
     setup() {
         return {
-            dbCard1_data: ref({}),
             dbBar2_data: ref({}),
-            dbCard2_data: ref({}),
             dbBar1_data: ref({}),
             dbLine_data: ref({}),
             dbBar1_2_data: ref({}),
-            dbCard3_data: ref({}),
-            orgFilter_data: ref({}),
-            current_org: ref('徐汇区域中心支行'),
-            current_date: ref([dayjs().add(-5, 'month'), dayjs()]),
-            locale
+            orgFilter_data: ref([]),
+            rt_cb: ref({}),
+            et_cb: ref({}),
+            all_lcrj: ref([]),
+            init_org: ref({}),
+            init_date: ref([dayjs().add(-5, 'month'), dayjs()]),
+            locale,
+            search_form: ref({
+                org: ref(),
+                date: ref(),
+                mark: ref('all')
+            }),
+            dashboard_data: ref({})
         }
     },
-    mounted() {
-        this.getRetailData();
+    async mounted() {
         this.getAUMData();
-        this.getEnterPriseData();
         this.getIncomeData();
         this.getHoldData();
         this.getEVAData();
-        this.getLCData();
-        this.getOrgFilter('123');
+
+        const user_org = {org_num:localStorage.getItem('org_num'),org_name:localStorage.getItem('org_name')}
+        this.init_org = user_org
+
+        // 获取当前登陆用户所在机构
+        const orgDeteil_params = {type:'single',target:user_org['org_num']}
+        const orgDetail_res = await myApi.get('/api/org/getOrgInfo',{params:orgDeteil_params})
+        this.org_group = orgDetail_res.data.data.org_group
+
+        // 获取当前登陆用户所在分组的机构筛选
+        const orgFilter_params = {type:'tree',target:user_org['org_num'],group:this.org_group}
+        const orgFilter_res = await myApi.get('/api/org/getOrgInfo',{params:orgFilter_params})
+        this.orgFilter_data = orgFilter_res.data.data
+
+        // 获取初始化的数据看板
+        this.search_form.org = this.init_org.org_num;
+        this.search_form.date = [
+            this.init_date[0].startOf('month').format('YYYY-MM-DD'),
+            this.init_date[1].endOf('month').format('YYYY-MM-DD'),
+        ]
+        const init_dashRes = await this.getDashboardData(
+            this.search_form.org,this.search_form.date,this.search_form.mark
+        )
+        this.dashboard_data = init_dashRes.data.data
+        console.log(this.dashboard_data)
+        this.drawDashboard(this.dashboard_data)
     },
     methods: {
 
-        // 获取零售客户建设情况
-        async getRetailData() {
-            const rtc_res = await axios.get('/demo/dashboard/dashboardn-card1.json');
-            this.dbCard1_data = rtc_res.data;
-        },
         async getAUMData() {
             const AUMData_res = await axios.get('/demo/dashboard/dashboardn-bar2.json');
             this.dbBar2_data = AUMData_res.data;
             // console.log(this.dbBar2_data)
-        },
-        async getEnterPriseData() {
-            const epc_res = await axios.get('/demo/dashboard/dashboardn-card2.json');
-            this.dbCard2_data = epc_res.data;
         },
         async getIncomeData() {
             const income_res = await axios.get('/demo/dashboard/dashboardn-bar1.json');
@@ -124,16 +144,24 @@ export default defineComponent({
             const eva_res = await axios.get('/demo/dashboard/dashboardn-bar1-2.json');
             this.dbBar1_2_data = eva_res.data;
         },
-        async getLCData() {
-            const lc_res = await axios.get('/demo/dashboard/dashboardn-card3.json');
-            this.dbCard3_data = lc_res.data;
+        // 定义更新数据方法
+        async getDashboardData(org,date,mark) {
+            const dash_params = {org: org,start:date[0],end:date[1],mark}
+            const dash_res = await myApi.get('/api/dashboard/getDashboard',{params:dash_params})
+            return dash_res
         },
-
-        // 获取机构筛选,传入org_id用作匹配
-        async getOrgFilter(org_id) {
-            const orgFilter_res = await axios.get('/demo/filter/org_filter.json');
-            this.orgFilter_data = orgFilter_res.data;
-            return { org_id }
+        // 接收每个组件传递的org/date/mark
+        async handleDBFilters(item) {
+            // console.log(item)
+            const db_res = await this.getDashboardData(item.org.org_num,item.date,item.mark);
+            // console.log(db_res.data.data)
+            this.drawDashboard(db_res.data.data)
+        },
+        drawDashboard(data) {
+            const dbIndex_list = Object.keys(data);
+            dbIndex_list.forEach(
+                (item)=>{ this[item] = data[item]}
+            )
         }
     }
 });

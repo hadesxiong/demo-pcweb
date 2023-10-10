@@ -8,7 +8,7 @@
             <div class="d_flex fai_c jc_fe gap_16">
                 <a-dropdown>
                     <a class="d_flex fai_c gap_8 fc_brand6">
-                        {{ choose_org }}
+                        {{ choose_org.org_name }}
                         <icon-down size="14" class="d_flex fai_c" fill="#165fdd"></icon-down>
                     </a>
                     <template #overlay>
@@ -111,7 +111,7 @@ export default defineComponent(
         props: {
             bar_data: { type: Object },
             org_filter: { type: Object },
-            cur_org: { type: String },
+            cur_org: { type: Object },
             cur_date: { type: Array }
         },
         data() {
@@ -149,7 +149,7 @@ export default defineComponent(
             },
             chooseOrg(item) {
                 this.selectedKeys.push(item.org_key);
-                this.choose_org = item.org_name;
+                this.choose_org = item;
             }
         }
     }

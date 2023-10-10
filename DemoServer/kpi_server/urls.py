@@ -11,6 +11,7 @@ urlpatterns = [
     # org
     path('api/org/getOrgList',views.getOrgList),
     path('api/org/updateOrg',views.updateOrg),
+    path('api/org/getOrgInfo',views.getOrgInfo),
 
     # other
     path('api/other/getFilter',views.getFilter),

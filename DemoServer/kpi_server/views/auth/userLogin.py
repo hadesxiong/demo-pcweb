@@ -207,10 +207,17 @@ def getUserInfo(request):
     else:
         user_queryset = Users.objects.filter(notes_id=query_params['notes_id'])
         user_data = UsersSerializer(user_queryset,many=True).data[0]
+        print(user_data)
         re_msg = {
             'code':200,
             'msg':settings.KPI_ERROR_MESSAGES['global'][200],
-            'data':{'name_1':user_data['user_name_withId'],'name_2':user_data['user_name']}
+            'data':{
+                'name_1':user_data['user_name_withId'],
+                'name_2':user_data['user_name'],
+                'org_num':user_data['user_belong_org'],
+                'character':user_data['user_character'],
+                'org_name': user_data['org_name']
+            }
         }
 
     return JsonResponse(re_msg,safe=False)
