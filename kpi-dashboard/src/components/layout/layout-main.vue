@@ -71,6 +71,7 @@
     /* background-color: #f2f3f3; */
     color: black;
     height: calc(100% - 40px);
+    min-width: 1200px;
 }
 </style>
   
