@@ -112,7 +112,7 @@ export const changeLineConfMap = {
 
 export const changeLineConfOptions = {
     tooltip:{},
-    grid:{left:0,right:8,bottom:12,height:'100%',containLabel:true},
+    grid:{left:0,right:8,top:4,bottom:12,height:'95%',containLabel:true},
     xAxis: {
         type:'category',data:[],
         axisLine:{lineStyle:{color:'#e5e8ef',type:'dashed'}},

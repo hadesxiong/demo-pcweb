@@ -33,13 +33,13 @@
             </div>
         </div>
         <div class="d_flex jc_sb">
-            <a-radio-group v-model:value="chosen_value" button-style="solid">
-                <a-radio-button v-for="item in line_conf['change_map']" :key="item.key" :value="item.key">
+            <a-radio-group v-model:value="chosen_value" button-style="solid" @change="handleRadio">
+                <a-radio-button v-for="item in line_conf[db_index]['change_map']" :key="item.key" :value="item.key">
                     {{ item.value }}
                 </a-radio-button>
             </a-radio-group>
-            <div class="d_iflex fai_c lh_20 fc_l3 gap_16 lh_32">
-                <div class="d_iflex gap_12 fai_c" v-for="(item,index) in line_conf['series_name']" :key="index">
+            <div class="d_iflex fai_c lh_20 fc_l3 gap_16 lh_32 mr_4">
+                <div class="d_iflex gap_12 fai_c" v-for="(item,index) in line_conf[db_index]['series_name']" :key="index">
                     <div class="dot" :class="`eg_${index + 1}`"></div>
                     {{ item }}
                 </div>
@@ -47,7 +47,12 @@
         </div>
         <div class="d_flex jc_c fai_c w_p100 h_p100">
             <div class="d_flex jc_sb fai_c  w_p100 h_p100">
-                <div :style="{ height: db_height, width: db_width }" :id="db_index"></div>
+                <a-skeleton v-if="!db_data.data" :active="true" :paragraph="{ rows: 6, width:'100%' }"></a-skeleton>
+                <div :style="{ height: db_height, width: db_width }">
+                    <a-spin :spinning="loading_status" :delay="100" tip="数据加载中...">
+                        <div :style="{ height: db_height, width: db_width }" :id="db_index"></div>
+                    </a-spin>
+                </div>
             </div>
         </div>
     </div>
@@ -122,7 +127,7 @@
 <script>
 import { defineComponent, ref, watch } from 'vue';
 import { Down } from '@icon-park/vue-next';
-import { Dropdown, Menu, SubMenu, MenuItem, DatePicker, RadioGroup, RadioButton } from 'ant-design-vue';
+import { Dropdown, Menu, SubMenu, MenuItem, DatePicker, RadioGroup, RadioButton, Spin, Skeleton } from 'ant-design-vue';
 import { echartsResize } from '@/utils/echartsResize.js';
 import { iterateMonths } from '@/utils/iterateMonths.js';
 
@@ -151,7 +156,9 @@ export default defineComponent({
         'a-menu-item': MenuItem,
         'a-date-picker': DatePicker,
         'a-radio-group': RadioGroup,
-        'a-radio-button': RadioButton
+        'a-radio-button': RadioButton,
+        'a-spin': Spin,
+        'a-skeleton': Skeleton
     },
     props: {
         id: {
@@ -164,7 +171,7 @@ export default defineComponent({
     },
     data() {
         return {
-            db_height: "100%"
+            db_height: "250px"
         };
     },
     setup(props) {
@@ -227,7 +234,18 @@ export default defineComponent({
 
             window.addEventListener('resize',function(){echart_obj.resize()}, {passive: true})
             echartsResize(document.getElementById(echart_con),echart_obj)
-        }
+        };
+
+        const handleRadio = function(e) {
+            console.log(e.target.value)
+            chosen_value.value = e.target.value;
+            
+            if (myChart.value) {
+                myChart.value.dispose();
+                myChart.value = null;
+            }
+            initChart(myChart,line_options.value,props.db_index);
+        };
 
         watch(props,()=>{
             db_data.value = props.line_data;
@@ -257,52 +275,31 @@ export default defineComponent({
             line_options,
             myChart,
             search_form,
-            db_width
+            db_width,
+            handleRadio
         }
     },
-    mounted() {
-        // this.drawLine();
-    },
     methods: {
-        // drawLine() {
-        //     let myChart = echarts.init(document.getElementById(this.id));
-        //     let myChart_option = this.db_data.db_option;
-        //     // console.log(myChart_option);
-        //     myChart_option.series[0].areaStyle.color = new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
-        //         { offset: 0, color: "rgba(100, 162, 255, 0.12)" },
-        //         { offset: 1, color: 'rgba(52, 105, 255, 0.01)' }
-        //     ]);
-        //     myChart_option.series[1].areaStyle.color = new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
-        //         { offset: 0, color: 'rgba(131, 100, 255, 0.12)' },
-        //         { offset: 1, color: 'rgba(80, 52, 255, 0.01)' }
-        //     ]);
-        //     myChart_option.xAxis.axisLabel.formatter = function (value, index) {
-        //         if (index === 0) {
-        //             return '{start|' + value + '}';
-        //         } else if (index == myChart_option.xAxis.data.length - 1) {
-        //             return '{end|' + value + '}';
-        //         } else {
-        //             return value;
-        //         }
-        //     }
-        //     myChart.setOption(myChart_option);
-        //     // 添加自适应
-        //     window.addEventListener('resize', function () {
-        //         myChart.resize();
-        //     }, { passive: true });
-        //     echartsResize(document.getElementById(this.id), myChart);
-        // },
         handlePickerClose(status) {
             if (!status) {
-                console.log(this.date_value)
+                // console.log(this.date_value)
+                this.search_form.date = [
+                    this.date_value.add(-5,'month').startOf('month').format('YYYY-MM-DD'),
+                    this.date_value.add(0,'month').endOf('month').format('YYYY-MM-DD')
+                ]
+                this.loading_status = true;
+                this.$emit('getDBFilters',this.search_form)
             }
         },
         chooseOrg(item) {
-            this.selectedKeys.push(item.org_key);
+            this.selectedKeys.push(item);
             this.choose_org = item;
+            this.search_form.org = item.org_num;
+            this.loading_status = true;
+            this.$emit('getDBFilters',this.search_form)
         },
         disabledDate(current) {
-            return current && current > dayjs().add(-1, 'month').endOf('month')
+            return current && (current > dayjs().add(-1, 'month').endOf('month') || current < dayjs().add(-1,'year').startOf('month'))
         }
     }
 });

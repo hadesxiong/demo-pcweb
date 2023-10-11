@@ -3,7 +3,7 @@
         <div class="d_flex fd_c">
             <div class="d_flex fd_r jc_sb">
                 <a-range-picker :placeholder="['起始月份', '截止月份']" format="YYYY-MM" :value="date_value" :mode='["month", "month"]'
-                    @panelChange="handlePannelChange" @openChange="handleChange" :allowClear="false">
+                    @panelChange="handlePannelChange" @openChange="handleChange" :allowClear="false" :locale="locale" :disabled-date="disabledDate">
                     <template #separator>
                         <icon-right fill="#86909C"></icon-right>
                     </template>
@@ -165,6 +165,9 @@ export default defineComponent({
                 this.$emit('getPageOptions',{page:this.page_obj.current,size:size})
             })
         },
+        disabledDate(current) {
+            return current && (current > dayjs().add(-1, 'month').endOf('month') || current < dayjs().add(-1,'year').startOf('month'))
+        }
     }
 });
 

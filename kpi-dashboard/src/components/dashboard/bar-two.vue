@@ -199,7 +199,7 @@ export default defineComponent({
             this.$emit('getDBFilters',this.search_form)
         },
         disabledDate(current) {
-            return current && current > dayjs().add(-1, 'month').endOf('month')
+            return current && (current > dayjs().add(-1, 'month').endOf('month') || current < dayjs().add(-1,'year').startOf('month'))
         }
     }
 })

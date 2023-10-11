@@ -8,7 +8,7 @@
                     <a-dropdown class="d_flex jc_sb fai_c bg_l2 br_4 ta_l h_32 fc_l2 of_h pl_12 pr_12 tover_ell ws_no minw_100 b_n">
                         <a-range-picker picker="date" :placeholder="['起始日期', '截止日期']" format="YYYY-MM-DD"
                             :value="search_form.date_range" :mode="['date', 'date']" @panelChange="handlePannelChange"
-                            @openChange="handleChange" @change="datesChange" :allowClear="false">
+                            @openChange="handleChange" @change="datesChange" :allowClear="false" :locale="locale" :disabled-date="disabledDate">
                             <template #separator>
                                 <icon-right fill="#86909C" size="14"></icon-right>
                             </template>
@@ -240,6 +240,9 @@ export default defineComponent({
             this.page_obj.total = upload_list.data.data_total
             // loading结束
             this.status = false;
+        },
+        disabledDate(current) {
+            return current && (current > dayjs().add(-1, 'month').endOf('month') || current < dayjs().add(-1,'year').startOf('month'))
         }
     }
 })

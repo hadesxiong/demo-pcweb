@@ -207,7 +207,7 @@ export default defineComponent(
         methods: {
             handlePickerClose(status) {
                 if (!status) {
-                    console.log(this.date_value)
+                    // console.log(this.date_value)
                     this.search_form.date = [
                         this.date_value.add(-5,'month').startOf('month').format('YYYY-MM-DD'),
                         this.date_value.add(0,'month').endOf('month').format('YYYY-MM-DD')
@@ -224,7 +224,7 @@ export default defineComponent(
                 this.$emit('getDBFilters',this.search_form)
             },
             disabledDate(current) {
-                return current && current > dayjs().add(-1, 'month').endOf('month')
+                return current && (current > dayjs().add(-1, 'month').endOf('month') || current < dayjs().add(-1,'year').startOf('month'))
             }
         }
     }
