@@ -50,7 +50,7 @@
 }
 .ant-picker:hover, .ant-picker-focused {
   border-color: none;
-  background-color: #fff;
+  background-color: #f2f3f5;
 }
 .ant-picker-input-active {
   background-color: var(--color-fill-2);

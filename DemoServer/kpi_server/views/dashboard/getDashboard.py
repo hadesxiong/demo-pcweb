@@ -45,7 +45,7 @@ def getCardData(org_num,start_date,end_date,index_list):
     result_df['value_compare'] = result_df[this_date] - result_df[last_date]
 
     result_df.drop(last_date,axis=1,inplace=True)
-    result_df = result_df.rename(columns={this_date:'value_current','index_unit':'value_unit'})
+    result_df = result_df.rename(columns={this_date:'value_current'})
     result_df['value_status'] = result_df.apply(lambda x: 0 if x['value_compare'] <=0 else 1,axis=1)
 
     # data转换

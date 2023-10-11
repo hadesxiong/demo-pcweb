@@ -22,6 +22,12 @@
 @import url('@/assets/style/common.css');
 </style>
 
+<style scoped>
+.ant-picker:hover {
+    background-color: #f2f3f5 !important;
+}
+</style>
+
 <script>
 import { defineComponent, ref } from 'vue';
 import { Spin } from 'ant-design-vue';
