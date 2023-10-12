@@ -220,6 +220,16 @@
   padding-inline: 15px;
 }
 
+/* 定位部分 */
+.po_r {
+  position: relative;
+}
+.po_a {
+  position: absolute;
+}
+.z_10 {
+  z-index: 10;
+}
 /* 行高部分 */
 .lh_1 {
   line-height: 1px;
@@ -505,6 +515,9 @@
 }
 .bg_d2 {
   background-color: var(--color-danger-2);
+}
+.bg_white_75 {
+  background-color: rgba(255,255,255,0.75);
 }
 
 /* 常用字体色 */

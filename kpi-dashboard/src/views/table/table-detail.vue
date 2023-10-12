@@ -1,15 +1,32 @@
 <template>
-    <div>
-        <a-spin :spinning="loading_status" size="large" :delay="100" tip="数据加载中">
-            <div class="d_flex fd_c gap_20 h_p100">
-                <table-filter v-if="filter_data.index_class" :filter_data="filter_data"
-                    @getFilterOptions="handleFilterOptions"></table-filter>
-                <table-main v-if="table_data.table_id" :table_data="table_data" :page_data="page_data" :spin_status="fetching_status" :clean_expand="clean_expand" class="h_p100"
-                    @getDateRange="handleRangeOptions"
-                    @getPageOptions="handlePageOptions"
-                    @getChildOptions="handleChildOptions"></table-main>
+    <div class="h_p100">
+        <div v-if="loading_status" class="d_flex fd_c gap_20 h_p100">
+            <div class="bg_white w_p100 p_20 d_flex fd_c gap_8">
+                <div class="w_p100 h_a d_flex gap_20 jc_c fai_c">
+                    <a-skeleton :active="true" :paragraph="{ rows: 1, width:'100%' }" :title="false"></a-skeleton>
+                    <a-skeleton-button :active="true"></a-skeleton-button>
+                </div>
+                <div class="w_p100 h_a d_flex gap_20 jc_c fai_c">
+                    <a-skeleton :active="true" :paragraph="{ rows: 1, width:'100%' }" :title="false"></a-skeleton>
+                    <a-skeleton-button :active="true"></a-skeleton-button>
+                </div>
             </div>
-        </a-spin>
+            <div class="bg_white w_p100 h_a br_2 p_20 d_flex fd_c gap_20">
+                <div class="w_p100 h_a d_flex gap_20 jc_sb fai_c">
+                    <a-skeleton-input :active="true"></a-skeleton-input>
+                    <a-skeleton-button :active="true"></a-skeleton-button>
+                </div>
+                <a-skeleton :active="true" :paragraph="{ rows: 16, width:'100%' }" :title="false"></a-skeleton>
+            </div>
+        </div>
+        <div v-else class="d_flex fd_c gap_20 h_p100">
+            <table-filter v-if="filter_data.index_class" :filter_data="filter_data"
+                @getFilterOptions="handleFilterOptions"></table-filter>
+            <table-main v-if="table_data.table_id" :table_data="table_data" :page_data="page_data" :spin_status="fetching_status" :clean_expand="clean_expand" class="h_p100"
+                @getDateRange="handleRangeOptions"
+                @getPageOptions="handlePageOptions"
+                @getChildOptions="handleChildOptions"></table-main>
+        </div>
     </div>
 
 
@@ -30,7 +47,7 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { Spin } from 'ant-design-vue';
+import { Skeleton, SkeletonButton, SkeletonInput } from 'ant-design-vue';
 import TableFilter from '@/components/table/table-filter.vue';
 import TableMain from '@/components/table/table-main.vue';
 
@@ -49,7 +66,9 @@ export default defineComponent({
     components: {
         'table-filter': TableFilter,
         'table-main': TableMain,
-        'a-spin': Spin
+        'a-skeleton': Skeleton,
+        'a-skeleton-button': SkeletonButton,
+        'a-skeleton-input': SkeletonInput
     },
     data() {
         return {}
@@ -105,8 +124,8 @@ export default defineComponent({
                 }).map(item => item.value)
                 this.search_form.index = index_list;
                 this.search_form.data_range = [
-                    dayjs().add(-5,'month').startOf('month').format('YYYY-MM-DD'),
-                    dayjs().add(-5,'month').endOf('month').format('YYYY-MM-DD'),
+                    dayjs().add(-1,'month').startOf('month').format('YYYY-MM-DD'),
+                    dayjs().add(-1,'month').endOf('month').format('YYYY-MM-DD'),
                 ]
                 this.getTableData().then(()=>{this.loading_status = false;});
 
@@ -144,7 +163,6 @@ export default defineComponent({
             // 为data添加key
             this.table_data.table_data = this.table_data.table_data.map((item, index) => { return { ...item, key: index.toString() } });
             this.table_data.table_id = 'table_id'
-            console.log(1)
             this.clean_expand = true
             // 处理分页数据
             this.page_data.current = table_data.page_no,
@@ -184,11 +202,6 @@ export default defineComponent({
                 const child_res = await myApi.post('/api/table/getTableData',child_form)
                 target_data.children = child_res.data.data
                 this.clean_expand = false
-                // 处理合并表头
-                // const column_date = this.table_data.table_columns.find((item)=>item.key=='detail_date')
-                // console.log(column_date)
-                // column_date.customCell = (_,index) => {if (index == item.key) {console.log(index);return {rowSpan: child_res.data.data.length + 1}}}
-                // 处理合并表头结束
                 this.fetching_status = false
             } 
         }

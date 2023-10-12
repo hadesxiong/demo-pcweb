@@ -80,14 +80,12 @@ import { defineComponent, ref } from 'vue';
 import { MenuFoldOne, MenuUnfoldOne } from '@icon-park/vue-next';
 import { Layout, LayoutHeader, LayoutSider, LayoutContent, Breadcrumb, BreadcrumbItem } from 'ant-design-vue';
 
-// import { api } from '@/utils/commonApi.js';
-
 import HeaderLogo from './header/header-logo.vue';
 import HeaderOther from './header/header-other.vue';
 import SiderMenu from './sider/sider-menu.vue';
 
-import axios from 'axios';
-// const myApi = api();
+import { menuMap } from '@/assets/config/menu';
+
 
 export default defineComponent({
     name: 'LayoutMain',
@@ -111,18 +109,9 @@ export default defineComponent({
         const user_name = localStorage.getItem('user_name')
         return {
             menu_collapsed: ref(false),
-            menu_data: ref(),
+            menu_data: ref(menuMap),
             user_name
         }
-    },
-    methods: {
-        async getMenuData() {
-            const menu_res = await axios.get('/demo/menu.json');
-            this.menu_data = menu_res.data;
-        },
-    },
-    mounted() {
-        this.getMenuData();
     },
     computed: {
         breadcrumb() {
@@ -136,7 +125,6 @@ export default defineComponent({
                     breadcrumb.push(...route.meta.breadcrumb);
                 }
             });
-
             return breadcrumb;
         },
         menuKeys() {

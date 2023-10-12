@@ -60,10 +60,6 @@ export default defineComponent({
     };
   },
   methods:{
-    // async getMenuData() {
-    //   const menu_res = await axios.get('/demo/menu.json');
-    //   this.menu_data = menu_res.data;
-    // },
     handleMenuClick() {
       // console.log(this.selectedKeys,this.openKeys)
     }

@@ -47,26 +47,30 @@
                     </a-dropdown>
                 </div>
             </div>
-            <div class="d_flex fd_c h_p100 w_p100 jc_c p_20" v-if="spin_status">
-                <div class="w_p100 bg_l2 mb_20 p_10">
-                    <a-skeleton v-if="spin_status" :active="true" :paragraph="{ rows: 1, width:'100%'}" :title="false"></a-skeleton>
+            <div class="d_flex fd_c h_p100 w_p100 p_20" v-if="loading_status">
+                <div class="w_p100 mb_20 p_8">
+                    <a-skeleton v-if="loading_status" :active="true" :paragraph="{ rows: 1, width:'100%'}" :title="false"></a-skeleton>
                 </div>
                 <a-row :gutter="[20,20]" :wrap="true" justify="start">
                     <a-col :span="8" v-for="(_,index) in [1,2,3,4,5,6]" :key="index">
                         <div class="d_flex fd_c bg_white br_4 c-rank_con p_20 b_w1c2_so" >
-                            <a-skeleton v-if="spin_status" :active="true" :paragraph="{ rows: 6, width:'100%'}"></a-skeleton>
+                            <a-skeleton v-if="loading_status" :active="true" :paragraph="{ rows: 6, width:'100%'}"></a-skeleton>
                         </div>
                     </a-col>
                 </a-row>
             </div>
-            <div class="m_20 fg_1 ofy_a ofx_h" v-if="!spin_status">
-                <!-- <a-spin :spinning="spin_status" size="large" :delay="100" tip="数据加载中">
-                </a-spin> -->
-                <rank-main v-if="rank_data" 
-                :rank_data="rank_data" 
-                :show_pannel="show_pannel"
-                :active_pannel="active_pannel"
-                :detail_params="detail_params"></rank-main>
+            <div class="m_20 fg_1 ofy_a ofx_h" v-if="!loading_status">
+                <div class="po_r w_p100 h_p100 of_a">
+                    <a-spin v-if="spin_status" :spinning="spin_status" size="large" :delay="100" tip="数据加载中" class="po_a z_10 bg_white_75 w_p100 h_p100 d_flex jc_c fai_c fd_c gap_8" >
+                    </a-spin>
+                    <div class="h_p100 w_p100 ofy_a ofx_h po_a" style="z-index:1">
+                        <rank-main v-if="rank_data" 
+                        :rank_data="rank_data" 
+                        :show_pannel="show_pannel"
+                        :active_pannel="active_pannel"
+                        :detail_params="detail_params"></rank-main>
+                    </div>
+                </div>
             </div>
         </div>
 </template>
@@ -162,7 +166,7 @@
 <script>
 import { defineComponent, ref } from 'vue';
 import { Down, CalendarThirty } from '@icon-park/vue-next';
-import { RadioGroup, RadioButton, Dropdown, Menu, MenuItem, DatePicker, Skeleton, Col, Row } from 'ant-design-vue';
+import { RadioGroup, RadioButton, Dropdown, Menu, MenuItem, DatePicker, Skeleton, Spin, Col, Row } from 'ant-design-vue';
 
 import RankMain from '@/components/rank/rank-main';
 
@@ -189,7 +193,7 @@ export default defineComponent({
         'a-menu': Menu,
         'a-menu-item': MenuItem,
         'a-date-picker': DatePicker,
-        // 'a-spin': Spin,
+        'a-spin': Spin,
         'a-skeleton': Skeleton,
         'a-col': Col,
         'a-row': Row,
@@ -206,6 +210,7 @@ export default defineComponent({
     setup() {
         return {
             locale,
+            loading_status: ref(true),
             spin_status: ref(false),
             show_pannel: ref(false),
             active_pannel: ref('1'),
@@ -222,7 +227,7 @@ export default defineComponent({
             search_form: ref({
                 class: ref({key:0,value:'全部分类'}),
                 group: ref({key:1,value:'按区域中心支行查看'}),
-                date: ref(dayjs().endOf('month'))
+                date: ref(dayjs().add(-1,'month').endOf('month'))
             }),
             detail_params: ref({
                 group: ref(),
@@ -232,7 +237,7 @@ export default defineComponent({
         }
     },
     mounted() {
-        this.getRankData();
+        this.getRankData().then(()=>{this.loading_status=false});
     },
     methods: {
         async getRankData() {

@@ -28,7 +28,7 @@ pymysql.install_as_MySQLdb()
 SECRET_KEY = 'django-insecure-7mxm2bo&v+_7z*9=23*0six)-ck3m(8#xs@mxn(#dz4+yymb0s'
 
 # CRYPTO SETTINGS
-CRYPTO_KEY = '$aR9#p3K@L2qJ7!W'
+CRYPTO_KEY = '@aR9*p3K@L2qJ7!W'
 CRYPTO_IV = 'X5yD!w*Q8Fv@2S7M'
 
 # SECURITY WARNING: don't run with debug turned on in production!

@@ -36,7 +36,8 @@
                         </div>
                         <div v-else-if="item.type==='date-month'" class="d_flex fg_1">
                             <a-date-picker picker="month" class="w_a fg_1" :allowClear="false" format="YYYY-MM"
-                                :value="form_data[item.dataIndex]" @change="dateChange(item.dataIndex,$event)" placeholder="请选择数据通报月份">
+                                :value="form_data[item.dataIndex]" @change="dateChange(item.dataIndex,$event)" placeholder="请选择数据通报月份"
+                                :locale="locale">
                             </a-date-picker>
                         </div>
                     </div>
@@ -82,6 +83,8 @@ import { defineComponent, ref, watch } from 'vue';
 import { Col, Row, Modal, RadioGroup, Radio, Input, Button, DatePicker, message } from 'ant-design-vue';
 import { Close, Check } from '@icon-park/vue-next';
 
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
+
 import MenuInput from '@/components/other/menu-input.vue';
 import SearchInput from '@/components/other/search-input.vue';
 import FileInput from '@/components/other/file-input.vue';
@@ -113,6 +116,7 @@ export default defineComponent({
         watch(props,()=>{modal_visible.value = props.visible});
 
         return {
+            locale,
             modal_visible,
             modal_title: ref(props.modal_obj.title),
             modal_data: ref(props.modal_obj.data),

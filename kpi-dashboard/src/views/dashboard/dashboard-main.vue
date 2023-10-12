@@ -116,7 +116,6 @@ export default defineComponent({
             this.search_form.org,this.search_form.date,this.search_form.mark
         )
         this.dashboard_data = init_dashRes.data.data
-        console.log(this.dashboard_data)
         this.drawDashboard(this.dashboard_data)
     },
     methods: {

@@ -111,15 +111,15 @@ import { defineComponent,reactive,ref } from 'vue';
 import { UserPositioning, Lock } from '@icon-park/vue-next';
 import { Layout, LayoutContent, Input, InputPassword, Checkbox, Button, Form, FormItem, message } from 'ant-design-vue';
 
-// import axios from 'axios';
+import axios from 'axios';
 import { api } from '@/utils/commonApi.js';
 import { useRouter } from 'vue-router';
 import CryptoJS from 'crypto-js';
 
-const myApi = api();
-// const api = axios.create({
-//     baseURL: process.env.VUE_APP_BASE_URL
-// })
+// const myApi = api();
+const login_api = axios.create({
+    baseURL: process.env.VUE_APP_BASE_URL
+})
 
 export default defineComponent({
     name: 'LoginMain',
@@ -137,8 +137,8 @@ export default defineComponent({
     },
     data() {
         return {
-            key:'$aR9#p3K@L2qJ7!W',
-            iv:'X5yD!w*Q8Fv@2S7M'
+            key:process.env.VUE_APP_ENCRYPTED_KEY,
+            iv:process.env.VUE_APP_ENCRYPTED_IV
         }
     },
     setup() {
@@ -161,7 +161,7 @@ export default defineComponent({
             const encrypted_data = CryptoJS.AES.encrypt(encrypted_pw,encrypted_key,{iv:encrypted_iv }).toString();
             const user_data = {notes:user,pw:encrypted_data}
 
-            const login_res = await myApi.post('/api/auth/userLogin',user_data,{ withCredentials: true })
+            const login_res = await login_api.post('/api/auth/userLogin',user_data,{ withCredentials: true })
             // 处理结果
             if (login_res.data.code == 100) {
                 // console.log(login_res)

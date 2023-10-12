@@ -19,9 +19,9 @@
                 </a-button>
             </div>
         </div>
-        <div class="ofy_h fg_1 h_p100" id="table_con">
+        <div class="ofy_h fg_1" id="table_con">
             <a-spin :spinning="spin_status" size="large" :delay="100" tip="数据加载中">
-                <div class="fg_1">
+                <!-- <div class="fg_1"> -->
                     <a-table :columns="table_data.table_columns" :data-source="table_data.table_data" :expandIconColumnIndex="1" :pagination="false"
                         :expandIconAsCell="false" :indentSize="26" @expand="expandRows" :expandedRowKeys="expand_keys" @expandedRowsChange="expandRowsChange" class="br_2 b_w1c2_so" :scroll="table_scroll" :bordered="false">
                         <template #customFilterIcon>
@@ -33,8 +33,7 @@
                             </div>
                         </template>
                     </a-table>
-                </div>
-
+                <!-- </div> -->
             </a-spin>
         </div>
         <div class="d_flex fai_c jc_fe">
@@ -99,7 +98,6 @@ export default defineComponent({
         'a-spin': Spin
     },
     setup(props) {
-        console.log(props.table_data)
         const w_table_data = ref(props.table_data)
         const page_obj = ref(props.page_data)
         const expand_keys = ref([])
@@ -113,18 +111,13 @@ export default defineComponent({
             expand_keys,
             table_id: ref(),
             pannel_mode: ref(['month', 'month']),
-            date_value: ref([dayjs().add(-5,'month'),dayjs().add(-5,'month')]),
+            date_value: ref([dayjs().add(-1,'month'),dayjs().add(-1,'month')]),
             w_table_data,
             table_scroll: ref({ x:100,y:360 }),
             page_obj
         }
     },
     mounted() {
-        // this.w_table_data = this.$props.table_data;
-        // console.log(this.w_table_data)
-        // this.page_obj = this.$props.page_data
-        // console.log(this.page_obj)
-        // this.expand_keys = this.$props.expand
         window.addEventListener('resize',tableScrollYResize('table_con',this.table_scroll));
     },
     methods: {

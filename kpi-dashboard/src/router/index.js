@@ -2,6 +2,14 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import { checkAuth } from "@/utils/checkAuth";
 
+// 定义数据报表的映射
+const tableClassMap = {
+  enterprise:'企金数据报表',
+  retail:'零售数据报表',
+  bank:'同业数据报表',
+  other:'其他数据报表'
+}
+
 // 定义路由配置
 const routes = [
   {
@@ -131,6 +139,13 @@ router.beforeEach((to, from, next) => {
   // table动态赋值
   if (to.name == 'table-detail') {
     to.meta.menu = to.path.substring(1)
+    const table_class = to.params.table_class;
+    // const new_breadcrumb = ['数据报表', tableClassMap[table_class]]
+    if (to.meta.breadcrumb.length >1) {
+      console.log(1);
+      to.meta.breadcrumb.pop()
+    }
+    to.meta.breadcrumb.push(tableClassMap[table_class])
   }
   // 跳转
   // next()
