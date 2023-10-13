@@ -39,11 +39,15 @@
                             <!-- <a @click="toggleExpand(record)">展开</a> -->
                         </span>
                     </template>
-                    <template #bodyCell="{ column, record, }">
+                    <template #bodyCell="{ column, record, text }">
                         <template v-if="column.dataIndex === 'operation'">
                             <div class="fc_brand6 d_iflex gap_8">
                                 <a id="history_btn" @click="showHistoryData(record)">查看历史</a>
                             </div>
+                        </template>
+                        <template v-if="column.dataIndex.indexOf('value') != -1">
+                            <span v-if="column.dataIndex.indexOf('_rate')!=-1" :class="{fc_danger6:text<0,fw_700:text<0}">{{ processNumber(text) }}%</span>
+                            <span v-else :class="{fc_danger6:text<0,fw_700:text<0}">{{ processNumber(text) }}</span>
                         </template>
                     </template>
                 </a-table>
@@ -82,6 +86,10 @@
                             <template #bodyCell="{ column,text }">
                                 <template v-if="column.dataIndex === 'detail_date'">
                                     {{ text.slice(0,4) }}.{{text.slice(5,7)}}
+                                </template>
+                                <template v-if="column.dataIndex.indexOf('value') != -1">
+                                    <span v-if="column.dataIndex.indexOf('_rate')!=-1" :class="{fc_danger6:text<0,fw_700:text<0}">{{ processNumber(text) }}%</span>
+                                    <span v-else :class="{fc_danger6:text<0,fw_700:text<0}">{{ processNumber(text) }}</span>
                                 </template>
                             </template>
                         </a-table>
@@ -152,6 +160,7 @@ import { cloneDeep } from 'lodash-es';
 import { api } from '@/utils/commonApi.js';
 import { tableScrollYResize } from '@/utils/tableScrollYResize.js';
 import { detailTableHeadMap, histroyTableHeadMap, histroyEchartsConf } from '@/assets/config/rank-detail.js';
+import { processNumber } from '@/utils/processNumber.js';
 
 import * as echarts from 'echarts/lib/echarts.js';
 import 'echarts/lib/component/tooltip';
@@ -287,7 +296,8 @@ export default defineComponent({
             if (expanded && record.children.length == 0) {
                 this.getRankDetailData('belong',record.detail_belong,'detail_table','rank_spin')
             }
-        }
+        },
+        processNumber
     }
 
 });

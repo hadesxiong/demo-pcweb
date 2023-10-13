@@ -57,7 +57,7 @@ import ModalInput from '@/components/other/modal-input.vue';
 import EditTable from '@/components/manage/edit-table.vue';
 
 import { api } from '@/utils/commonApi.js';
-import { orgTableHead, orgEditIndex, orgEditMap, orgSearchInfo, updateOrgModal } from '@/utils/commonTableHeader.js'
+import { orgTableHead, orgEditIndex, orgEditMap, orgSearchInfo, updateOrgModal } from '@/assets/config/org-manage.js';
 
 const myApi = api();
 

@@ -46,7 +46,7 @@
                                 <div class="w_p100 mt_20">
                                     <a-table :columns="rank_data.column" :data-source="sub_item.detail_list"
                                         :pagination="false">
-                                        <template #bodyCell="{column,index}">
+                                        <template #bodyCell="{column,index,text}">
                                             <div v-if="column.dataIndex == 'rank_sort'" class="d_flex gap_4 jc_sb">
                                                 <div>{{ index+1 }}</div>
                                                 <div v-if="index == 0" class="d_flex fai_c jc_c">
@@ -58,6 +58,12 @@
                                                 <div v-if="index == 2" class="d_flex fai_c jc_c">
                                                     <img src="../../assets/copper.png" alt="" class="rank_icon">
                                                 </div>
+                                            </div>
+                                            <div v-if="column.dataIndex == 'value_done'" :class="{fc_danger6:text<0,fw_700:text<0}">
+                                                {{ processNumber(text) }}
+                                            </div>
+                                            <div v-if="column.dataIndex == 'value_rate'" :class="{fc_danger6:text<0,fw_700:text<0}">
+                                                {{ processNumber(text) }} %
                                             </div>
                                         </template>
                                     </a-table>
@@ -77,6 +83,8 @@
 </template>
 
 <style>
+@import url('@/assets/style/common.css');
+
 .ant-collapse .ant-collapse-content>.ant-collapse-content-box {
     padding-left: 0;
     padding-right: 0;
@@ -110,7 +118,8 @@ import { defineComponent, ref, watch } from 'vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import { Collapse, CollapsePanel, Row, Col, Tag, Table, Empty } from 'ant-design-vue';
 
-import { tagMap } from '@/assets/config/rank-important.js'
+import { tagMap } from '@/assets/config/rank-important.js';
+import { processNumber } from '@/utils/processNumber.js';
 
 import { Base64 } from 'js-base64';
 
@@ -156,7 +165,8 @@ export default defineComponent({
         },
         encodeQuery(query) {
             return Base64.encode(JSON.stringify(query));
-        }
+        },
+        processNumber
     }
 });
 

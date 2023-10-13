@@ -58,7 +58,7 @@ import ModalInput from '@/components/other/modal-input.vue';
 import EditTable from '@/components/manage/edit-table.vue';
 
 import { api } from '@/utils/commonApi.js';
-import { userTableHead, userEditIndex, userEditMap, userSearchInfo, updateUserModal } from '@/utils/commonTableHeader.js';
+import { userTableHead, userEditIndex, userEditMap, userSearchInfo, updateUserModal } from '@/assets/config/user-manage.js';
 
 const myApi = api();
 

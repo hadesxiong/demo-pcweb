@@ -44,7 +44,7 @@
                             <div class="d_flex jc_fs fc_l2 font_14">{{ item.index_name }}</div>
                             <div class="d_flex jc_sb">
                                 <div class="fw_700 font_14 fc_l1 d_flex fai_b gap_8 lh_30 h_30">
-                                    <div class="font_18">{{ item.value_current }}</div>
+                                    <div class="font_18">{{ processNumber(item.value_current) }}</div>
                                     {{ item.index_unit }}
                                 </div>
                                 <div class="d_flex gap_4 fc_l3">
@@ -52,7 +52,7 @@
                                     <div :class="item.value_status === 0 ? 'compare_plus' : 'compare_minus'"
                                         class="ml_4 fw_700 d_iflex fai_c jc_c">
                                         <span v-if="item.value_status === 1">+</span>
-                                        {{ item.value_compare }}
+                                        {{ processNumber(item.value_compare) }}
                                     </div>
                                 </div>
                             </div>
@@ -87,6 +87,7 @@ import { Down } from '@icon-park/vue-next';
 import { Dropdown, Menu, SubMenu, MenuItem, DatePicker, Row, Col, Spin, Skeleton } from 'ant-design-vue';
 
 import { cardConfMap } from '@/assets/config/dashboard-main.js';
+import { processNumber } from '@/utils/processNumber.js';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
@@ -106,7 +107,7 @@ export default defineComponent({
         'a-row': Row,
         'a-col': Col,
         'a-spin': Spin,
-        'a-skeleton': Skeleton
+        'a-skeleton': Skeleton,
     },
     props: {
         card_data: { type: Object },
@@ -162,7 +163,8 @@ export default defineComponent({
         },
         disabledDate(current) {
             return current && (current > dayjs().add(-1, 'month').endOf('month') || current < dayjs().add(-1,'year').startOf('month'))
-        }
+        },
+        processNumber
     }
 });
 

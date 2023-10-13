@@ -31,6 +31,12 @@
                             <div v-if="record['detail_date'] && column.dataIndex == 'detail_date'">
                                 {{ text.substr(0,7) }}
                             </div>
+                            <div v-if=" !['detail_date','detail_belong','org_name','children'].includes(column.dataIndex)">
+                                <span v-if="column.dataIndex.indexOf('_rt')!=-1" :class="{fc_danger6:text<0,fw_700:text<0}">
+                                    {{ processNumber(text) }} %
+                                </span>
+                                <span v-else :class="{fc_danger6:text<0,fw_700:text<0}">{{ processNumber(text) }}</span>
+                            </div>
                         </template>
                     </a-table>
                 <!-- </div> -->
@@ -70,6 +76,7 @@ import 'dayjs/locale/zh-cn';
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 
 import { tableScrollYResize } from '@/utils/tableScrollYResize.js';
+import { processNumber } from '@/utils/processNumber.js';
 
 dayjs.locale('zh-cn');
 
@@ -160,7 +167,8 @@ export default defineComponent({
         },
         disabledDate(current) {
             return current && (current > dayjs().add(-1, 'month').endOf('month') || current < dayjs().add(-1,'year').startOf('month'))
-        }
+        },
+        processNumber
     }
 });
 
