@@ -14,6 +14,12 @@ from pathlib import Path
 from datetime import timedelta
 from kpi_server.errMsg import KPI_ERROR_MESSAGES
 
+import os
+from dotenv import load_dotenv
+
+# 读取环境配置
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,8 +34,10 @@ pymysql.install_as_MySQLdb()
 SECRET_KEY = 'django-insecure-7mxm2bo&v+_7z*9=23*0six)-ck3m(8#xs@mxn(#dz4+yymb0s'
 
 # CRYPTO SETTINGS
-CRYPTO_KEY = '@aR9*p3K@L2qJ7!W'
-CRYPTO_IV = 'X5yD!w*Q8Fv@2S7M'
+# CRYPTO_KEY = '@aR9*p3K@L2qJ7!W'
+CRYPTO_KEY = os.getenv('SERVER_CRYPTO_KEY')
+# CRYPTO_IV = 'X5yD!w*Q8Fv@2S7M'
+CRYPTO_IV = os.getenv('X5yD!w*Q8Fv@2S7M')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -61,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'DemoServer.corsmiddleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'DemoServer.urls'
@@ -88,7 +97,10 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:8080',
     'http://localhost:3000',
-    'http://server.bearman.xyz'
+    'http://kpi.bearman.xyz',
+    'https://kpi.bearman.xyz',
+    'http://106.15.120.71:80',
+    'https://106.15.120.71:443'
 ]
 CORS_ALLOW_HEADERS = [
     'Authorization',
@@ -108,31 +120,23 @@ CORS_ALLOW_METHODS = ("POST","GET")
 DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'demo_server',
+        'NAME':os.getenv('MYSQL_DEFAULT_DB'),
         'USER':'root',
-        'PASSWORD':'Faurecia614',
-        # Z-INTRA
-        'HOST':'10.162.165.155',
-        'PORT':11001
-        # INTRA
-        # 'HOST':'192.168.31.156',
-        # 'PORT':11001
+        'PASSWORD':os.getenv('MYSQL_PWD'),
+        'HOST':os.getenv('MYSQL_HOST'),
+        'PORT':os.getenv('MYSQL_PORT')
     },
     'kpi_db':{
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'kpi_db',
+        'NAME':os.getenv('MYSQL_DB'),
         'USER':'root',
-        'PASSWORD':'Faurecia614',
-        # Z-INTRA
-        'HOST':'10.162.165.155',
-        'PORT':11001
-        # INTRA
-        # 'HOST':'192.168.31.156',
-        # 'PORT':11001
+        'PASSWORD':os.getenv('MYSQL_PWD'),
+        'HOST':os.getenv('MYSQL_HOST'),
+        'PORT':os.getenv('MYSQL_PORT')
     }
 }
 DATABASES_APPS_MAPPING = {
-    'kpi_server':'kpi_db'
+    'kpi_server':os.getenv('MYSQL_DB')
 }
 
 # 插入数据路由

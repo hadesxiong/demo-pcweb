@@ -71,6 +71,17 @@ const routes = [
         }
       },
       {
+        name:"score-table",
+        path:'/score-table',
+        component: ()=> import('@/views/rank/rank-important.vue'),
+        meta: {
+          breadcrumb: ["考核评分","考核展示"],
+          sub:"score",
+          menu:"score-manage",
+          requireAuth:true
+        }
+      },
+      {
         name:"data-manage",
         path: "/data-manage",
         component: () => import("@/views/manage/data-manage.vue"),

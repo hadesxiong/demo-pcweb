@@ -14,8 +14,11 @@ from kpi_server.serializers import UsersSerializer
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.backends import default_backend
-import base64
+from dotenv import load_dotenv
 
+import base64,os
+
+load_dotenv()
 
 # 通用方法 - 密码解密验证
 def decrypt_aes(encrypted_data, key, iv):
@@ -53,8 +56,9 @@ def userLogin(request):
     }
 
     # 配置key,iv
-    decrypt_key = bytes(settings.CRYPTO_KEY,'utf-8')
-    decrypt_iv = bytes(settings.CRYPTO_IV,'utf-8')
+    # decrypt_key = bytes(settings.CRYPTO_KEY,'utf-8')
+    decrypt_key = bytes(os.getenv('SERVER_CRYPTO_KEY'),'utf-8')
+    decrypt_iv = bytes(os.getenv('SERVER_CRYPTO_IV'),'utf-8')
 
     # 参数检查
     if None in body_data.values():

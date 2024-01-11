@@ -31,7 +31,7 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import { DashboardOne, NewComputer, Notes, Data } from '@icon-park/vue-next';
+import { DashboardOne, NewComputer, Notes, Data, Trophy } from '@icon-park/vue-next';
 import { Menu, SubMenu, MenuItem} from 'ant-design-vue';
 
 export default defineComponent({
@@ -41,6 +41,7 @@ export default defineComponent({
     'icon-computer': NewComputer,
     'icon-notes': Notes,
     'icon-data': Data,
+    'icon-trophy': Trophy,
     'a-menu': Menu,
     'a-sub-menu': SubMenu,
     'a-menu-item': MenuItem,

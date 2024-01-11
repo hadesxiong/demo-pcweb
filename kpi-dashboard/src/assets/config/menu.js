@@ -64,6 +64,20 @@ export const menuMap = [
     ],
   },
   {
+    menu_key:"score",
+    menu_title:"考核评分",
+    menu_icon:"icon-trophy",
+    sub_menu:[
+      {
+        menu_key:'score-table',
+        menu_title:'考核展示',
+        menu_icon:"",
+        menu_name:"score-table",
+        menu_params:{}
+      }
+    ]
+  },
+  {
     menu_key: "settings",
     menu_title: "数据管理",
     menu_icon: "icon-data",
