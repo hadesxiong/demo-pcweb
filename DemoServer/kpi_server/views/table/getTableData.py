@@ -210,10 +210,10 @@ def getTableData(request):
 
         # normal下处理分页，非normal下不处理
         if body_data['type'] == 'normal':
-            if body_data['size'] == 0:
-                page_size = len(org_queryset)
-            else:
-                page_size = body_data['size']
+            page_size = len(org_queryset) if body_data['size'] == 0 else body_data['size']
+            if page_size <=6:
+                print(page_size)
+                page_size = page_size*2
             paginator = Paginator(df_list,page_size)
             page_max = math.ceil(len(df_list)/page_size)
             page = paginator.get_page(body_data['page'])

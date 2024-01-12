@@ -7,8 +7,8 @@ export const tableRouteMap = {
 
 export const orgMap = [
     {label:'区域中心支行',value:1},
-    {label:'单点支行',value:2},
-    {label:'战略客户部',value:3}
+    {label:'战略客户部',value:2},
+    {label:'单点支行',value:3}
 ]
 
 export const indexClassMap = [

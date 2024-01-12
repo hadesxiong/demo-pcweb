@@ -199,16 +199,16 @@ export default defineComponent({
             // 检查并处理index_list
             let index_result = []
             if (index_list.includes('all') || index_list.length == 0) {
-                console.log('all')
-                console.log(class_list)
+                // console.log('all')
+                // console.log(class_list)
                 index_result = class_list.flatMap(each_class => {
                     const obj = this.filter_data.index_list.find(item => item.class == each_class);
                     return obj? obj.label_list:[]
                 }).map(item=>item.value)
-                console.log(index_result)
+                // console.log(index_result)
             } else {
                 index_result = index_list
-                console.log(index_result)
+                // console.log(index_result)
             }
             this.$emit('getFilterOptions',{'org':org_list,'class':class_list,'index':index_result})
         }

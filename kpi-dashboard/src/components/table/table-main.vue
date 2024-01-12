@@ -2,15 +2,20 @@
     <div class="w_p100 h_p100 bg_white p_20 d_flex fd_c gap_20 fg_1">
         <div class="d_flex fd_c">
             <div class="d_flex fd_r jc_sb">
-                <a-range-picker :placeholder="['起始月份', '截止月份']" format="YYYY-MM" :value="date_value" :mode='["month", "month"]'
-                    @panelChange="handlePannelChange" @openChange="handleChange" :allowClear="false" :locale="locale" :disabled-date="disabledDate">
-                    <template #separator>
-                        <icon-right fill="#86909C"></icon-right>
-                    </template>
-                    <template #suffixIcon>
-                        <icon-calendar fill="#86909C" size="14"></icon-calendar>
-                    </template>
-                </a-range-picker>
+                <div class="d_flex gap_20">
+                    <a-range-picker :placeholder="['起始月份', '截止月份']" format="YYYY-MM" :value="date_value" :mode='["month", "month"]'
+                        @panelChange="handlePannelChange" @openChange="handleChange" :allowClear="false" :locale="locale" :disabled-date="disabledDate">
+                        <template #separator>
+                            <icon-right fill="#86909C"></icon-right>
+                        </template>
+                        <template #suffixIcon>
+                            <icon-calendar fill="#86909C" size="14"></icon-calendar>
+                        </template>
+                    </a-range-picker>
+                    <div v-if="extra_filter" class="d_flex gap_20">
+                        <menu-input v-for="item in filter_list" v-bind:key="item.filter_name" :cp_data="item.filter_data" @menu-select="handleMenuSelect" class="w_180"></menu-input>
+                    </div>
+                </div>
                 <a-button type="primary" class="br_2 fai_c d_flex fc_l5 bg_brand6">
                     <template #icon>
                         <icon-download size="14" class="mr_8 lh_1"></icon-download>
@@ -75,6 +80,8 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 
+import MenuInput from '@/components/other/menu-input.vue';
+
 import { tableScrollYResize } from '@/utils/tableScrollYResize.js';
 import { processNumber } from '@/utils/processNumber.js';
 
@@ -83,6 +90,8 @@ dayjs.locale('zh-cn');
 export default defineComponent({
     name: 'TableMain',
     props: {
+        extra_filter: {type:Boolean,default:false},
+        filter_list: {type:Array},
         table_data: {type: Object},
         spin_status: {type: Boolean,default:false},
         clean_expand: {type: Boolean,default: false},
@@ -102,7 +111,8 @@ export default defineComponent({
         'a-button': Button,
         'a-table': Table,
         'a-pagination': Pagination,
-        'a-spin': Spin
+        'a-spin': Spin,
+        'menu-input': MenuInput
     },
     setup(props) {
         const w_table_data = ref(props.table_data)
@@ -140,6 +150,9 @@ export default defineComponent({
                     endDate.endOf('month').format('YYYY-MM-DD')
                 ]})
             }
+        },
+        handleMenuSelect(value) {
+            this.$emit('getMenuOptions',value)
         },
         expandRows(expanded,record) {
             if (expanded) {

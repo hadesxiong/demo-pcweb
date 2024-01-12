@@ -52,7 +52,7 @@ def getScoreTable(request):
         if body_data['index_num'] == 'all':
             index_queryset = Index.objects.filter(belong_line=5)
         else:
-            index_queryset = Index.objects.filter(parent_index__in=body_data['index_num'])
+            index_queryset = Index.objects.filter(parent_index=body_data['index_num'])
         
         detail_queryset = IndexDetail.objects.filter(
             index_num__in = Subquery(index_queryset.values('index_num')),
@@ -135,6 +135,9 @@ def getScoreTable(request):
         # normal下处理分页
         if body_data['type'] == 'normal':
             page_size = len(org_queryset) if body_data['size'] == 0 else body_data['size']
+            if page_size <=6:
+                print(page_size)
+                page_size = page_size*2
             paginator = Paginator(df_list,page_size)
             page_max = math.ceil(len(df_list)/page_size)
             page = paginator.get_page(body_data['page'])

@@ -3,6 +3,9 @@
         <!-- 主页面 -->
         <div class="d_flex fd_c gap_20 h_p100">
             <table-main v-if="table_data.table_id" :table_data="table_data" :page_data="page_data" :spin_status="fetching_status" :clean_expand="clean_expand" class="h_p100"
+                :extra_filter="true"
+                :filter_list="filter_data"
+                @getMenuOptions="handleMenuOptions"
                 @getDateRange="handleRangeOptions"
                 @getPageOptions="handlePageOptions"
                 @getChildOptions="handleChildOptions"></table-main>
@@ -29,6 +32,7 @@ import 'dayjs/locale/zh-cn';
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 
 import { api } from '@/utils/commonApi.js';
+import { orgOptions, scoreOptions } from '@/assets/config/score-table.js'; 
 
 const myApi = api();
 
@@ -39,7 +43,12 @@ export default defineComponent({
         // 'a-skeleton': Skeleton
     },
     data() {
-        return {}
+        return {
+            filter_data: [
+                {filter_name:'org_map',filter_data:orgOptions},
+                {filter_name:'score_map',filter_data:scoreOptions}
+            ]
+        }
     },
     setup() {
         return {
@@ -51,8 +60,8 @@ export default defineComponent({
                 table_id: ref([])
             }),
             search_form: ref({
-                org_group: ref(1),
-                index: ref([]),
+                org_option: ref(1),
+                score_option: ref('all'),
                 date_range: ref([]),
                 page: ref(1),
                 size: ref(0),
@@ -82,22 +91,22 @@ export default defineComponent({
             // const table_res = await axios.get('/demo/table/table-main.json');
             this.fetching_status = true;
             const post_data = {
-                index:this.search_form.index,
+                index:this.search_form.score_option,
                 date:this.search_form.date_range,
-                group:this.search_form.org_group,
+                group:this.search_form.org_option,
                 page:this.search_form.page,
                 size:this.search_form.size
             }
             // const table_res = await myApi.post('/api/table/getTableData',post_data)
             const table_res = await myApi.post('/api/score/getScoreTable',post_data)
-            console.log(table_res)
+            // console.log(table_res)
             let table_data = {}
             if (typeof(table_res.data) == 'string') {
                 table_data = eval('('+table_res.data+')')
             } else {
                 table_data = table_res.data
             }
-            console.log(table_data)
+            // console.log(table_data)
             this.table_data.table_columns = table_data.title
             this.table_data.table_data = table_data.data
             // 为data添加key
@@ -119,6 +128,10 @@ export default defineComponent({
         handlePageOptions(item) {
             this.search_form.page = item.page
             this.search_form.size = item.size
+            this.getTableData()
+        },
+        handleMenuOptions(item) {
+            this.search_form[item.title] = item.data.ref_code
             this.getTableData()
         },
         async handleChildOptions(item) {
