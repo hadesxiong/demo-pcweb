@@ -42,6 +42,7 @@ urlpatterns = [
     path('api/upload/publishUpload',views.publishUpload),
 
     #score
-    path('api/score/getScoreTable',views.getScoreTable)
+    path('api/score/getScoreTable',views.getScoreTable),
+    path('api/score/getScoreData',views.getScoreData)
 
 ]

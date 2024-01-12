@@ -54,6 +54,7 @@ export default defineComponent({
         return {
             locale,
             loading_status: ref(false),
+            score_data: ref({}),
             table_data: ref({
                 table_columns: ref([]),
                 table_data: ref([]),
@@ -85,6 +86,7 @@ export default defineComponent({
             dayjs().add(-1,'month').endOf('month').format('YYYY-MM-DD'),
         ]
         this.getTableData().then(()=>{this.loading_status = false;})
+        this.getScoreData().then(()=>{})
     },
     methods: {
         async getTableData() {
@@ -120,6 +122,13 @@ export default defineComponent({
             this.page_data.sizeOptions = [String(table_data.data.length),String(table_data.data.length*2),String(table_data.data.length*3)]
 
             this.fetching_status = false;
+        },
+        async getScoreData() {
+            const org_num = localStorage.getItem('org_num')
+            const data_date = dayjs().add(-1,'month').endOf('month').format('YYYY-MM-DD')
+            const score_res = await myApi.get('/api/score/getScoreData',{params:{org:org_num,date:data_date}})
+            this.score_data = score_res.data.data
+            console.log(this.score_data)
         },
         handleRangeOptions(dateRange) {
             this.search_form.date_range = dateRange.date_range
