@@ -344,3 +344,27 @@ class UploadIndexSerializer(serializers.ModelSerializer):
         model = IndexDetail
         # fields = '__all__'
         fields = ('detail_date','detail_belong','index_num','detail_value')
+
+class ScoreIndexDetailSerializer(serializers.ModelSerializer):
+
+    # 查询所有org
+    org_queryset = Org.objects.all().values('org_num','org_name')
+    org_dict = {item['org_num']:item['org_name'] for item in org_queryset}
+
+    # 查询所有index_name
+    index_queryset = Index.objects.all().values('index_num','index_name')
+    index_dict = {item['index_num']: item['index_name'] for item in index_queryset}
+
+    index_name = serializers.SerializerMethodField()
+    org_name = serializers.SerializerMethodField()
+
+    def get_index_name(self,obj):
+        return self.index_dict[obj['index_num']]
+    
+    def get_org_name(self,obj):
+        return self.org_dict[obj['detail_belong']]
+
+
+    class Meta:
+        model = IndexDetail
+        fields = ('detail_date','detail_belong','index_num','detail_value','index_name','org_name')

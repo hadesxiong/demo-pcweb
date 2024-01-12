@@ -34,3 +34,7 @@ from .dashboard.getDashboard import *
 from .upload.getUploadList import *
 from .upload.getUploadDetail import *
 from .upload.updateUpload import *
+
+# score接口
+from .score.getScoreTable import *
+from .score.getScoreData import *

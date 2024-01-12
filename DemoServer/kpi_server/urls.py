@@ -39,6 +39,9 @@ urlpatterns = [
     path('api/upload/getUploadList',views.getUploadList),
     path('api/upload/getUploadDetail',views.getUploadDetail),
     path('api/upload/createUpload',views.createUpload),
-    path('api/upload/publishUpload',views.publishUpload)
+    path('api/upload/publishUpload',views.publishUpload),
+
+    #score
+    path('api/score/getScoreTable',views.getScoreTable)
 
 ]

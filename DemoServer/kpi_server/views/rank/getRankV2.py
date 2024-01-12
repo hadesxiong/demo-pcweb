@@ -33,11 +33,11 @@ def getRankV2(request):
     # 指标筛选
     # 分类数据
     if query_params['index_class'] == 0:
-        index_condition = Q()
+        index_condition = ~Q(belong_line=5)
         # 后续补充动态
         # index_condition = f'SELECT index_num FROM index_info WHERE index_class in (1,2,3,4,5)'
     else:
-        index_condition = Q(index_class=query_params['index_class'])
+        index_condition = Q(index_class=query_params['index_class']) & ~Q(belong_line=5)
         # index_condition = f'SELECT index_num FROM index_info WHERE index_class = {query_params["index_class"]}'
 
     # print(index_condition)

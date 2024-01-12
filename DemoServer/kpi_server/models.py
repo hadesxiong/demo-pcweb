@@ -135,7 +135,7 @@ class Org(models.Model):
 
 class Index(models.Model):
 
-    index_num = models.CharField(help_text='指标编号',max_length=10,blank=False,unique=True)
+    index_num = models.CharField(help_text='指标编号',max_length=30,blank=False,unique=True)
     index_class = models.IntegerField(help_text='指标分类-财务效益等')
     belong_line = models.IntegerField(help_text='归属条线-企金、零售、同业其他等')
     index_unit = models.CharField(help_text='指标单位',max_length=10)
@@ -149,6 +149,7 @@ class Index(models.Model):
     index_update = models.DateTimeField(help_text='修改时间',auto_now_add=False,auto_now=True)
     index_state = models.IntegerField(help_text='指标状态')
     index_ext_info = models.CharField(help_text='扩展字段',max_length=64)
+    parent_index = models.CharField(help_text='上级指标',max_length=10,blank=True,null=True)
 
     class Meta:
 
