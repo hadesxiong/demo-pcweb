@@ -34,6 +34,9 @@
 .minw_100 {
   min-width: 100px;
 }
+.minw_250 {
+  min-width: 250px;
+}
 .minw_p100 {
   min-width: 100%;
 }
@@ -42,6 +45,9 @@
 }
 .h_p100 {
   height: 100%;
+}
+.h_12 {
+  height: 12px;
 }
 .h_60 {
   height: 60px;
@@ -330,7 +336,18 @@
   flex-wrap: nowrap;
 }
 
+/* 其他display */
+d_ib {
+  display: inline-block;
+}
+
 /* 字体部分 */
+.font_12 {
+  font-size: 12px;
+}
+.font_14 {
+  font-size: 14px;
+}
 .font_16 {
   font-size: 16px;
 }
@@ -363,6 +380,9 @@
 }
 .fw_normal {
   font-weight: normal;
+}
+.va_bl {
+  vertical-align: baseline;
 }
 
 /* 边框部分 */

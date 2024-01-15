@@ -1,6 +1,26 @@
 <template>
-    <div class="h_p100">
+    <div class="h_p100 d_flex fd_c gap_20">
         <!-- 主页面 -->
+        <div class="d_flex fd_c bg_white gap_20 p_20">
+            <div class="d_flex gap_20">
+                <div>考核数据时间: {{score_info.score_date}}</div>
+                <div>考核机构: {{score_info.score_org}}</div>
+            </div>
+            <div class="d_flex bg_white fai_c">
+                <div>
+                    <gauge-one :gauge_data="score_data" db_index="gauge_one"></gauge-one>
+                </div>
+                <div class="d_flex fwrap_w gap_20">
+                        <a-row :gutter="[20,20]">
+                            <a-col :lg="8" :xl="6" v-for="(item,index) in score_data" :key="item.index_num">
+                                <step-one v-if="item.index_num" :step_data="item" :color="score_color[index]"></step-one>
+                            </a-col>
+                        </a-row>
+                </div>
+            </div>
+        </div>
+
+
         <div class="d_flex fd_c gap_20 h_p100">
             <table-main v-if="table_data.table_id" :table_data="table_data" :page_data="page_data" :spin_status="fetching_status" :clean_expand="clean_expand" class="h_p100"
                 :extra_filter="true"
@@ -24,8 +44,10 @@
 
 <script>
 import { defineComponent, ref } from 'vue';
-// import { Skeleton } from 'ant-design-vue';
+import { Col,Row } from 'ant-design-vue';
 import TableMain from '@/components/table/table-main.vue';
+import GaugeOne from '@/components/dashboard/gauge-one.vue';
+import StepOne from '@/components/dashboard/step-one.vue';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
@@ -40,6 +62,10 @@ export default defineComponent({
     name: 'ScoreTable',
     components: {
         'table-main': TableMain,
+        'step-one': StepOne,
+        'gauge-one': GaugeOne,
+        'a-col': Col,
+        'a-row': Row
         // 'a-skeleton': Skeleton
     },
     data() {
@@ -54,7 +80,12 @@ export default defineComponent({
         return {
             locale,
             loading_status: ref(false),
-            score_data: ref({}),
+            score_data: ref([]),
+            score_info:ref({
+                score_org: localStorage.getItem('org_name'),
+                score_date: dayjs().add(-1,'month').endOf('month').format('YYYY-MM')
+            }),
+            score_color: ref(['blue','red','pink','yellow','green']),
             table_data: ref({
                 table_columns: ref([]),
                 table_data: ref([]),
@@ -86,7 +117,8 @@ export default defineComponent({
             dayjs().add(-1,'month').endOf('month').format('YYYY-MM-DD'),
         ]
         this.getTableData().then(()=>{this.loading_status = false;})
-        this.getScoreData().then(()=>{})
+        // this.getScoreData().then(()=>{console.log(this.score_data)})
+        this.getScoreData()
     },
     methods: {
         async getTableData() {
@@ -128,7 +160,7 @@ export default defineComponent({
             const data_date = dayjs().add(-1,'month').endOf('month').format('YYYY-MM-DD')
             const score_res = await myApi.get('/api/score/getScoreData',{params:{org:org_num,date:data_date}})
             this.score_data = score_res.data.data
-            console.log(this.score_data)
+            // console.log(this.score_data)
         },
         handleRangeOptions(dateRange) {
             this.search_form.date_range = dateRange.date_range

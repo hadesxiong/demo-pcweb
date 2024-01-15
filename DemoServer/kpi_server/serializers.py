@@ -357,12 +357,16 @@ class ScoreIndexDetailSerializer(serializers.ModelSerializer):
 
     index_name = serializers.SerializerMethodField()
     org_name = serializers.SerializerMethodField()
+    detail_value = serializers.SerializerMethodField()
 
     def get_index_name(self,obj):
         return self.index_dict[obj['index_num']]
     
     def get_org_name(self,obj):
         return self.org_dict[obj['detail_belong']]
+    
+    def get_detail_value(self,obj):
+        return math.floor(obj['detail_value'])
 
 
     class Meta:
