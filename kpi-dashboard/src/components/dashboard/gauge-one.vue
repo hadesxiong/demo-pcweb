@@ -21,7 +21,7 @@ export default defineComponent(
         name: 'GaugeOne',
         props: {
             gauge_data: {type:Object},
-            // color_list: {type:Array},
+            color_list: {type:Array},
             db_index: {type:String}
         },
         data() {
@@ -32,7 +32,7 @@ export default defineComponent(
         setup(props) {
             const db_width = ref('auto')
             const db_data = ref(props.gauge_data);
-            // const option_template = ref(cloneDeep(gaugeOption));
+            const color_style = ref(props.color_list)
             const myChart = ref(null);
             const initChart = function(echart_obj,echart_options,echart_con) {
                 echart_obj = echarts.init(document.getElementById(echart_con))
@@ -57,7 +57,8 @@ export default defineComponent(
                         let add_option = cloneDeep(gaugeOption);
                         add_option.data = [{
                             name: db_data.value[i].index_name,
-                            value: db_data.value[i].add_sum
+                            value: db_data.value[i].add_sum,
+                            itemStyle: {color: color_style.value[i]}
                         }]
                         gauge_option.series.push(add_option)
                         if (i==db_data.value.length-1) {
@@ -72,7 +73,6 @@ export default defineComponent(
             },{ immediate: true })
             return {
                 db_data,
-                // option_template,
                 myChart,
                 db_width
             }
