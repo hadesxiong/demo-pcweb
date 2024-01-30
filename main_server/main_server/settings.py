@@ -11,6 +11,18 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+from kpi_server.configs.errMsg import KPI_ERROR_MESSAGES
+
+import os
+from dotenv import load_dotenv
+
+# 此处引入pymysql作为依赖
+import pymysql
+pymysql.install_as_MySQLdb()
+
+# 读取环境配置
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,10 +34,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-$ry+1vb&xrhx3$w-($krp(4d^#3(pdn2a_&c$esk=v5#sg+33)"
 
+# CRYPTO SETTINGS
+CRYPTO_KEY = os.getenv('SERVER_CRYPTO_KEY')
+CRYPTO_IV = os.getenv('SERVER_CRYPTO_IV')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +53,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "kpi_server",
+    "corsheaders",
+    "rest_framework",
+    "rest_framework_swagger"
 ]
 
 MIDDLEWARE = [
@@ -47,6 +67,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "main_server.corsmiddleware.CorsMiddleware"
 ]
 
 ROOT_URLCONF = "main_server.urls"
@@ -69,17 +90,54 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "main_server.wsgi.application"
 
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8080',
+    'http://localhost:3000',
+    'http://kpi.bearman.xyz',
+    'https://kpi.bearman.xyz',
+    'http://106.15.120.71:80',
+    'https://106.15.120.71:443'
+]
+CORS_ALLOW_HEADERS = [
+    'Authorization',
+    'X-Refresh-Token',
+    'Content-Type'
+]
+CORS_EXPOSE_HEADERS = [
+    'Authorization',
+    'X-Refresh-Token',
+]
+CORS_ALLOW_METHODS = ("POST","GET")
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE':'django.db.backends.mysql',
+        'NAME':os.getenv('MYSQL_DEFAULT_DB'),
+        'USER':'root',
+        'PASSWORD':os.getenv('MYSQL_PWD'),
+        'HOST':os.getenv('MYSQL_HOST'),
+        'PORT':os.getenv('MYSQL_PORT')
+    },
+    'kpi_main':{
+        'ENGINE':'django.db.backends.mysql',
+        'NAME':os.getenv('MYSQL_DB'),
+        'USER':'root',
+        'PASSWORD':os.getenv('MYSQL_PWD'),
+        'HOST':os.getenv('MYSQL_HOST'),
+        'PORT':os.getenv('MYSQL_PORT')
     }
 }
+DATABASES_APPS_MAPPING = {
+    'kpi_server':os.getenv('MYSQL_DB')
+}
 
+# 插入数据路由
+DATABASE_ROUTERS = ['main_server.routers.DatabaseAppRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -121,3 +179,22 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = { 
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' ,
+    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework_simplejwt.authentication.JWTAuthentication']
+}
+
+# 配置simple JWT
+SIMPLE_JWT = {
+    'ALGORITHM': 'HS256',
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=24), #设定访问令牌有效时间
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  #设定刷新令牌有效期
+    'ROTATE_REFRESH_TOKENS': True,
+}
+
+AUTH_USER_MODEL = 'kpi_server.UserAuth'
+AUTHENTICATION_BACKENDS = ['kpi_server.backends.CustomAuthBackend']
+
+# 配置KPI的信息码
+KPI_ERROR_MESSAGES = KPI_ERROR_MESSAGES
