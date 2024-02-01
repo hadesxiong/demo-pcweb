@@ -62,3 +62,9 @@ class UsersSerializer(serializers.ModelSerializer):
             return f'{self.manager_dict[self.org_dict[obj.user_belong_org]["org_manager"]]} - {self.org_dict[obj.user_belong_org]["org_manager"]}'
         except:
             return ''
+        
+    class Meta:
+
+        model = Users
+        # fields = '__all__'
+        fields = ('notes_id','user_name','user_character','user_belong_group', 'user_belong_org', 'org_name','org_manager','character_name','group_name','user_name_withId','org_manager_withName')

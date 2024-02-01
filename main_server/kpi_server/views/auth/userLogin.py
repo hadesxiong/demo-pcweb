@@ -117,7 +117,7 @@ def userLogin(request):
 
 # 用户注册逻辑
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def userRegister(request):
 
     # 解析body
@@ -128,8 +128,8 @@ def userRegister(request):
     }
 
     # 配置key,iv
-    decrypt_key = bytes(settings.CRYPTO_KEY,'utf-8')
-    decrypt_iv = bytes(settings.CRYPTO_IV,'utf-8')
+    decrypt_key = bytes(os.getenv('SERVER_CRYPTO_KEY'),'utf-8')
+    decrypt_iv = bytes(os.getenv('SERVER_CRYPTO_IV'),'utf-8')
 
     # 参数检查
     if None in body_data.values():

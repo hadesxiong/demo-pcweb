@@ -2,7 +2,7 @@
 from rest_framework import serializers
 
 # 引入model
-from kpi_server.models.otherConf import DashboardMap,Referenc
+from kpi_server.models.otherConf import DashboardMap,Reference
 
 class DashboardSerializer(serializers.ModelSerializer):
 
