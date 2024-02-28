@@ -60,7 +60,7 @@ def getUploadList(request):
         query_params['end_date'] = datetime.datetime.combine(date_value,datetime.time(23,59,59))
         record_queryset = UploadRecord.objects.filter(
             record_update_time__range=[query_params['start_date'],query_params['end_date']]
-        ).filter(rd_condition).filter(class_condition).filter(kw_condition)
+        ).filter(rd_condition).filter(class_condition).filter(kw_condition).order_by('-record_update_time')
 
         # 分页
         page_inator = Paginator(record_queryset,query_params['page_size'])

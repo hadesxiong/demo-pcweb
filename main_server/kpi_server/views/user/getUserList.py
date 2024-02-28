@@ -54,7 +54,7 @@ def getUserList(request):
     else:
         character_condition = Q(user_character=query_params['user_character'])
 
-    users_querySet = Users.objects.filter(user_belong_org__in=Subquery(org_query.values('org_num'))).filter(group_condition).filter(character_condition).filter(complex_condition)
+    users_querySet = Users.objects.filter(user_belong_org__in=Subquery(org_query.values('org_num'))).filter(group_condition).filter(character_condition).filter(complex_condition).order_by('-notes_id')
 
     # 分页
     page_inator = Paginator(users_querySet,query_params['page_size'])

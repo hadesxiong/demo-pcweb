@@ -46,7 +46,7 @@ def getOrgList(request):
     else:
         complex_condition = Q()
 
-    org_querySet = Org.objects.filter(group_condition).filter(level_condition).filter(complex_condition)
+    org_querySet = Org.objects.filter(group_condition).filter(level_condition).filter(complex_condition).order_by('-org_update')
 
     # 分页
     page_inator = Paginator(org_querySet,query_params['page_size'])
