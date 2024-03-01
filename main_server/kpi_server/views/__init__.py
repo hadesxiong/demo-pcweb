@@ -38,3 +38,7 @@ from .upload.updateUpload import *
 # score接口
 from .score.getScoreTable import *
 from .score.getScoreData import *
+
+# factor接口
+from .factor.getFactorList import *
+from .factor.updateFactor import *

@@ -80,7 +80,7 @@ class FactorConfig(models.Model):
     factor_id = models.CharField(help_text='因子id',max_length=24)
     factor_name = models.CharField(help_text='因子名称',max_length=128)
     factor_class = models.IntegerField(help_text='因子分类')
-    factor_express = models.CharField(help_text='因子计算表达式',max_length=512)
+    factor_express = models.JSONField(help_text='因子计算表达式',max_length=512)
     factor_update_dt = models.DateTimeField(help_text='因子更新时间',auto_now_add=False,auto_now=False)
     factor_update_usr = models.CharField(help_text='因子更新人',max_length=24)
     factor_ext_info = models.CharField(help_text='补充字段',max_length=512,blank=True)
