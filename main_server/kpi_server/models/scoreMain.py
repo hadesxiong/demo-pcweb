@@ -38,7 +38,54 @@ class ScoreRuleDetail(models.Model):
         app_label = 'kpi_server'
         db_table = 'score_rule_detail'
 
+# 考核指标分解
+class ScoreInstanceInfo(models.Model):
+
+    instance_id = models.CharField(help_text='分解实例id',max_length=24,unique=True)
+    rule_id = models.CharField(help_text='对应模版id',max_length=24)
+    instance_parent = models.CharField(help_text='父级实例id',max_length=24)
+    instance_state = models.IntegerField(help_text='实例状态')
+    instance_period_st = models.DateTimeField(help_text='考核实例开始日期',auto_now=False,auto_now_add=False)
+    instance_period_end = models.DateTimeField(help_text='考核实例结束日期',auto_now=False,auto_now_add=False)
+    instance_org = models.CharField(help_text='实例归属机构',max_length=24)
+    instance_update_dt = models.DateTimeField(help_text='实例更新日期',auto_now=False,auto_now_add=False)
+    instance_update_usr = models.CharField(help_text='实例更新人员',max_length=24)
+    instance_ext_info = models.CharField(help_text='扩展字段',max_length=512,blank=True)
+
+    class Meta:
+
+        app_label = 'kpi_server'
+        db_table = 'score_instance_info'
+
 # 评价方式信息
 class ScoreMethod(models.Model):
 
-    method_id = models.CharField()
+    method_id = models.CharField(help_text='评价方式id',max_length=24)
+    detail_id = models.CharField(help_text='关联考核指标id',max_length=24)
+    method_title = models.CharField(help_text='评价方式名称',max_length=128)
+    method_desc = models.CharField(help_text='评价方式描述',max_length=256)
+    method_sc_min = models.IntegerField(help_text='评价方式得分下限',blank=True)
+    method_sc_max = models.IntegerField(help_text='评价方式得分上限',blank=True)
+    method_express = models.CharField(help_text='表达式',max_length=512,blank=True)
+    method_ext_info = models.CharField(help_text='补充字段',max_length=512,blank=True)
+
+    class Meta:
+
+        app_label = 'kpi_server'
+        db_table = 'score_method'
+
+# 计算因子配置
+class FactorConfig(models.Model):
+
+    factor_id = models.CharField(help_text='因子id',max_length=24)
+    factor_name = models.CharField(help_text='因子名称',max_length=128)
+    factor_class = models.IntegerField(help_text='因子分类')
+    factor_express = models.CharField(help_text='因子计算表达式',max_length=512)
+    factor_update_dt = models.DateTimeField(help_text='因子更新时间',auto_now_add=False,auto_now=False)
+    factor_update_usr = models.CharField(help_text='因子更新人',max_length=24)
+    factor_ext_info = models.CharField(help_text='补充字段',max_length=512,blank=True)
+
+    class Meta:
+
+        app_label = 'kpi_server'
+        db_table = 'factor_config'

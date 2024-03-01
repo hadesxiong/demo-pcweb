@@ -15,3 +15,6 @@ from .recUpload import *
 
 # 其他信息
 from .otherConf import *
+
+# 考核指标
+from .scoreMain import *
