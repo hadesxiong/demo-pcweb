@@ -46,5 +46,7 @@ urlpatterns = [
     path('api/score/getScoreTable',views.getScoreTable),
     path('api/score/getScoreData',views.getScoreData),
     path('api/score/getFactorList',views.getFactorList),
-    path('api/score/updateFactor',views.updateFactor)
+    path('api/score/updateFactor',views.updateFactor),
+    path('api/score/getRuleList',views.getRuleList),
+    path('api/score/getRuleInfo',views.getRuleInfo)
 ]

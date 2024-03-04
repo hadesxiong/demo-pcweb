@@ -32,15 +32,14 @@ def updateFactor(request):
         try:
             factor_kwargs = {
                 'factor_id': 'FC' + str(int(datetime.now().timestamp())),
-                'factor_name': cleaned_data['form']['name'],
-                'factor_class': cleaned_data['form']['class'],
-                'factor_express': {
-                    'factors': cleaned_data['form']['factors'],
-                    'express': cleaned_data['form']['express']
-                },
+                'factor_name': cleaned_data['form']['factor_name'],
+                'factor_class': cleaned_data['form']['factor_class'],
+                'factor_express': cleaned_data['form']['factor_express'],
                 'factor_update_dt': datetime.now(),
                 'factor_update_usr': cleaned_data['user']
             } if check_fields(body_data['form'],FactorConfig) else None
+
+            print(factor_kwargs)
 
             if factor_kwargs:
                 factor_ins = FactorConfig.objects.create(**factor_kwargs)

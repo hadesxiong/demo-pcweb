@@ -18,28 +18,8 @@ class ScoreRuleInfo(models.Model):
         app_label = 'kpi_server'
         db_table = 'score_rule_info'
 
-# 考核指标信息
-class ScoreRuleDetail(models.Model):
-
-    detail_id = models.CharField(help_text='考核id',max_length=24,unique=True)
-    parent_id = models.CharField(help_text='父级内容id',max_length=24)
-    parent_class = models.IntegerField(help_text='父级内容类别')
-    detail_level = models.IntegerField(help_text='考核指标等级')
-    detail_wg_std = models.IntegerField(help_text='考核指标标准权重',blank=True)
-    detail_wg_value = models.IntegerField(help_text='考核指标权重',blank=True)
-    detail_wg_min = models.IntegerField(help_text='考核指标权重下限',blank=True)
-    detail_wg_max = models.IntegerField(help_text='考核指标权重上限',blank=True)
-    detail_sc_min = models.IntegerField(help_text='考核指标得分下限',blank=True)
-    detail_sc_max = models.IntegerField(help_text='考核指标得分上线',blank=True)
-    detail_ext_info = models.CharField(help_text='补充字段',max_length=512,blank=True)
-
-    class Meta:
-
-        app_label = 'kpi_server'
-        db_table = 'score_rule_detail'
-
 # 考核指标分解
-class ScoreInstanceInfo(models.Model):
+class ScoreRuleInstance(models.Model):
 
     instance_id = models.CharField(help_text='分解实例id',max_length=24,unique=True)
     rule_id = models.CharField(help_text='对应模版id',max_length=24)
@@ -50,12 +30,33 @@ class ScoreInstanceInfo(models.Model):
     instance_org = models.CharField(help_text='实例归属机构',max_length=24)
     instance_update_dt = models.DateTimeField(help_text='实例更新日期',auto_now=False,auto_now_add=False)
     instance_update_usr = models.CharField(help_text='实例更新人员',max_length=24)
-    instance_ext_info = models.CharField(help_text='扩展字段',max_length=512,blank=True)
+    instance_ext_info = models.CharField(help_text='扩展字段',max_length=512,blank=True,null=True)
 
     class Meta:
 
         app_label = 'kpi_server'
-        db_table = 'score_instance_info'
+        db_table = 'score_rule_instance'
+
+# 考核指标信息
+class ScoreRuleDetail(models.Model):
+
+    detail_id = models.CharField(help_text='考核id',max_length=24,unique=True)
+    rule_id = models.CharField(help_text='对应模版id',max_length=24)
+    parent_id = models.CharField(help_text='父级内容id',max_length=24,blank=True,null=True)
+    parent_class = models.CharField(help_text='父级内容类别',max_length=96,blank=True,null=True)
+    detail_level = models.IntegerField(help_text='考核指标等级')
+    detail_wg_std = models.DecimalField(help_text='考核指标标准权重',max_digits=10,decimal_places=2,null=True,blank=True)
+    detail_wg_value = models.DecimalField(help_text='考核指标权重',max_digits=10,decimal_places=2,null=True,blank=True)
+    detail_wg_min = models.DecimalField(help_text='考核指标权重下限',max_digits=10,decimal_places=2,null=True,blank=True)
+    detail_wg_max = models.DecimalField(help_text='考核指标权重上限',max_digits=10,decimal_places=2,null=True,blank=True)
+    detail_sc_min = models.DecimalField(help_text='考核指标得分下限',max_digits=10,decimal_places=2,null=True,blank=True)
+    detail_sc_max = models.DecimalField(help_text='考核指标得分上线',max_digits=10,decimal_places=2,null=True,blank=True)
+    detail_ext_info = models.CharField(help_text='补充字段',max_length=512,blank=True,null=True)
+
+    class Meta:
+
+        app_label = 'kpi_server'
+        db_table = 'score_rule_detail'
 
 # 评价方式信息
 class ScoreMethod(models.Model):
@@ -64,8 +65,8 @@ class ScoreMethod(models.Model):
     detail_id = models.CharField(help_text='关联考核指标id',max_length=24)
     method_title = models.CharField(help_text='评价方式名称',max_length=128)
     method_desc = models.CharField(help_text='评价方式描述',max_length=256)
-    method_sc_min = models.IntegerField(help_text='评价方式得分下限',blank=True)
-    method_sc_max = models.IntegerField(help_text='评价方式得分上限',blank=True)
+    method_sc_min = models.DecimalField(help_text='评价方式得分下限',max_digits=10,decimal_places=2,null=True,blank=True)
+    method_sc_max = models.DecimalField(help_text='评价方式得分上限',max_digits=10,decimal_places=2,null=True,blank=True)
     method_express = models.CharField(help_text='表达式',max_length=512,blank=True)
     method_ext_info = models.CharField(help_text='补充字段',max_length=512,blank=True)
 
