@@ -49,7 +49,7 @@ def getRuleList(request):
 
     return JsonResponse(re_msg,safe=False)
 
-
+# 查询模板详情
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getRuleInfo(request):
@@ -74,7 +74,8 @@ def getRuleInfo(request):
             re_msg = {'code':201,'msg':settings.KPI_ERROR_MESSAGES['global'][201]}
 
         return JsonResponse(re_msg,safe=False)
-    
+
+# 查询考核方式 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getScoreMethod(request):

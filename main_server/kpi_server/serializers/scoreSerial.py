@@ -4,7 +4,8 @@ from rest_framework import serializers
 from django.db.models import F
 # 引入model
 from kpi_server.models.userMain import Users
-from kpi_server.models.scoreMain import FactorConfig,ScoreRuleInfo,ScoreRuleDetail,ScoreMethod
+from kpi_server.models.orgMain import Org
+from kpi_server.models.scoreMain import FactorConfig,ScoreRuleInfo,ScoreRuleDetail,ScoreMethod,ScoreRuleInstance
 
 class FactorConfSerial(serializers.ModelSerializer):
 
@@ -73,3 +74,32 @@ class ScoreRuleInfoSerial(serializers.ModelSerializer):
 
         model = ScoreRuleInfo
         fields = ('rule_id','rule_name','rule_state','rule_update_dt','rule_user','rule_mark','score_detail')
+
+
+class ScoreRuleInsListSerial(serializers.ModelSerializer):
+
+    ins_user = serializers.SerializerMethodField()
+    ins_org = serializers.SerializerMethodField()
+
+    def get_ins_user(self,obj):
+
+        try:
+            user_target = Users.objects.get(notes_id=obj.instance_update_usr)
+            return f'{user_target.user_name} - {obj.instance_update_usr}'
+        
+        except Users.DoesNotExist:
+            return ''
+        
+    def get_ins_org(self,obj):
+
+        try:
+            org_target = Org.objects.get(org_num=obj.instance_org)
+            return org_target.org_name
+        except:
+            return ''
+    class Meta:
+
+        model = ScoreRuleInstance
+        fields = ('instance_id','rule_id','instance_parent','instance_state',
+                  'instance_period_st','instance_period_end','instance_update_dt',
+                  'ins_user','instance_org','ins_org')
