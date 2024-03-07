@@ -1,6 +1,7 @@
 # coding=utf8
 from rest_framework import serializers
 
+from django.db.models import F
 # 引入model
 from kpi_server.models.userMain import Users
 from kpi_server.models.scoreMain import FactorConfig,ScoreRuleInfo,ScoreRuleDetail,ScoreMethod
@@ -29,7 +30,7 @@ class ScoreRuleListSerial(serializers.ModelSerializer):
     class Meta:
 
         model = ScoreRuleInfo
-        fields = ('rule_id','rule_name','rule_state','rule_udpate_dt','rule_user')
+        fields = ('rule_id','rule_name','rule_state','rule_update_dt','rule_user')
 
 class ScoreMethodListSerial(serializers.ModelSerializer):
 
@@ -52,11 +53,21 @@ class ScoreDetailListSerial(serializers.ModelSerializer):
 class ScoreRuleInfoSerial(serializers.ModelSerializer):
 
     score_detail = serializers.SerializerMethodField()
+    rule_user = serializers.SerializerMethodField()
 
     def get_score_detail(self,obj):
 
-        detail_obj = ScoreRuleDetail.objects.filter(rule_id=obj.rule_id)
+        detail_obj = ScoreRuleDetail.objects.filter(rule_id=obj.rule_id,parent_id=F('rule_id'))
         return ScoreDetailListSerial(detail_obj,many=True).data
+    
+    def get_rule_user(self,obj):
+
+        try:
+            user_target = Users.objects.get(notes_id=obj.rule_update_usr)
+            return f'{user_target.user_name} - {obj.rule_update_usr}'
+        
+        except Users.DoesNotExist:
+            return ''
 
     class Meta:
 

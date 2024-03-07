@@ -31,7 +31,7 @@ def updateFactor(request):
 
         try:
             factor_kwargs = {
-                'factor_id': 'FC' + str(int(datetime.now().timestamp())),
+                'factor_id': 'FC_' + str(int(datetime.now().timestamp())),
                 'factor_name': cleaned_data['form']['factor_name'],
                 'factor_class': cleaned_data['form']['factor_class'],
                 'factor_express': cleaned_data['form']['factor_express'],
