@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.conf import settings
 
 from kpi_server.models.scoreMain import FactorConfig
-from kpi_server.serializers.scoreSerial import FactorConfSerial
+from kpi_server.serializers.factorSerial import fctConfSerial
 
 # 查询因子配置
 @api_view(['GET'])
@@ -29,7 +29,7 @@ def getFactorList(request):
 
     fl_queryset = FactorConfig.objects.filter(fl_query).order_by('-factor_update_dt')
     
-    fl_data = FactorConfSerial(fl_queryset,many=True).data
+    fl_data = fctConfSerial(fl_queryset,many=True).data
 
     re_msg = {'code':200,'msg':settings.KPI_ERROR_MESSAGES['global'][200],'data':fl_data}
 

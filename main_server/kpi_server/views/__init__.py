@@ -40,6 +40,7 @@ from .score.getScoreTable import *
 from .score.getScoreData import *
 from .score.getScoreRule import *
 from .score.getScoreInstance import *
+from .score.getScoreMethod import *
 
 # factor接口
 from .factor.getFactorList import *

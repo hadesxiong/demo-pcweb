@@ -6,13 +6,13 @@ from django.http.response import JsonResponse
 from django.db.models import Q
 from django.conf import settings
 
-from kpi_server.models.scoreMain import ScoreRuleInfo,ScoreMethod
+from kpi_server.models.scoreMain import ScoreRuleInfo
 
-from kpi_server.serializers.scoreSerial import ScoreRuleListSerial,ScoreRuleInfoSerial,ScoreMethodListSerial
+from kpi_server.serializers.scRuleSerial import srListSerial,srInfoSerial
 
 from datetime import datetime,time
 
-# 查询模板
+# 查询列表
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getRuleList(request):
@@ -43,7 +43,7 @@ def getRuleList(request):
 
     rl_queryset = ScoreRuleInfo.objects.filter(rl_query).order_by('-rule_update_dt')
 
-    rl_data = ScoreRuleListSerial(rl_queryset,many=True).data
+    rl_data = srListSerial(rl_queryset,many=True).data
 
     re_msg = {'code':200,'msg':settings.KPI_ERROR_MESSAGES['global'][200],'data':rl_data}
 
@@ -66,36 +66,11 @@ def getRuleInfo(request):
     else:
         try:
             rl_target = ScoreRuleInfo.objects.get(rule_id=query_params['rule_id'])
-            rl_serial = ScoreRuleInfoSerial(rl_target)
+            rl_serial = srInfoSerial(rl_target)
 
             re_msg = {'code':200,'msg':settings.KPI_ERROR_MESSAGES['global'][200],'data':rl_serial.data}
 
         except ScoreRuleInfo.DoesNotExist:
-            re_msg = {'code':201,'msg':settings.KPI_ERROR_MESSAGES['global'][201]}
-
-        return JsonResponse(re_msg,safe=False)
-
-# 查询考核方式 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def getScoreMethod(request):
-
-    # params解析
-    query_params = {
-        'detail_id': request.query_params.get('detail',None)
-    }
-
-    if None in query_params.values():
-        re_msg = {'code':201,'msg':settings.KPI_ERROR_MESSAGES['global'][201]}
-        return JsonResponse(re_msg,safe=False)
-    
-    else:
-        try:
-            sm_target = ScoreMethod.objects.filter(detail_id=query_params['detail_id'])
-            sm_serial = ScoreMethodListSerial(sm_target,many=True)
-            re_msg = {'code':200,'msg':settings.KPI_ERROR_MESSAGES['global'][200],'data':sm_serial.data}
-
-        except ScoreMethod.DoesNotExist:
             re_msg = {'code':201,'msg':settings.KPI_ERROR_MESSAGES['global'][201]}
 
         return JsonResponse(re_msg,safe=False)

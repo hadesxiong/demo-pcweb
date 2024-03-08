@@ -7,7 +7,7 @@ from django.db.models import Q,F
 from django.conf import settings
 
 from kpi_server.models.scoreMain import ScoreRuleInstance
-from kpi_server.serializers.scoreSerial import ScoreRuleInsListSerial
+from kpi_server.serializers.scoreSerial import ScoreRuleInsListSerial,ScoreRuleInsInfoSerial
 
 from datetime import datetime,time
 
@@ -42,7 +42,7 @@ def getScoreInsList(request):
 
         update_end_value = datetime.strptime(cleaned_query['update_end'],'%Y-%m-%d')
         cleaned_query['update_end'] = datetime.combine(update_end_value,time(23,59,59))
-        si_query &= Q(instance_udpate_dt__range=[cleaned_query['update_start'],cleaned_query['update_end']])
+        si_query &= Q(instance_update_dt__range=[cleaned_query['update_start'],cleaned_query['update_end']])
 
     si_queryset = ScoreRuleInstance.objects.filter(si_query).order_by('-instance_update_dt')
     si_data = ScoreRuleInsListSerial(si_queryset,many=True).data
@@ -50,3 +50,27 @@ def getScoreInsList(request):
     re_msg = {'code':200,'msg':settings.KPI_ERROR_MESSAGES['global'][200],'data':si_data }
 
     return JsonResponse(re_msg,safe=False)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getScoreInsInfo(request):
+
+    # params解析
+    query_params = {
+        'score_ins': request.query_params.get('ins',None)
+    }
+
+    if None in query_params.values():
+        re_msg = {'code': 201,'msg':settings.KPI_ERROR_MESSAGES['global'][201]}
+        return JsonResponse(re_msg,safe=False)
+    
+    else:
+        try:
+            si_target = ScoreRuleInstance.objects.filter(instance_parent=query_params['score_ins'])
+            si_serial = ScoreRuleInsInfoSerial(si_target,many=True)
+            re_msg = {'code':200,'msg':settings.KPI_ERROR_MESSAGES['global'][200],'data':si_serial.data}
+
+        except ScoreRuleInstance.DoesNotExist:
+            re_msg = {'code':201,'msg':settings.KPI_ERROR_MESSAGES['global'][201]}
+
+        return JsonResponse(re_msg,safe=False)
