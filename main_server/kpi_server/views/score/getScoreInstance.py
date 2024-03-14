@@ -7,7 +7,7 @@ from django.db.models import Q,F
 from django.conf import settings
 
 from kpi_server.models.scoreMain import ScoreRuleInstance
-from kpi_server.serializers.scoreSerial import ScoreRuleInsListSerial,ScoreRuleInsInfoSerial
+from kpi_server.serializers.scInsSerial import siListSerial,siInfoSerial
 
 from datetime import datetime,time
 
@@ -45,7 +45,7 @@ def getScoreInsList(request):
         si_query &= Q(instance_update_dt__range=[cleaned_query['update_start'],cleaned_query['update_end']])
 
     si_queryset = ScoreRuleInstance.objects.filter(si_query).order_by('-instance_update_dt')
-    si_data = ScoreRuleInsListSerial(si_queryset,many=True).data
+    si_data = siListSerial(si_queryset,many=True).data
 
     re_msg = {'code':200,'msg':settings.KPI_ERROR_MESSAGES['global'][200],'data':si_data }
 
@@ -67,7 +67,7 @@ def getScoreInsInfo(request):
     else:
         try:
             si_target = ScoreRuleInstance.objects.filter(instance_parent=query_params['score_ins'])
-            si_serial = ScoreRuleInsInfoSerial(si_target,many=True)
+            si_serial = siInfoSerial(si_target,many=True)
             re_msg = {'code':200,'msg':settings.KPI_ERROR_MESSAGES['global'][200],'data':si_serial.data}
 
         except ScoreRuleInstance.DoesNotExist:
