@@ -41,6 +41,7 @@ from .score.getScoreData import *
 from .score.getScoreRule import *
 from .score.getScoreInstance import *
 from .score.getScoreMethod import *
+from .score.updateScoreRule import *
 
 # factor接口
 from .factor.getFactorList import *
